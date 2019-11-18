@@ -80,6 +80,18 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+def A000079(start=0, limit=20, plot=False):
+    seq = []
+    for n in range(start, limit):
+        seq.append(2**n)
+
+    if plot:
+        plt.plot(seq, 'r-o', label='power')
+        plt.title = "Power"
+        plt.show()
+        return seq
+    else:
+        return seq
 
 def main():
     args = parse_args()
@@ -90,6 +102,8 @@ def main():
         return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
+    elif args.sequence == "A000079":
+        return A000079(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
