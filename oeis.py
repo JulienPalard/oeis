@@ -12,10 +12,7 @@ __version__ = "0.0.1"
 def parse_args():
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
-        "sequence",
-        metavar="S",
-        type=str,
-        help="Define the sequence to run (e.g.: A181391)",
+        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)",
     )
     parser.add_argument(
         "--limit",
