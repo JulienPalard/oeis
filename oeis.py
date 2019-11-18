@@ -81,6 +81,23 @@ def A000010(n):
     return len(numbers)
 
 
+def A000142(start=0, limit=20, plot=False):
+    sequence = []
+    colors = []
+    x = []
+    for i in range(start, start + limit):
+        sequence.append(math.factorial(i))
+        colors.append(np.random.rand())
+        x.append(i)
+
+    if plot:
+        plt.scatter(x, sequence, s=1, c=colors, alpha=0.5)
+        plt.show()
+    else:
+        print(sequence)
+
+    return sequence
+
 def main():
     args = parse_args()
 
@@ -90,6 +107,8 @@ def main():
         return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
+    elif args.sequence == "A181391":
+        return A000142(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
