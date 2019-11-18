@@ -162,6 +162,8 @@ def main():
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return A000010(args.start, args.limit, args.plot)
+    elif args.sequence == "A006577":
+        return [A006577(n) for n in xrange(1, 101)]
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
