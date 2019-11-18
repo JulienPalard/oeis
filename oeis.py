@@ -79,6 +79,25 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+def A000040(start=0, end=999, plot=False):
+    result = []
+    resultIndex = []
+    i=0
+    for val in range(start, end + 1): 
+        if val > 1: 
+            for n in range(2, val): 
+                if (val % n) == 0: 
+                    break
+            else: 
+                result.append(val)
+                resultIndex.append(i)
+                i=i+1
+    if plot:
+        plt.plot(resultIndex,result)
+        plt.ylabel('some numbers')
+        plt.show()
+    else:
+        return result
 
 def _partitions(n):
 	
@@ -109,6 +128,8 @@ def main():
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
         return A115020()[args.start : args.start + args.limit]
+    elif args.sequence == "A000040":
+        return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
     if args.sequence == "A000041":
