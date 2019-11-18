@@ -61,6 +61,26 @@ def A181391(start=0, limit=20, plot=False):
 
     return sequence[start : start + limit]
 
+def A006577(n):
+
+    if n==1: return 0
+
+    x=0
+
+    while True:
+
+        if n%2==0: n/=2
+
+        else: n = 3*n + 1
+
+        x+=1
+
+        if n<2: break
+
+    return x
+
+
+
 
 def A115020():
     result = []
