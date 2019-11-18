@@ -96,6 +96,8 @@ def A000040(start=0, end=999, plot=False):
         plt.plot(resultIndex,result)
         plt.ylabel('some numbers')
         plt.show()
+    else:
+        return result
 
 def _partitions(n):
 	
