@@ -1,6 +1,9 @@
-from oeis import partitions
+from oeis import A000041
+
+
 def test_partitions():
-    assert partitions(5)==7
-    assert partitions(3)==3
-    assert partitions(4)==5
-    assert partitions(10)==42
+    assert A000041(5) == 7
+    assert A000041(3) == 3
+    assert A000041(4) == 5
+    assert A000041(10) == 42
+
