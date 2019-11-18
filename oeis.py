@@ -70,8 +70,18 @@ def A115020():
 
     return result
 
+def A000010(start, limit, plot):
+    if plot:
+        plt.scatter(
+            range(start, start + limit),
+            [phi(x) for x in range(start, limit)],
+            s=50,
+        )
+        plt.show()
+    else:
+        return [phi(x) for x in range(start, limit)]
 
-def A000010(n):
+def phi(n):
     numbers = []
     i = 0
     for i in range(n):
@@ -131,15 +141,7 @@ def main():
     elif args.sequence == "A000040":
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
-        if args.plot:
-            plt.scatter(
-                range(args.start, args.start + args.limit),
-                [A000010(x) for x in range(args.start, args.limit)],
-                s=50,
-            )
-            plt.show()
-        else:
-            return [A000010(x) for x in range(args.start, args.limit)]
+        return A000010(args.start, args.limit, args.plot)
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
