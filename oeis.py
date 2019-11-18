@@ -79,7 +79,7 @@ def A006577(n):
 
     return x
 
-print [A006577(n) for n in xrange(1, 101)]
+
 
 
 def A115020():
