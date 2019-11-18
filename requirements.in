@@ -3,4 +3,5 @@ hypothesis
 numpy
 matplotlib
 flit
-pip - tools
+pip-tools
+black
