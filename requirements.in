@@ -1,0 +1,6 @@
+pytest
+hypothesis
+numpy
+matplotlib
+flit
+pip-tools
