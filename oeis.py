@@ -61,6 +61,26 @@ def A181391(start=0, limit=20, plot=False):
 
     return sequence[start : start + limit]
 
+def A006577(n):
+
+    if n==1: return 0
+
+    x=0
+
+    while True:
+
+        if n%2==0: n/=2
+
+        else: n = 3*n + 1
+
+        x+=1
+
+        if n<2: break
+
+    return x
+
+
+
 
 def A115020():
     result = []
@@ -109,7 +129,25 @@ def A000142(start=0, limit=20, plot=False):
         x.append(i)
 
     if plot:
-        plt.scatter(x, sequence, s=1, c=colors, alpha=0.5)
+        plt.plot(x, sequence)
+        plt.show()
+
+    return sequence
+    
+
+def A000217(start=0, limit=20, plot=False):
+    sequence = []
+    x = []
+    for i in range(start, start + limit):
+        if i+1 < 2:
+            sequence.append(0)
+        else:
+            sequence.append(math.factorial(i+1) // math.factorial(2) // math.factorial((i+1) - 2))
+        
+        x.append(i)
+
+    if plot:
+        plt.plot(x, sequence)
         plt.show()
 
     return sequence
@@ -149,6 +187,10 @@ def main():
         return [A000010(x) for x in range(1, args.limit)]
     elif args.sequence == "A000142":
         return A000142(args.start, args.limit, args.plot)
+    elif args.sequence == "A000217":
+        return A000217(args.start, args.limit, args.plot)
+    elif args.sequence == "A006577":
+        return [A006577(n) for n in xrange(1, 101)]
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
