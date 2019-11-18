@@ -62,6 +62,29 @@ def A181391(start=0, limit=20, plot=False):
     return sequence[start : start + limit]
 
 
+def A006577(n):
+
+    if n == 1:
+        return 0
+
+    x = 0
+
+    while True:
+
+        if n % 2 == 0:
+            n /= 2
+
+        else:
+            n = 3 * n + 1
+
+        x += 1
+
+        if n < 2:
+            break
+
+    return x
+
+
 def A000142(start=0, limit=20, plot=False):
     sequence = []
     x = []
@@ -217,6 +240,8 @@ def main():
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
+    elif args.sequence == "A006577":
+        return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
 
