@@ -126,6 +126,7 @@ def A000079(start=0, limit=20, plot=False):
 
     return sequence
 
+
 def A115020():
     result = []
     for n in range(100, 0, -7):
@@ -255,33 +256,34 @@ def partitions(n):
 def A000041(n):
     return len(partitions(n))
 
-    
-def fibonacci(n): 
-    if n<0: 
-        print("Incorrect input") 
-    if n<=1:
+
+def fibonacci(n):
+    if n < 0:
+        print("Incorrect input")
+    if n <= 1:
         return 1
     else:
-        return (fibonacci(n-1)+fibonacci(n-2))
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
 
 def A000045(start, limit, plot=False):
 
     numbers = []
     y_label = []
-    for i in range(int(start), int(limit)+1):
+    for i in range(int(start), int(limit) + 1):
         numbers.append(fibonacci(i))
         y_label.append(i)
-        
-    
-    if plot:
-        with plt.style.context('dark_background'):
-            plt.plot(y_label, numbers, 'r-o')
 
-        plt.xlabel('x label')
-        plt.ylabel('y label')
+    if plot:
+        with plt.style.context("dark_background"):
+            plt.plot(y_label, numbers, "r-o")
+
+        plt.xlabel("x label")
+        plt.ylabel("y label")
         plt.title("A000045 - Fibonacci")
         plt.show()
     return numbers
+
 
 def main():
     args = parse_args()
