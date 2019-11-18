@@ -12,7 +12,7 @@ __version__ = "0.0.1"
 def parse_args():
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
-        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)",
+        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)"
     )
     parser.add_argument(
         "--limit",
@@ -60,7 +60,6 @@ def A181391(start=0, limit=20, plot=False):
 
 
 def A006577(n):
-
     if n == 1:
         return 0
 
@@ -160,6 +159,18 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+def A000079(start=0, limit=20, plot=False):
+    seq = []
+    for n in range(start, limit):
+        seq.append(2**n)
+
+    if plot:
+        plt.plot(seq, 'r-o', label='power')
+        plt.title = "Power"
+        plt.show()
+        return seq
+    else:
+        return seq
 
 def A000040(start=0, end=999, plot=False):
     result = []
@@ -182,8 +193,19 @@ def A000040(start=0, end=999, plot=False):
         return result
 
 
-def partitions(n):
+def A008592(start, limit):
+    nterms = limit + 1
+    end = limit + start
+    my_list = []
+    i = 0
+    print("A008592 sequence:")
+    while i < end:
+        my_list.append(i * 10)
+        i += 1
+    return my_list[start:end]
 
+
+def partitions(n):
     if n == 0:
         return []
     if n == 1:
@@ -234,10 +256,11 @@ def A000045():
     return numbers
 
 def main():
-
     args = parse_args()
 
-    if args.sequence == "A181391":
+    if args.sequence == "A008592":
+        return A008592(args.start, args.limit)
+    elif args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A000142":
         return A000142(args.start, args.limit, args.plot)
