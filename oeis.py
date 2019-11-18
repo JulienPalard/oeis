@@ -174,7 +174,6 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
-<<<<<<< HEAD
 def A000079(start=0, limit=20, plot=False):
     seq = []
     for n in range(start, limit):
@@ -187,8 +186,6 @@ def A000079(start=0, limit=20, plot=False):
         return seq
     else:
         return seq
-=======
->>>>>>> ce0c3267ca3b9dbdf147e337c7fb41bf7ef10fef
 
 def A000040(start=0, end=999, plot=False):
     result = []
@@ -235,11 +232,6 @@ def A000041(n):
 def main():
 
     args = parse_args()
-<<<<<<< HEAD
-   
-=======
-
->>>>>>> ce0c3267ca3b9dbdf147e337c7fb41bf7ef10fef
     if args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A000142":
@@ -256,16 +248,6 @@ def main():
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
-<<<<<<< HEAD
-    elif args.sequence == "A000079":
-        return A000079(args.start, args.limit, args.plot)
-    elif args.sequence == "A000041":
-        return 'Nop'
-
-    
-if __name__== "__main__":
-    main()
-=======
     elif args.sequence == "A006577":
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
@@ -274,4 +256,3 @@ if __name__== "__main__":
 
 if __name__ == "__main__":
     print(main())
->>>>>>> ce0c3267ca3b9dbdf147e337c7fb41bf7ef10fef
