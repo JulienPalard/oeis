@@ -1,24 +1,78 @@
+"""
+Tool that return a given sequence
+"""
+
 import argparse
+import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-parser = argparse.ArgumentParser(description='')
+__version__ = "0.0.1"
 
-parser.add_argument('sequence')
-parser.add_argument('--start', type= int, default=0)
-parser.add_argument('--limit', type= int, default=17)
 
-args = parser.parse_args()
+def parse_args():
+    parser = argparse.ArgumentParser(description="Print a sweet sequence")
+    parser.add_argument(
+        "sequence",
+        metavar="S",
+        type=str,
+        help="Define the sequence to run (e.g.: A181391)",
+    )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=20,
+        help="Define the limit of the sequence, (default: 20)",
+    )
+    parser.add_argument(
+        "--plot", action="store_true", help="Print a sweet sweet sweet graph"
+    )
+    parser.add_argument(
+        "--start",
+        type=int,
+        default=0,
+        help="Define the starting point of the sequence (default: 0)",
+    )
 
-def countdown():
+    return parser.parse_args()
+
+
+def A181391(start=0, limit=20, plot=False):
+    sequence = [0]
+    last_pos = {}
+
+    for i in range(start + limit):
+        new_value = i - last_pos.get(sequence[i], i)
+        sequence.append(new_value)
+        last_pos[sequence[i]] = i
+
+    if plot:
+        colors = []
+        for i in range(start, start + limit):
+            colors.append(np.random.rand())
+
+        plt.scatter(
+            range(start, start + limit),
+            sequence[start : start + limit],
+            s=50,
+            c=colors,
+            alpha=0.5,
+        )
+        plt.show()
+
+    return sequence[start : start + limit]
+
+
+def A115020():
     result = []
-    for n in range(100,0,-7):
+    for n in range(100, 0, -7):
         if n >= 0:
             result.append(n)
-    
+
     return result
 
-def phi(n):
+
+def A000010(n):
     numbers = []
     i = 0
     for i in range(n):
@@ -26,7 +80,7 @@ def phi(n):
             numbers.append(i)
     return len(numbers)
 
-def primeNumber(start, end, plot=False):
+def A000040(start=0, end=999, plot=False):
     result = []
     resultIndex = []
     i=0
@@ -45,19 +99,18 @@ def primeNumber(start, end, plot=False):
         plt.show()
 
 def main():
-    if args.sequence == "A000010":
-        return [phi(x) for x in range (1, args.limit)]
-    if args.sequence == "A000040":
-        return primeNumber(args.start,args.limit,args.plot)
-            
-print(countdown()[args.start:args.start + args.limit])
+    args = parse_args()
+
+    if args.sequence == "A181391":
+        return A181391(args.start, args.limit, args.plot)
+    elif args.sequence == "A115020":
+        return A115020()[args.start : args.start + args.limit]
+    elif args.sequence == "A000040":
+        return A000040(args.start, args.limit, args.plot)
+    elif args.sequence == "A000010":
+        return [A000010(x) for x in range(1, args.limit)]
 
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Get all primes number.")
-    parser.add_argument("--plot", help="Display graph.",action="store_true")
-    parser.add_argument("--start", default=0, help="Begining value.",type=int)
-    parser.add_argument("--limit", default=9999, help="Character to use as a replacement.",type=int)
-
-    return parser.parse_args()
+if __name__ == "__main__":
+    print(main())
 
