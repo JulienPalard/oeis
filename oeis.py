@@ -174,6 +174,18 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+def A000079(start=0, limit=20, plot=False):
+    seq = []
+    for n in range(start, limit):
+        seq.append(2**n)
+
+    if plot:
+        plt.plot(seq, 'r-o', label='power')
+        plt.title = "Power"
+        plt.show()
+        return seq
+    else:
+        return seq
 
 def A000040(start=0, end=999, plot=False):
     result = []
