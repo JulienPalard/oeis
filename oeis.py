@@ -12,7 +12,7 @@ __version__ = "0.0.1"
 def parse_args():
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
-        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)",
+        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)"
     )
     parser.add_argument(
         "--limit",
@@ -60,7 +60,6 @@ def A181391(start=0, limit=20, plot=False):
 
 
 def A006577(n):
-
     if n == 1:
         return 0
 
@@ -197,7 +196,6 @@ def A000040(start=0, end=999, plot=False):
 
 
 def partitions(n):
-
     if n == 0:
         return []
     if n == 1:
@@ -218,7 +216,6 @@ def A000041(n):
 
 
 def main():
-
     args = parse_args()
 
     if args.sequence == "A181391":
