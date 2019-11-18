@@ -81,20 +81,6 @@ def A006577(n):
     return x
 
 
-def A000142(start=0, limit=20, plot=False):
-    sequence = []
-    x = []
-    for i in range(start, start + limit):
-        sequence.append(math.factorial(i))
-        x.append(i)
-
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
-
-    return sequence
-
-
 def A000290(start=0, limit=20, plot=False):
     sequence = []
     x = []
@@ -173,38 +159,57 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+
 def A000079(start=0, limit=20, plot=False):
     seq = []
     for n in range(start, limit):
-        seq.append(2**n)
+        seq.append(2 ** n)
 
     if plot:
-        plt.plot(seq, 'r-o', label='power')
+        plt.plot(seq, "r-o", label="power")
         plt.title = "Power"
         plt.show()
         return seq
     else:
         return seq
 
-def A000040(start=0, end=999, plot=False):
-    result = []
-    resultIndex = []
-    i = 0
-    for val in range(start, end + 1):
-        if val > 1:
-            for n in range(2, val):
-                if (val % n) == 0:
-                    break
-            else:
-                result.append(val)
-                resultIndex.append(i)
-                i = i + 1
+
+def A000142(start=0, limit=20, plot=False):
+    sequence = []
+    colors = []
+    x = []
+    for i in range(start, start + limit):
+        sequence.append(math.factorial(i))
+        colors.append(np.random.rand())
+        x.append(i)
+
     if plot:
-        plt.plot(resultIndex, result)
-        plt.ylabel("some numbers")
+        plt.plot(x, sequence)
         plt.show()
-    else:
-        return result
+
+    return sequence
+
+
+def A000217(start=0, limit=20, plot=False):
+    sequence = []
+    x = []
+    for i in range(start, start + limit):
+        if i + 1 < 2:
+            sequence.append(0)
+        else:
+            sequence.append(
+                math.factorial(i + 1)
+                // math.factorial(2)
+                // math.factorial((i + 1) - 2)
+            )
+
+        x.append(i)
+
+    if plot:
+        plt.plot(x, sequence)
+        plt.show()
+
+    return sequence
 
 
 def A008592(start, limit):
@@ -260,6 +265,10 @@ def main():
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
+    elif args.sequence == "A000142":
+        return A000142(args.start, args.limit, args.plot)
+    elif args.sequence == "A000217":
+        return A000217(args.start, args.limit, args.plot)
     elif args.sequence == "A006577":
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
