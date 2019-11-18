@@ -26,7 +26,7 @@ def parse_args():
     parser.add_argument(
         "--start",
         type=int,
-        default=1,
+        default=0,
         help="Define the starting point of the sequence (default: 0)",
     )
 
@@ -224,16 +224,14 @@ def partitions(n):
 def A000041(n):
     return len(partitions(n))
 
-
+    
 def Fibonacci(n): 
     if n<0: 
         print("Incorrect input") 
-    elif n==1: 
-        return 0
-    elif n==2: 
+    if n<=1:
         return 1
-    else: 
-        return Fibonacci(n-1)+Fibonacci(n-2)
+    else:
+        return (Fibonacci(n-1)+Fibonacci(n-2))
 
 def A000045():
     args = parse_args()
