@@ -1,7 +1,6 @@
 """
 Tool that return a given sequence
 """
-
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -98,9 +97,31 @@ def A000040(start=0, end=999, plot=False):
         plt.ylabel('some numbers')
         plt.show()
 
-def main():
-    args = parse_args()
+def _partitions(n):
+	
+    if n == 0:
+        return []
+    if n==1:
+        return [[1]]
+    liste=[[n]]  
+    for i in range(1,n):
 
+        for p in _partitions(n-i):
+            if [i]+p==sorted([i]+p):
+                liste.append([i]+p)       
+    return liste
+def partitions(n):
+    return len(_partitions(n))
+def affiche(n):
+    listes=_partitions(n)
+    for i in range(0,len(listes)):
+        print(listes[i])
+
+def main():
+
+    args = parse_args()
+   
+    
     if args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
@@ -109,8 +130,10 @@ def main():
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
+    if args.sequence == "A000041":
+        print(affiche(args.start))
+        print(partitions(args.start))
 
-
-if __name__ == "__main__":
-    print(main())
-
+    
+if __name__=="__main__":
+    main()
