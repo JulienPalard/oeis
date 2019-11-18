@@ -23,6 +23,7 @@ lib/
 lib64/
 parts/
 sdist/
+.vscode/
 var/
 wheels/
 pip-wheel-metadata/
