@@ -59,10 +59,8 @@ def A181391(start=0, limit=20, plot=False):
             alpha=0.5,
         )
         plt.show()
-    else:
-        print(sequence[start : start + limit])
 
-    return sequence
+    return sequence[start : start + limit]
 
 
 def A000142(start=0, limit=20, plot=False):
@@ -75,8 +73,6 @@ def A000142(start=0, limit=20, plot=False):
     if plot:
         plt.plot(x, sequence)
         plt.show()
-    else:
-        print(sequence)
 
     return sequence
 
@@ -91,8 +87,6 @@ def A000290(start=0, limit=20, plot=False):
     if plot:
         plt.plot(x, sequence)
         plt.show()
-    else:
-        print(sequence)
 
     return sequence
 
@@ -105,8 +99,6 @@ def A000079(start=0, limit=20, plot=False):
     if plot:
         plt.plot(sequence)
         plt.show()
-    else:
-        print(sequence)
 
     return sequence
 
@@ -121,20 +113,17 @@ def A000045(start=0, limit=20, plot=False):
     if plot:
         plt.plot(sequence)
         plt.show()
-    else:
-        print(sequence)
 
     return sequence
 
 
 def A115020():
-    sequence = []
+    result = []
     for n in range(100, 0, -7):
         if n >= 0:
-            sequence.append(n)
+            result.append(n)
 
-    print(sequence)
-    return sequence
+    return result
 
 
 def A000040(start, end, plot=False):
@@ -155,26 +144,39 @@ def A000040(start, end, plot=False):
         plt.ylabel("some numbers")
         plt.show()
 
+    return result
+
+
+def A000010(n):
+    numbers = []
+    i = 0
+    for i in range(n):
+        if math.gcd(i, n) == 1:
+            numbers.append(i)
+    return len(numbers)
+
 
 def main():
     args = parse_args()
 
     if args.sequence == "A181391":
-        A181391(args.start, args.limit, args.plot)
+        return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A000142":
-        A000142(args.start, args.limit, args.plot)
+        return A000142(args.start, args.limit, args.plot)
     elif args.sequence == "A000290":
-        A000290(args.start, args.limit, args.plot)
+        return A000290(args.start, args.limit, args.plot)
     elif args.sequence == "A000079":
-        A000079(args.start, args.limit, args.plot)
+        return A000079(args.start, args.limit, args.plot)
     elif args.sequence == "A000045":
-        A000045(args.start, args.limit, args.plot)
+        return A000045(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
-        A115020()[args.start : args.start + args.limit]
+        return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000040":
-        A000040(args.start, args.limit, args.plot)
+        return A000040(args.start, args.limit, args.plot)
+    elif args.sequence == "A000010":
+        return [A000010(x) for x in range(1, args.limit)]
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
 
