@@ -122,20 +122,6 @@ def A000079(start=0, limit=20, plot=False):
     return sequence
 
 
-def A000045(start=0, limit=20, plot=False):
-    sequence = []
-    sequence.append(0)
-    sequence.append(1)
-    for i in range(2, limit):
-        sequence.append(sequence[i - 1] + sequence[i - 2])
-
-    if plot:
-        plt.plot(sequence)
-        plt.show()
-
-    return sequence
-
-
 def A115020():
     result = []
     for n in range(100, 0, -7):
@@ -259,8 +245,6 @@ def main():
         return A000290(args.start, args.limit, args.plot)
     elif args.sequence == "A000079":
         return A000079(args.start, args.limit, args.plot)
-    elif args.sequence == "A000045":
-        return A000045(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
         return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000040":
@@ -272,8 +256,8 @@ def main():
     elif args.sequence == "A000041":
         return A000041(args.start)
     elif args.sequence == "A000045":
-        return A000045() 
+        return A000045()
 
 
 if __name__ == "__main__":
-    print(main())
+    main()
