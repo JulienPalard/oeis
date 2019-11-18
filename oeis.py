@@ -85,20 +85,6 @@ def A006577(n):
     return x
 
 
-def A000142(start=0, limit=20, plot=False):
-    sequence = []
-    x = []
-    for i in range(start, start + limit):
-        sequence.append(math.factorial(i))
-        x.append(i)
-
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
-
-    return sequence
-
-
 def A000290(start=0, limit=20, plot=False):
     sequence = []
     x = []
@@ -176,27 +162,6 @@ def A000010(n):
         if math.gcd(i, n) == 1:
             numbers.append(i)
     return len(numbers)
-
-
-def A000040(start=0, end=999, plot=False):
-    result = []
-    resultIndex = []
-    i = 0
-    for val in range(start, end + 1):
-        if val > 1:
-            for n in range(2, val):
-                if (val % n) == 0:
-                    break
-            else:
-                result.append(val)
-                resultIndex.append(i)
-                i = i + 1
-    if plot:
-        plt.plot(resultIndex, result)
-        plt.ylabel("some numbers")
-        plt.show()
-    else:
-        return result
 
 
 def A000142(start=0, limit=20, plot=False):
