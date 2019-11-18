@@ -30,7 +30,7 @@ def parse_args():
     parser.add_argument(
         "--start",
         type=int,
-        default=0,
+        default=1,
         help="Define the starting point of the sequence (default: 0)",
     )
 
@@ -81,6 +81,36 @@ def A000010(n):
     return len(numbers)
 
 
+def Fibonacci(n): 
+    if n<0: 
+        print("Incorrect input") 
+    elif n==1: 
+        return 0
+    elif n==2: 
+        return 1
+    else: 
+        return Fibonacci(n-1)+Fibonacci(n-2)
+
+def A000045():
+    args = parse_args()
+
+    numbers = []
+    y_label = []
+    for i in range(int(args.start), int(args.limit)+1):
+        numbers.append(Fibonacci(i))
+        y_label.append(i)
+        
+    print(y_label)
+    print(numbers)
+    if args.plot:
+        with plt.style.context('dark_background'):
+            plt.plot(y_label, numbers, 'r-o')
+
+        plt.xlabel('x label')
+        plt.ylabel('y label')
+        plt.title("A000045 - Fibonacci")
+        plt.show()
+
 def main():
     args = parse_args()
 
@@ -90,7 +120,8 @@ def main():
         return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000010":
         return [A000010(x) for x in range(1, args.limit)]
-
+    elif args.sequence == 'A000045':
+            A000045()
 
 if __name__ == "__main__":
     print(main())
