@@ -127,6 +127,35 @@ def A000045(start=0, limit=20, plot=False):
     return sequence
 
 
+def A115020():
+    sequence = []
+    for n in range(100, 0, -7):
+        if n >= 0:
+            sequence.append(n)
+
+    print(sequence)
+    return sequence
+
+
+def A000040(start, end, plot=False):
+    result = []
+    resultIndex = []
+    i = 0
+    for val in range(start, end + 1):
+        if val > 1:
+            for n in range(2, val):
+                if (val % n) == 0:
+                    break
+            else:
+                result.append(val)
+                resultIndex.append(i)
+                i = i + 1
+    if plot:
+        plt.plot(resultIndex, result)
+        plt.ylabel("some numbers")
+        plt.show()
+
+
 def main():
     args = parse_args()
 
@@ -140,7 +169,12 @@ def main():
         A000079(args.start, args.limit, args.plot)
     elif args.sequence == "A000045":
         A000045(args.start, args.limit, args.plot)
+    elif args.sequence == "A115020":
+        A115020()[args.start : args.start + args.limit]
+    elif args.sequence == "A000040":
+        A000040(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
     main()
+
