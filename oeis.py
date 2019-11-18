@@ -230,25 +230,24 @@ def A000041(n):
     return len(partitions(n))
 
     
-def Fibonacci(n): 
+def fibonacci(n): 
     if n<0: 
         print("Incorrect input") 
     if n<=1:
         return 1
     else:
-        return (Fibonacci(n-1)+Fibonacci(n-2))
+        return (fibonacci(n-1)+fibonacci(n-2))
 
-def A000045():
-    args = parse_args()
+def A000045(start, limit, plot=False):
 
     numbers = []
     y_label = []
-    for i in range(int(args.start), int(args.limit)+1):
-        numbers.append(Fibonacci(i))
+    for i in range(int(start), int(limit)+1):
+        numbers.append(fibonacci(i))
         y_label.append(i)
         
     
-    if args.plot:
+    if plot:
         with plt.style.context('dark_background'):
             plt.plot(y_label, numbers, 'r-o')
 
@@ -286,7 +285,7 @@ def main():
     elif args.sequence == "A000041":
         return A000041(args.start)
     elif args.sequence == "A000045":
-        return A000045()
+        return A000045(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
