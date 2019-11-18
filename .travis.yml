@@ -6,4 +6,4 @@ install:
   - flit install
 script:
   - pytest
-  - black --check oeis.py
+  - black --diff --check oeis.py
