@@ -119,6 +119,22 @@ def affiche(n):
     for i in range(0,len(listes)):
         print(listes[i])
 
+def A000045(n):
+    if n <= 1:
+       return 1
+    else:
+       return(A000045(n-1) + A000045(n-2))
+nterms = 10
+
+if nterms <= 0:
+   print("Plese enter a positive integer")
+else:
+   print("Fibonacci sequence:")
+   for i in range(nterms):
+       print(A000045(i))
+
+
+
 def main():
 
     args = parse_args()
@@ -135,6 +151,8 @@ def main():
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
+    if args.sequence == "A000045":
+        print(A000045(i))
 
     
 if __name__=="__main__":
