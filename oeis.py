@@ -85,11 +85,86 @@ def A006577(n):
     return x
 
 
+def A000142(start=0, limit=20, plot=False):
+    sequence = []
+    x = []
+    for i in range(start, start + limit):
+        sequence.append(math.factorial(i))
+        x.append(i)
+
+    if plot:
+        plt.plot(x, sequence)
+        plt.show()
+
+    return sequence
+
+
+def A000290(start=0, limit=20, plot=False):
+    sequence = []
+    x = []
+    for i in range(start, start + limit):
+        sequence.append(i * i)
+        x.append(i)
+
+    if plot:
+        plt.plot(x, sequence)
+        plt.show()
+
+    return sequence
+
+
+def A000079(start=0, limit=20, plot=False):
+    sequence = []
+    for i in range(start, start + limit):
+        sequence.append(2 ** i)
+
+    if plot:
+        plt.plot(sequence)
+        plt.show()
+
+    return sequence
+
+
+def A000045(start=0, limit=20, plot=False):
+    sequence = []
+    sequence.append(0)
+    sequence.append(1)
+    for i in range(2, limit):
+        sequence.append(sequence[i - 1] + sequence[i - 2])
+
+    if plot:
+        plt.plot(sequence)
+        plt.show()
+
+    return sequence
+
+
 def A115020():
     result = []
     for n in range(100, 0, -7):
         if n >= 0:
             result.append(n)
+
+    return result
+
+
+def A000040(start, end, plot=False):
+    result = []
+    resultIndex = []
+    i = 0
+    for val in range(start, end + 1):
+        if val > 1:
+            for n in range(2, val):
+                if (val % n) == 0:
+                    break
+            else:
+                result.append(val)
+                resultIndex.append(i)
+                i = i + 1
+    if plot:
+        plt.plot(resultIndex, result)
+        plt.ylabel("some numbers")
+        plt.show()
 
     return result
 
@@ -162,29 +237,25 @@ def A000217(start=0, limit=20, plot=False):
     return sequence
 
 
-def _partitions(n):
+def partitions(n):
 
     if n == 0:
         return []
     if n == 1:
         return [[1]]
-    liste = [[n]]
+
+    partition = [[n]]
+
     for i in range(1, n):
-
-        for p in _partitions(n - i):
+        for p in partitions(n - i):
             if [i] + p == sorted([i] + p):
-                liste.append([i] + p)
-    return liste
+                partition.append([i] + p)
+
+    return partition
 
 
-def partitions(n):
-    return len(_partitions(n))
-
-
-def affiche(n):
-    listes = _partitions(n)
-    for i in range(0, len(listes)):
-        print(listes[i])
+def A000041(n):
+    return len(partitions(n))
 
 
 def main():
@@ -193,6 +264,14 @@ def main():
 
     if args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
+    elif args.sequence == "A000142":
+        return A000142(args.start, args.limit, args.plot)
+    elif args.sequence == "A000290":
+        return A000290(args.start, args.limit, args.plot)
+    elif args.sequence == "A000079":
+        return A000079(args.start, args.limit, args.plot)
+    elif args.sequence == "A000045":
+        return A000045(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
         return A115020()[args.start : args.start + args.limit]
     elif args.sequence == "A000040":
@@ -205,10 +284,9 @@ def main():
         return A000217(args.start, args.limit, args.plot)
     elif args.sequence == "A006577":
         return [A006577(n) for n in xrange(1, 101)]
-    if args.sequence == "A000041":
-        print(affiche(args.start))
-        print(partitions(args.start))
+    elif args.sequence == "A000041":
+        return A000041(args.start)
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
