@@ -143,16 +143,16 @@ def A115020():
 
     return result
 
+
 def A000010(start, limit, plot):
     if plot:
         plt.scatter(
-            range(start, start + limit),
-            [phi(x) for x in range(start, limit)],
-            s=50,
+            range(start, start + limit), [phi(x) for x in range(start, limit)], s=50,
         )
         plt.show()
     else:
         return [phi(x) for x in range(start, limit)]
+
 
 def A000040(start, end, plot=False):
     result = []
@@ -183,18 +183,20 @@ def phi(n):
             numbers.append(i)
     return len(numbers)
 
+
 def A000079(start=0, limit=20, plot=False):
     seq = []
     for n in range(start, limit):
-        seq.append(2**n)
+        seq.append(2 ** n)
 
     if plot:
-        plt.plot(seq, 'r-o', label='power')
+        plt.plot(seq, "r-o", label="power")
         plt.title = "Power"
         plt.show()
         return seq
     else:
         return seq
+
 
 def A000040(start=0, end=999, plot=False):
     result = []
