@@ -99,6 +99,17 @@ def A000040(start=0, end=999, plot=False):
     else:
         return result
 
+def A008592(start, limit):
+    nterms = limit + 1
+    end = limit + start
+    my_list = []
+    i = 0
+    print("A008592 sequence:")
+    while i < end:
+        my_list.append(i*10)
+        i += 1
+    return my_list[start:end]
+
 def _partitions(n):
 	
     if n == 0:
@@ -123,7 +134,8 @@ def main():
 
     args = parse_args()
    
-    
+    if args.sequence == "A008592":
+        return A008592(args.start, args.limit)
     if args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
@@ -135,7 +147,8 @@ def main():
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
+        
 
     
 if __name__=="__main__":
-    main()
+    print(main())
