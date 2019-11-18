@@ -12,8 +12,12 @@ __version__ = "0.0.1"
 def parse_args():
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
-        "sequence", type=str, help="Define the sequence to run (e.g.: A181391)"
+        "sequence",
+        type=str,
+        help="Define the sequence to run (e.g.: A181391)",
+        nargs="?",
     )
+    parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
         "--limit",
         type=int,
@@ -33,6 +37,19 @@ def parse_args():
     return parser.parse_args()
 
 
+class OEISRegistry:
+    def __init__(self):
+        self.series = []
+
+    def __call__(self, function):
+        self.series.append(function)
+        return function
+
+
+oeis = OEISRegistry()
+
+
+@oeis
 def A181391(start=0, limit=20, plot=False):
     sequence = [0]
     last_pos = {}
@@ -59,6 +76,7 @@ def A181391(start=0, limit=20, plot=False):
     return sequence[start : start + limit]
 
 
+@oeis
 def A006577(n):
     if n == 1:
         return 0
@@ -81,6 +99,7 @@ def A006577(n):
     return x
 
 
+@oeis
 def A000290(start=0, limit=20, plot=False):
     sequence = []
     x = []
@@ -95,6 +114,7 @@ def A000290(start=0, limit=20, plot=False):
     return sequence
 
 
+@oeis
 def A000079(start=0, limit=20, plot=False):
     sequence = []
     for i in range(start, start + limit):
@@ -107,6 +127,25 @@ def A000079(start=0, limit=20, plot=False):
     return sequence
 
 
+<<<<<<< HEAD
+=======
+@oeis
+def A000045(start=0, limit=20, plot=False):
+    sequence = []
+    sequence.append(0)
+    sequence.append(1)
+    for i in range(2, limit):
+        sequence.append(sequence[i - 1] + sequence[i - 2])
+
+    if plot:
+        plt.plot(sequence)
+        plt.show()
+
+    return sequence
+
+
+@oeis
+>>>>>>> 17cc92103bbf5e082009853baa17b006ba78685a
 def A115020():
     result = []
     for n in range(100, 0, -7):
@@ -116,6 +155,7 @@ def A115020():
     return result
 
 
+@oeis
 def A000040(start, end, plot=False):
     result = []
     resultIndex = []
@@ -137,6 +177,7 @@ def A000040(start, end, plot=False):
     return result
 
 
+@oeis
 def A000010(n):
     numbers = []
     i = 0
@@ -146,6 +187,7 @@ def A000010(n):
     return len(numbers)
 
 
+@oeis
 def A000079(start=0, limit=20, plot=False):
     seq = []
     for n in range(start, limit):
@@ -160,6 +202,7 @@ def A000079(start=0, limit=20, plot=False):
         return seq
 
 
+@oeis
 def A000142(start=0, limit=20, plot=False):
     sequence = []
     colors = []
@@ -176,6 +219,7 @@ def A000142(start=0, limit=20, plot=False):
     return sequence
 
 
+@oeis
 def A000217(start=0, limit=20, plot=False):
     sequence = []
     x = []
@@ -198,6 +242,7 @@ def A000217(start=0, limit=20, plot=False):
     return sequence
 
 
+@oeis
 def A008592(start, limit):
     nterms = limit + 1
     end = limit + start
@@ -226,6 +271,7 @@ def partitions(n):
     return partition
 
 
+@oeis
 def A000041(n):
     return len(partitions(n))
 
@@ -259,7 +305,10 @@ def A000045(start, limit, plot=False):
 
 def main():
     args = parse_args()
-
+    if args.list:
+        for function in oeis.series:
+            print("-", function.__name__)
+        exit(0)
     if args.sequence == "A008592":
         return A008592(args.start, args.limit)
     elif args.sequence == "A181391":
