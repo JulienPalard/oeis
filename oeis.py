@@ -61,25 +61,28 @@ def A181391(start=0, limit=20, plot=False):
 
     return sequence[start : start + limit]
 
+
 def A006577(n):
 
-    if n==1: return 0
+    if n == 1:
+        return 0
 
-    x=0
+    x = 0
 
     while True:
 
-        if n%2==0: n/=2
+        if n % 2 == 0:
+            n /= 2
 
-        else: n = 3*n + 1
+        else:
+            n = 3 * n + 1
 
-        x+=1
+        x += 1
 
-        if n<2: break
+        if n < 2:
+            break
 
     return x
-
-
 
 
 def A115020():
@@ -99,25 +102,27 @@ def A000010(n):
             numbers.append(i)
     return len(numbers)
 
+
 def A000040(start=0, end=999, plot=False):
     result = []
     resultIndex = []
-    i=0
-    for val in range(start, end + 1): 
-        if val > 1: 
-            for n in range(2, val): 
-                if (val % n) == 0: 
+    i = 0
+    for val in range(start, end + 1):
+        if val > 1:
+            for n in range(2, val):
+                if (val % n) == 0:
                     break
-            else: 
+            else:
                 result.append(val)
                 resultIndex.append(i)
-                i=i+1
+                i = i + 1
     if plot:
-        plt.plot(resultIndex,result)
-        plt.ylabel('some numbers')
+        plt.plot(resultIndex, result)
+        plt.ylabel("some numbers")
         plt.show()
     else:
         return result
+
 
 def A000142(start=0, limit=20, plot=False):
     sequence = []
@@ -133,17 +138,21 @@ def A000142(start=0, limit=20, plot=False):
         plt.show()
 
     return sequence
-    
+
 
 def A000217(start=0, limit=20, plot=False):
     sequence = []
     x = []
     for i in range(start, start + limit):
-        if i+1 < 2:
+        if i + 1 < 2:
             sequence.append(0)
         else:
-            sequence.append(math.factorial(i+1) // math.factorial(2) // math.factorial((i+1) - 2))
-        
+            sequence.append(
+                math.factorial(i + 1)
+                // math.factorial(2)
+                // math.factorial((i + 1) - 2)
+            )
+
         x.append(i)
 
     if plot:
@@ -151,32 +160,37 @@ def A000217(start=0, limit=20, plot=False):
         plt.show()
 
     return sequence
-    
+
+
 def _partitions(n):
-	
+
     if n == 0:
         return []
-    if n==1:
+    if n == 1:
         return [[1]]
-    liste=[[n]]  
-    for i in range(1,n):
+    liste = [[n]]
+    for i in range(1, n):
 
-        for p in _partitions(n-i):
-            if [i]+p==sorted([i]+p):
-                liste.append([i]+p)       
+        for p in _partitions(n - i):
+            if [i] + p == sorted([i] + p):
+                liste.append([i] + p)
     return liste
+
+
 def partitions(n):
     return len(_partitions(n))
+
+
 def affiche(n):
-    listes=_partitions(n)
-    for i in range(0,len(listes)):
+    listes = _partitions(n)
+    for i in range(0, len(listes)):
         print(listes[i])
+
 
 def main():
 
     args = parse_args()
-   
-    
+
     if args.sequence == "A181391":
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A115020":
@@ -195,6 +209,6 @@ def main():
         print(affiche(args.start))
         print(partitions(args.start))
 
-    
-if __name__=="__main__":
+
+if __name__ == "__main__":
     main()
