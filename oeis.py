@@ -131,7 +131,15 @@ def main():
     elif args.sequence == "A000040":
         return A000040(args.start, args.limit, args.plot)
     elif args.sequence == "A000010":
-        return [A000010(x) for x in range(1, args.limit)]
+        if args.plot:
+            plt.scatter(
+                range(args.start, args.start + args.limit),
+                [A000010(x) for x in range(args.start, args.limit)],
+                s=50,
+            )
+            plt.show()
+        else:
+            return [A000010(x) for x in range(args.start, args.limit)]
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
