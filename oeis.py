@@ -126,26 +126,6 @@ def A000079(start=0, limit=20, plot=False):
 
     return sequence
 
-
-<<<<<<< HEAD
-=======
-@oeis
-def A000045(start=0, limit=20, plot=False):
-    sequence = []
-    sequence.append(0)
-    sequence.append(1)
-    for i in range(2, limit):
-        sequence.append(sequence[i - 1] + sequence[i - 2])
-
-    if plot:
-        plt.plot(sequence)
-        plt.show()
-
-    return sequence
-
-
-@oeis
->>>>>>> 17cc92103bbf5e082009853baa17b006ba78685a
 def A115020():
     result = []
     for n in range(100, 0, -7):
@@ -338,4 +318,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print(main())
