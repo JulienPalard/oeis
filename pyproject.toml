@@ -1,0 +1,10 @@
+[build-system]
+requires = ["flit"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "oeis"
+author = "Gregoire Masse"
+author-email = "gregoire.masse@supinternet.fr"
+classifiers = ["License :: OSI Approved :: MIT License"]
+
