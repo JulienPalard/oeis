@@ -1,8 +1,10 @@
 import argparse
 import matplotlib.pyplot as plt
+import math
 
 parser = argparse.ArgumentParser(description='')
 
+parser.add_argument('sequence')
 parser.add_argument('--start', type= int, default=0)
 parser.add_argument('--limit', type= int, default=17)
 
@@ -15,19 +17,16 @@ def countdown():
             result.append(n)
     
     return result
-            
-print(countdown()[args.start:args.start + args.limit])
 
+def phi(n):
+    numbers = []
+    i = 0
+    for i in range(n):
+        if math.gcd(i, n) == 1:
+            numbers.append(i)
+    return len(numbers)
 
-def parse_args():
-    parser = argparse.ArgumentParser(description="Get all primes number.")
-    parser.add_argument("--plot", help="Display graph.",action="store_true")
-    parser.add_argument("--start", default=0, help="Begining value.",type=int)
-    parser.add_argument("--limit", default=9999, help="Character to use as a replacement.",type=int)
-
-    return parser.parse_args()
-
-def A000040(start, end, plot=False):
+def primeNumber(start, end, plot=False):
     result = []
     resultIndex = []
     i=0
@@ -46,9 +45,19 @@ def A000040(start, end, plot=False):
         plt.show()
 
 def main():
-    args = parse_args()
-    prime_number(args.start,args.limit,args.plot)
-if __name__ == '__main__': 
-      
-    # Calling main() function 
-    main() 
+    if args.sequence == "A000010":
+        return [phi(x) for x in range (1, args.limit)]
+    if args.sequence == "A000040":
+        return primeNumber(args.start,args.limit,args.plot)
+            
+print(countdown()[args.start:args.start + args.limit])
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Get all primes number.")
+    parser.add_argument("--plot", help="Display graph.",action="store_true")
+    parser.add_argument("--start", default=0, help="Begining value.",type=int)
+    parser.add_argument("--limit", default=9999, help="Character to use as a replacement.",type=int)
+
+    return parser.parse_args()
+
