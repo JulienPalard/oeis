@@ -276,9 +276,9 @@ def A000041(n):
 @oeis
 def A000203(start=0, limit=20, plot=False):
     sequence = []
+    if start == 0:
+        start += 1
     for i in range(start, start + limit):
-        if i == 0:
-            continue
         divisors = []
         for j in range(int(math.sqrt(i)) + 1):
             if j == 0:
