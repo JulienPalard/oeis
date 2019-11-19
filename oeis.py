@@ -277,13 +277,15 @@ def A000041(n):
     "a(n) is the number of partitions of n (the partition numbers)."
     return len(partitions(n))
 
+
 @oeis
 def A001220(start, limit, plot):
     sequence = []
     for i in range(start, limit):
-        if is_prime(i) and (2 ** (i-1) - 1) % (i ** 2) == 0:
+        if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
             sequence.append(i)
     return sequence
+
 
 def is_prime(n):
     if n % 2 == 0:
@@ -301,6 +303,7 @@ def is_prime(n):
             if n % i == 0:
                 return False
         return True
+
 
 @oeis
 def A000203(start=0, limit=20, plot=False):
@@ -375,6 +378,8 @@ def main():
         return [A006577(n) for n in range(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
+    elif args.sequence == "A001220":
+        return A001220(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
