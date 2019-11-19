@@ -7,4 +7,7 @@ module = "oeis"
 author = "Gregoire Masse"
 author-email = "gregoire.masse@supinternet.fr"
 classifiers = ["License :: OSI Approved :: MIT License"]
-
+requires = [
+  "numpy",
+  "matplotlib",
+]
