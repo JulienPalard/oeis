@@ -8,3 +8,4 @@ script:
   - pytest
   - black --diff --check oeis.py
   - flake8
+  - mypy oeis.py --ignore-missing-imports --strict
