@@ -3,11 +3,17 @@ A000040: Samuel
 A000010: Anthony
 A000041: Sall
 A008592: Mohamed
+<<<<<<< HEAD
 A006577: Jean-Paul
 A000142: Alice Bonnet
 A000217: Alice Bonnet
 A000203: Alice Bonnet
 A133058: Alice Bonnet
+=======
+A006577: Jean - Paul
+A000142: Alice
+A000217: Alice
+>>>>>>> 044eb52b481ec6cd84b9af030ae4fcbc48fdc03a
 A000079: Tanguy
 A000290: Maxime
 A000045: Mathieu
