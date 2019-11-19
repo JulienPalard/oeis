@@ -169,17 +169,6 @@ def A000010(start, limit):
     return [phi(x) for x in range(start, start + limit)]
 
 
-def A008592(start, limit):
-    nterms = limit + 1
-    end = limit + start
-    my_list = []
-    i = 0
-    print("A008592 sequence:")
-    while i < end:
-        my_list.append(i*10)
-        i += 1
-    return my_list[start:end]
-
 @oeis
 def A023811(start,limit):
     def largest_metadrome(n):
