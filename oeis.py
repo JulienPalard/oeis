@@ -238,6 +238,33 @@ def A000041(start, limit):
 
 
 @oeis
+def A001220(start, limit, plot):
+    sequence = []
+    for i in range(start, limit):
+        if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
+            sequence.append(i)
+    return sequence
+
+
+def is_prime(n):
+    if n % 2 == 0:
+        return False
+    elif n % 3 == 0:
+        return False
+    elif n % 5 == 0:
+        return False
+    elif n % 7 == 0:
+        return False
+    elif n % 9 == 0:
+        return False
+    else:
+        for i in range(2, math.floor(math.sqrt(n))):
+            if n % i == 0:
+                return False
+        return True
+
+
+@oeis
 def A000203(start=0, limit=20):
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
