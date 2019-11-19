@@ -5,7 +5,6 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import math
-from decimal import getcontext, Decimal
 from math import factorial
 import sys
 
@@ -138,24 +137,6 @@ def A115020(start, limit):
 
 
 @oeis
-def A000040(start, end):
-    "The prime numbers."
-    result = []
-    resultIndex = []
-    i = 0
-    for val in range(start, end + 1):
-        if val > 1:
-            for n in range(2, val):
-                if (val % n) == 0:
-                    break
-            else:
-                result.append(val)
-                resultIndex.append(i)
-                i = i + 1
-    return result
-
-
-@oeis
 def A000010(start, limit):
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
@@ -179,17 +160,6 @@ def A000040(start=0, end=999, plot=False):
         plt.show()
     else:
         return result
-
-    def phi(n):
-        numbers = []
-        i = 0
-        for i in range(n):
-            if math.gcd(i, n) == 1:
-                numbers.append(i)
-        return len(numbers)
-
-    return [phi(x) for x in range(start, start + limit)]
-
 
 @oeis
 def A000142(start=0, limit=20):
