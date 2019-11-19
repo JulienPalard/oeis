@@ -239,6 +239,7 @@ def A000041(start, limit):
 
 @oeis
 def A001220(start, limit, plot):
+    "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
         if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
