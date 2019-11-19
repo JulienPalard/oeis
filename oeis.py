@@ -6,6 +6,7 @@ import math
 from math import factorial
 from typing import Collection, Dict, List, Callable
 import sys
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,6 +34,9 @@ def parse_args() -> argparse.Namespace:
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
     parser.add_argument("--random", action="store_true", help="Pick a random sequence")
+    parser.add_argument(
+        "--file", action="store_true", help="Generates a png of the sequence's plot"
+    )
     parser.add_argument(
         "--start",
         type=int,
@@ -417,6 +421,7 @@ def main() -> None:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
     serie = oeis.series[args.sequence](args.start, args.limit)
+
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
@@ -431,6 +436,21 @@ def main() -> None:
         print("#", args.sequence, end="\n\n")
         print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
+
+    if args.file:
+        if args.plot or args.dark_plot:
+            if not os.path.exists("graph"):
+                print("No graph directory found, creating...")
+                try:
+                    os.mkdir("graph")
+                except OSError:
+                    print("Creation of the graph directory failed")
+                else:
+                    print("Successfully created the graph directory")
+            plt.savefig(f"graph/{args.sequence}.png")
+            print(f"Graph printed in graph/{args.sequence}.png")
+        else:
+            print("You cannot use --file without --plot or --dark_plot")
 
 
 if __name__ == "__main__":
