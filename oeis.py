@@ -6,14 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from math import factorial
-from typing import Iterator
+from typing import Collection, Dict, List, Callable
 import sys
 
 
 __version__ = "0.0.1"
 
 
-def parse_args():
+def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
         "sequence",
@@ -41,11 +41,14 @@ def parse_args():
     return parser.parse_args()
 
 
-class OEISRegistry:
-    def __init__(self):
-        self.series = {}
+Serie = Callable[[int, int], Collection[int]]
 
-    def __call__(self, function):
+
+class OEISRegistry:
+    def __init__(self) -> None:
+        self.series: Dict[str, Serie] = {}
+
+    def __call__(self, function: Serie) -> Serie:
         self.series[function.__name__] = function
         return function
 
@@ -54,14 +57,14 @@ oeis = OEISRegistry()
 
 
 @oeis
-def A181391(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A181391(start: int = 0, limit: int = 20) -> Collection[int]:
     """Van Eck's sequence: For n >= 1,
     if there exists an m < n such that a(m) = a(n),
     take the largest such m and set a(n+1) = n-m;
     otherwise a(n+1) = 0. Start with a(1)=0.
     """
     sequence = [0]
-    last_pos = {}
+    last_pos: Dict[int, int] = {}
 
     for i in range(start + limit):
         new_value = i - last_pos.get(sequence[i], i)
@@ -72,18 +75,18 @@ def A181391(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A006577(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A006577(start: int = 0, limit: int = 20) -> Collection[int]:
     """Number of halving and tripling steps to reach 1 in '3x+1' problem,
     or -1 if 1 is never reached.
     """
 
-    def steps(n):
+    def steps(n: int) -> int:
         if n == 1:
             return 0
         x = 0
         while True:
             if n % 2 == 0:
-                n /= 2
+                n //= 2
             else:
                 n = 3 * n + 1
             x += 1
@@ -95,7 +98,7 @@ def A006577(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000290(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
     "The squares: a(n) = n^2."
     sequence = []
     x = []
@@ -107,7 +110,7 @@ def A000290(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000079(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
     "Powers of 2: a(n) = 2^n."
     seq = []
     for n in range(start, limit):
@@ -116,7 +119,7 @@ def A000079(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000045(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = []
     sequence.append(0)
@@ -127,7 +130,7 @@ def A000045(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A115020(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
     "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
@@ -138,12 +141,12 @@ def A115020(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000040(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
     "The prime numbers."
     result = []
     resultIndex = []
     i = 0
-    for val in range(start, end + 1):
+    for val in range(start, limit + 1):
         if val > 1:
             for n in range(2, val):
                 if (val % n) == 0:
@@ -156,10 +159,10 @@ def A000040(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000010(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000010(start: int = 0, limit: int = 20) -> Collection[int]:
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
-    def phi(n):
+    def phi(n: int) -> int:
         numbers = []
         i = 0
         for i in range(n):
@@ -171,7 +174,7 @@ def A000010(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000142(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000142(start: int = 0, limit: int = 20) -> Collection[int]:
     """Factorial numbers: n! = 1*2*3*4*...*n
     (order of symmetric group S_n, number of permutations of n letters).
     """
@@ -187,7 +190,7 @@ def A000142(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000217(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000217(start: int = 0, limit: int = 20) -> Collection[int]:
     "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
 
     sequence = []
@@ -204,7 +207,7 @@ def A000217(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A008592(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A008592(start: int = 0, limit: int = 20) -> Collection[int]:
     "Multiples of 10: a(n) = 10 * n."
     end = limit + start
     my_list = []
@@ -216,7 +219,7 @@ def A008592(start: int = 0, limit: int = 20) -> Iterator[int]:
     return my_list[start:end]
 
 
-def partitions(n):
+def partitions(n: int) -> List[List[int]]:
     if n == 0:
         return [[0]]
     if n == 1:
@@ -233,13 +236,13 @@ def partitions(n):
 
 
 @oeis
-def A000041(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000041(start: int = 0, limit: int = 20) -> Collection[int]:
     "a(n) is the number of partitions of n (the partition numbers)."
     return [len(partitions(n)) for n in range(start, start + limit)]
 
 
 @oeis
-def A001220(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A001220(start: int = 0, limit: int = 20) -> Collection[int]:
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
@@ -248,7 +251,7 @@ def A001220(start: int = 0, limit: int = 20) -> Iterator[int]:
     return sequence
 
 
-def is_prime(n):
+def is_prime(n: int) -> bool:
     if n % 2 == 0:
         return False
     elif n % 3 == 0:
@@ -267,7 +270,7 @@ def is_prime(n):
 
 
 @oeis
-def A000203(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000203(start: int = 0, limit: int = 20) -> Collection[int]:
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
     if start == 0:
@@ -282,13 +285,13 @@ def A000203(start: int = 0, limit: int = 20) -> Iterator[int]:
                     divisors.append(j)
                 else:
                     divisors.append(j)
-                    divisors.append(i / j)
+                    divisors.append(i // j)
         sequence.append(int(sum(divisors)))
     return sequence
 
 
 @oeis
-def A133058(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
@@ -306,7 +309,7 @@ def A133058(start: int = 0, limit: int = 20) -> Iterator[int]:
 
 
 @oeis
-def A000108(start: int = 0, limit: int = 20) -> Iterator[int]:
+def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
     Also called Segner numbers.
     """
@@ -318,11 +321,16 @@ def A000108(start: int = 0, limit: int = 20) -> Iterator[int]:
     return sequence
 
 
-def main():
+def main() -> None:
     args = parse_args()
     if args.list:
         for name, function in oeis.series.items():
-            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
+            if function.__doc__:
+                print(
+                    "-", name, function.__doc__.replace("\n", " ").replace("     ", " ")
+                )
+            else:
+                print("-", name)
         exit(0)
 
     if args.sequence not in oeis.series:
