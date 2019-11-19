@@ -20,3 +20,7 @@ Demo:
 - travis
 - hypothesis
 - flit
+
+## Contributing
+
+We are using coding style `black` (https://github.com/psf/black).
