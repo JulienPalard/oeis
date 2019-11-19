@@ -310,6 +310,7 @@ def A133058(start=0, limit=20):
     return sequence[start:]
 
 
+<<<<<<< HEAD
 @oeis
 def A000005(start=0, limit=20):
     "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
@@ -343,6 +344,34 @@ def A000108(start=0, limit=20):
         sequence.append(int(r))
 
     return sequence
+=======
+def fibonacci(n):
+    if n < 0:
+        print("Incorrect input")
+    if n <= 1:
+        return 1
+    else:
+        return fibonacci(n - 1) + fibonacci(n - 2)
+
+
+def A000045(start, limit, plot=False):
+
+    numbers = []
+    y_label = []
+    for i in range(int(start), int(limit) + 1):
+        numbers.append(fibonacci(i))
+        y_label.append(i)
+
+    if plot:
+        with plt.style.context("dark_background"):
+            plt.plot(y_label, numbers, "r-o")
+
+        plt.xlabel("x label")
+        plt.ylabel("y label")
+        plt.title("A000045 - Fibonacci")
+        plt.show()
+    return numbers
+>>>>>>> 330b2db2547a02481df1fb40158000e56533d306
 
 
 def main():
@@ -353,6 +382,7 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+<<<<<<< HEAD
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
@@ -377,6 +407,34 @@ def main():
         print("#", args.sequence, end="\n\n")
         print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
+=======
+    if args.sequence == "A008592":
+        return A008592(args.start, args.limit)
+    elif args.sequence == "A181391":
+        return A181391(args.start, args.limit, args.plot)
+    elif args.sequence == "A000142":
+        return A000142(args.start, args.limit, args.plot)
+    elif args.sequence == "A000290":
+        return A000290(args.start, args.limit, args.plot)
+    elif args.sequence == "A000079":
+        return A000079(args.start, args.limit, args.plot)
+    elif args.sequence == "A115020":
+        return A115020()[args.start : args.start + args.limit]
+    elif args.sequence == "A000040":
+        return A000040(args.start, args.limit, args.plot)
+    elif args.sequence == "A000010":
+        return [A000010(x) for x in range(1, args.limit)]
+    elif args.sequence == "A000142":
+        return A000142(args.start, args.limit, args.plot)
+    elif args.sequence == "A000217":
+        return A000217(args.start, args.limit, args.plot)
+    elif args.sequence == "A006577":
+        return [A006577(n) for n in xrange(1, 101)]
+    elif args.sequence == "A000041":
+        return A000041(args.start)
+    elif args.sequence == "A000045":
+        return A000045(args.start, args.limit, args.plot)
+>>>>>>> 044eb52b481ec6cd84b9af030ae4fcbc48fdc03a
 
 
 if __name__ == "__main__":
