@@ -33,6 +33,9 @@ def parse_args():
     )
     parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
+        "--file", action="store_true", help="Generates a png of the sequence's plot"
+    )
+    parser.add_argument(
         "--start",
         type=int,
         default=0,
@@ -360,7 +363,11 @@ def main():
     serie = oeis.series[args.sequence](args.start, args.limit)
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
-        plt.show()
+        if args.file:
+            plt.savefig(f"graph/{args.sequence}.png")
+            print(f"Graph printed in graph/{args.sequence}.png")
+        else:
+            plt.show()
     else:
         print(serie)
 
