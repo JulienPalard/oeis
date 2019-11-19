@@ -266,6 +266,7 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
