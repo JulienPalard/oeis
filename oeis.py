@@ -195,7 +195,6 @@ def A000010(n):
     return len(numbers)
 
 
-
 @oeis
 def A000142(start=0, limit=20, plot=False):
     "Factorial numbers: n! = 1*2*3*4*...*n (order of symmetric group S_n, number of permutations of n letters)."
