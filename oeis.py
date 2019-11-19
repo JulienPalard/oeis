@@ -140,6 +140,16 @@ def A115020(start, limit):
 def A000010(start, limit):
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
+    def phi(n):
+        numbers = []
+        i = 0
+        for i in range(n):
+            if math.gcd(i, n) == 1:
+                numbers.append(i)
+        return len(numbers)
+
+    return [phi(x) for x in range(start, start + limit)]
+
 
 def A000040(start=0, end=999, plot=False):
     result = []
