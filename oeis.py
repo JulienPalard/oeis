@@ -1,12 +1,13 @@
-"""
-Tool that return a given sequence
+"""Tool that return a given sequence
 """
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
+from random import choice
 import math
 from math import factorial
 import sys
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 __version__ = "0.0.1"
@@ -30,6 +31,7 @@ def parse_args():
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
+    parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
         "--start",
         type=int,
@@ -325,6 +327,10 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+
+    if args.random:
+        args.sequence = choice(list(oeis.series.values())).__name__
+        print("Randomly choosen:", args.sequence)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
