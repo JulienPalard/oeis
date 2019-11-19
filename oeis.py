@@ -168,12 +168,7 @@ def A000040(start=0, end=999, plot=False):
                 result.append(val)
                 resultIndex.append(i)
                 i = i + 1
-    if plot:
-        plt.plot(resultIndex, result)
-        plt.ylabel("some numbers")
-        plt.show()
-    else:
-        return result
+    return result
 
 
 @oeis
