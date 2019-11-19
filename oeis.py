@@ -290,7 +290,8 @@ def main():
         exit(1)
     serie = oeis.series[args.sequence](args.start, args.limit)
     if args.plot:
-        plt.plot(list(range(len(serie))), serie)
+        plt.scatter(list(range(len(serie))), serie)
+        plt.show()
     else:
         print(serie)
 
