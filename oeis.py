@@ -5,6 +5,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from math import factorial
 
 __version__ = "0.0.1"
 
@@ -115,19 +116,6 @@ def A000290(start=0, limit=20, plot=False):
 
 
 @oeis
-def A000079(start=0, limit=20, plot=False):
-    sequence = []
-    for i in range(start, start + limit):
-        sequence.append(2 ** i)
-
-    if plot:
-        plt.plot(sequence)
-        plt.show()
-
-    return sequence
-
-
-@oeis
 def A000045(start=0, limit=20, plot=False):
     sequence = []
     sequence.append(0)
@@ -205,7 +193,7 @@ def A000142(start=0, limit=20, plot=False):
     colors = []
     x = []
     for i in range(start, start + limit):
-        sequence.append(math.factorial(i))
+        sequence.append(factorial(i))
         colors.append(np.random.rand())
         x.append(i)
 
@@ -224,11 +212,7 @@ def A000217(start=0, limit=20, plot=False):
         if i + 1 < 2:
             sequence.append(0)
         else:
-            sequence.append(
-                math.factorial(i + 1)
-                // math.factorial(2)
-                // math.factorial((i + 1) - 2)
-            )
+            sequence.append(factorial(i + 1) // factorial(2) // factorial((i + 1) - 2))
 
         x.append(i)
 
@@ -241,7 +225,6 @@ def A000217(start=0, limit=20, plot=False):
 
 @oeis
 def A008592(start, limit):
-    nterms = limit + 1
     end = limit + start
     my_list = []
     i = 0
@@ -302,7 +285,7 @@ def main():
     elif args.sequence == "A000217":
         return A000217(args.start, args.limit, args.plot)
     elif args.sequence == "A006577":
-        return [A006577(n) for n in xrange(1, 101)]
+        return [A006577(n) for n in range(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
 
