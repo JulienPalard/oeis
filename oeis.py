@@ -99,20 +99,6 @@ def A006577(n):
     return x
 
 
-@oeis
-def A000290(start=0, limit=20, plot=False):
-    sequence = []
-    x = []
-    for i in range(start, start + limit):
-        sequence.append(i * i)
-        x.append(i)
-
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
-
-    return sequence
-
 
 @oeis
 def A000079(start=0, limit=20, plot=False):
@@ -272,6 +258,16 @@ def partitions(n):
 def A000041(n):
     return len(partitions(n))
 
+@oeis
+def A000290() : 
+  
+    result = []
+    sm = 1
+    for i in range(6) : 
+        sm = sm + (i + i) 
+        result.append(i + sm)
+    
+    return result
 
 def main():
     args = parse_args()
@@ -285,8 +281,6 @@ def main():
         return A181391(args.start, args.limit, args.plot)
     elif args.sequence == "A000142":
         return A000142(args.start, args.limit, args.plot)
-    elif args.sequence == "A000290":
-        return A000290(args.start, args.limit, args.plot)
     elif args.sequence == "A000079":
         return A000079(args.start, args.limit, args.plot)
     elif args.sequence == "A000045":
@@ -305,6 +299,8 @@ def main():
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
+    elif args.sequence == "A000290":
+        return A000290()
 
 
 if __name__ == "__main__":
