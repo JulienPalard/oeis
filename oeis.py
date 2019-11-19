@@ -279,7 +279,6 @@ def A000203(start=0, limit=20):
 
 
 @oeis
-<<<<<<< HEAD
 def A000004(limit=1):
     result=[]
     for i in range(limit):
@@ -316,7 +315,6 @@ def A001247():
 
     for n in range(6): 
         print(bellNumber(n)*bellNumber(n))
-=======
 def A133058(start=0, limit=20):
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
@@ -333,7 +331,6 @@ def A133058(start=0, limit=20):
 
     return sequence[start:]
 
->>>>>>> e80639e3acecbae7c1edfae334e021b80b39a129
 
 def main():
     args = parse_args()
