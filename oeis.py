@@ -275,6 +275,27 @@ def A133058(start=0, limit=20):
 
     return sequence[start:]
 
+@oeis
+def A000005(start=0, limit=20):
+    "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
+    sequence = []
+
+    if start == 0:
+        start += 1
+
+    for i in range(start, start + limit):
+        divisors = 0
+        for j in range(int(math.sqrt(i)) + 1):
+            if j == 0:
+                continue
+            elif i % j == 0:
+                if i / j == j:
+                    divisors += 1
+                else:
+                    divisors +=2
+        sequence.append(divisors)
+
+    return sequence
 
 def main():
     args = parse_args()
