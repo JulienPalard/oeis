@@ -159,25 +159,27 @@ def A000040(start, end):
 def A000010(start, limit):
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
+
 def A000040(start=0, end=999, plot=False):
     result = []
     resultIndex = []
-    i=0
-    for val in range(start, end + 1): 
-        if val > 1: 
-            for n in range(2, val): 
-                if (val % n) == 0: 
+    i = 0
+    for val in range(start, end + 1):
+        if val > 1:
+            for n in range(2, val):
+                if (val % n) == 0:
                     break
-            else: 
+            else:
                 result.append(val)
                 resultIndex.append(i)
-                i=i+1
+                i = i + 1
     if plot:
-        plt.plot(resultIndex,result)
-        plt.ylabel('some numbers')
+        plt.plot(resultIndex, result)
+        plt.ylabel("some numbers")
         plt.show()
     else:
         return result
+
     def phi(n):
         numbers = []
         i = 0
@@ -280,41 +282,45 @@ def A000203(start=0, limit=20):
 
 @oeis
 def A000004(limit=1):
-    result=[]
+    result = []
     for i in range(limit):
         result.append(0)
     return result
 
+
 @oeis
 def A001246():
-    def catalan(n): 
-        if (n == 0 or n == 1): 
+    def catalan(n):
+        if n == 0 or n == 1:
             return 1
-        catalan = [0 for i in range(n + 1)] 
+        catalan = [0 for i in range(n + 1)]
         catalan[0] = 1
         catalan[1] = 1
-        for i in range(2, n + 1): 
+        for i in range(2, n + 1):
             catalan[i] = 0
-            for j in range(i): 
-                catalan[i] = catalan[i] + catalan[j] * catalan[i-j-1] 
-        return catalan[n] 
+            for j in range(i):
+                catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
+        return catalan[n]
 
-    for i in range (10): 
-        print ((catalan(i))*catalan(i))
- 
+    for i in range(10):
+        print((catalan(i)) * catalan(i))
+
+
 @oeis
 def A001247():
-    def bellNumber(n): 
-        bell = [[0 for i in range(n+1)] for j in range(n+1)] 
+    def bellNumber(n):
+        bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
         bell[0][0] = 1
-        for i in range(1, n+1): 
-            bell[i][0] = bell[i-1][i-1] 
-            for j in range(1, i+1): 
-                bell[i][j] = bell[i-1][j-1] + bell[i][j-1] 
-        return bell[n][0] 
+        for i in range(1, n + 1):
+            bell[i][0] = bell[i - 1][i - 1]
+            for j in range(1, i + 1):
+                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
+        return bell[n][0]
 
-    for n in range(6): 
-        print(bellNumber(n)*bellNumber(n))
+    for n in range(6):
+        print(bellNumber(n) * bellNumber(n))
+
+
 def A133058(start=0, limit=20):
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
