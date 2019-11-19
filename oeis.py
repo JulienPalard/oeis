@@ -115,6 +115,20 @@ def A000290(start=0, limit=20, plot=False):
 
 
 @oeis
+def A001462(n=6): 
+  
+    dp = [0] * (n + 1) 
+   
+    dp[1] = 1
+  
+    for i in range(2, n + 1):  
+      
+        dp[i] = 1 + dp[i - dp[dp[i - 1]]]  
+    
+    return dp
+
+
+@oeis
 def A000079(start=0, limit=20, plot=False):
     sequence = []
     for i in range(start, start + limit):
@@ -305,6 +319,8 @@ def main():
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
+    elif args.sequence == "A001462":
+        return A001462(args.limit)
 
 
 if __name__ == "__main__":
