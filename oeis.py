@@ -278,7 +278,7 @@ def A133058(start=0, limit=20):
 
 @oeis
 def A000108(start=0, limit=20):
-    """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!). 
+    """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
     Also called Segner numbers.
     """
     sequence = []
