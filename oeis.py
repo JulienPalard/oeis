@@ -279,6 +279,7 @@ def A000203(start=0, limit=20):
 
 
 @oeis
+<<<<<<< HEAD
 def A000004(limit=1):
     result=[]
     for i in range(limit):
@@ -315,6 +316,24 @@ def A001247():
 
     for n in range(6): 
         print(bellNumber(n)*bellNumber(n))
+=======
+def A133058(start=0, limit=20):
+    """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
+    otherwise a(n) = a(n-1)/gcd(a(n-1),n).
+    """
+    sequence = []
+
+    for i in range(0, start + limit):
+        if i == 0 or i == 1:
+            sequence.append(1)
+        elif (math.gcd(i, sequence[i - 1])) == 1:
+            sequence.append(sequence[i - 1] + i + 1)
+        else:
+            sequence.append(int(sequence[i - 1] / math.gcd(sequence[i - 1], i)))
+
+    return sequence[start:]
+
+>>>>>>> e80639e3acecbae7c1edfae334e021b80b39a129
 
 def main():
     args = parse_args()
@@ -324,6 +343,7 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
