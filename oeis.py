@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from math import factorial
+import sys
 
 
 __version__ = "0.0.1"
@@ -41,10 +42,10 @@ def parse_args():
 
 class OEISRegistry:
     def __init__(self):
-        self.series = []
+        self.series = {}
 
     def __call__(self, function):
-        self.series.append(function)
+        self.series[function.__name__] = function
         return function
 
 
@@ -52,7 +53,7 @@ oeis = OEISRegistry()
 
 
 @oeis
-def A181391(start=0, limit=20, plot=False):
+def A181391(start=0, limit=20):
     """Van Eck's sequence: For n >= 1,
     if there exists an m < n such that a(m) = a(n),
     take the largest such m and set a(n+1) = n-m;
@@ -66,51 +67,34 @@ def A181391(start=0, limit=20, plot=False):
         sequence.append(new_value)
         last_pos[sequence[i]] = i
 
-    if plot:
-        colors = []
-        for i in range(start, start + limit):
-            colors.append(np.random.rand())
-
-        plt.scatter(
-            range(start, start + limit),
-            sequence[start : start + limit],
-            s=50,
-            c=colors,
-            alpha=0.5,
-        )
-        plt.show()
-
     return sequence[start : start + limit]
 
 
 @oeis
-def A006577(n):
+def A006577(start, limit):
     """Number of halving and tripling steps to reach 1 in '3x+1' problem,
     or -1 if 1 is never reached.
     """
-    if n == 1:
-        return 0
 
-    x = 0
+    def steps(n):
+        if n == 1:
+            return 0
+        x = 0
+        while True:
+            if n % 2 == 0:
+                n /= 2
+            else:
+                n = 3 * n + 1
+            x += 1
+            if n < 2:
+                break
+        return x
 
-    while True:
-
-        if n % 2 == 0:
-            n /= 2
-
-        else:
-            n = 3 * n + 1
-
-        x += 1
-
-        if n < 2:
-            break
-
-    return x
+    return [steps(n) for n in range(start, start + limit)]
 
 
 @oeis
-def A000290(start=0, limit=20, plot=False):
+def A000290(start=0, limit=20):
     "The squares: a(n) = n^2."
     sequence = []
     x = []
@@ -118,58 +102,42 @@ def A000290(start=0, limit=20, plot=False):
         sequence.append(i * i)
         x.append(i)
 
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
-
     return sequence
 
 
 @oeis
-def A000079(start=0, limit=20, plot=False):
+def A000079(start=0, limit=20):
     "Powers of 2: a(n) = 2^n."
     seq = []
     for n in range(start, limit):
         seq.append(2 ** n)
-
-    if plot:
-        plt.plot(seq, "r-o", label="power")
-        plt.title = "Power"
-        plt.show()
-        return seq
-    else:
-        return seq
+    return seq
 
 
 @oeis
-def A000045(start=0, limit=20, plot=False):
+def A000045(start=0, limit=20):
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = []
     sequence.append(0)
     sequence.append(1)
     for i in range(2, limit):
         sequence.append(sequence[i - 1] + sequence[i - 2])
-
-    if plot:
-        plt.plot(sequence)
-        plt.show()
-
     return sequence
 
 
 @oeis
-def A115020():
+def A115020(start, limit):
     "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
         if n >= 0:
             result.append(n)
 
-    return result
+    return result[start : start + limit]
 
 
 @oeis
-def A000040(start, end, plot=False):
+def A000040(start, end):
     "The prime numbers."
     result = []
     resultIndex = []
@@ -183,27 +151,26 @@ def A000040(start, end, plot=False):
                 result.append(val)
                 resultIndex.append(i)
                 i = i + 1
-    if plot:
-        plt.plot(resultIndex, result)
-        plt.ylabel("some numbers")
-        plt.show()
-
     return result
 
 
 @oeis
-def A000010(n):
+def A000010(start, limit):
     "Euler totient function phi(n): count numbers <= n and prime to n."
-    numbers = []
-    i = 0
-    for i in range(n):
-        if math.gcd(i, n) == 1:
-            numbers.append(i)
-    return len(numbers)
+
+    def phi(n):
+        numbers = []
+        i = 0
+        for i in range(n):
+            if math.gcd(i, n) == 1:
+                numbers.append(i)
+        return len(numbers)
+
+    return [phi(x) for x in range(start, start + limit)]
 
 
 @oeis
-def A000142(start=0, limit=20, plot=False):
+def A000142(start=0, limit=20):
     """Factorial numbers: n! = 1*2*3*4*...*n
     (order of symmetric group S_n, number of permutations of n letters).
     """
@@ -215,15 +182,11 @@ def A000142(start=0, limit=20, plot=False):
         colors.append(np.random.rand())
         x.append(i)
 
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
-
     return sequence
 
 
 @oeis
-def A000217(start=0, limit=20, plot=False):
+def A000217(start=0, limit=20):
     "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
 
     sequence = []
@@ -235,10 +198,6 @@ def A000217(start=0, limit=20, plot=False):
             sequence.append(factorial(i + 1) // factorial(2) // factorial((i + 1) - 2))
 
         x.append(i)
-
-    if plot:
-        plt.plot(x, sequence)
-        plt.show()
 
     return sequence
 
@@ -258,7 +217,7 @@ def A008592(start, limit):
 
 def partitions(n):
     if n == 0:
-        return []
+        return [[0]]
     if n == 1:
         return [[1]]
 
@@ -273,9 +232,9 @@ def partitions(n):
 
 
 @oeis
-def A000041(n):
+def A000041(start, limit):
     "a(n) is the number of partitions of n (the partition numbers)."
-    return len(partitions(n))
+    return [len(partitions(n)) for n in range(start, start + limit)]
 
 
 @oeis
@@ -306,7 +265,7 @@ def is_prime(n):
 
 
 @oeis
-def A000203(start=0, limit=20, plot=False):
+def A000203(start=0, limit=20):
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
     if start == 0:
@@ -323,64 +282,26 @@ def A000203(start=0, limit=20, plot=False):
                     divisors.append(j)
                     divisors.append(i / j)
         sequence.append(int(sum(divisors)))
-
-    if plot:
-        colors = []
-        for i in range(start, start + limit):
-            colors.append(np.random.rand())
-
-        plt.scatter(
-            range(start, start + limit),
-            sequence[start : start + limit],
-            s=50,
-            c=colors,
-            alpha=0.5,
-        )
-        plt.show()
     return sequence
 
 
 def main():
     args = parse_args()
     if args.list:
-        for function in oeis.series:
+        for name, function in oeis.series.items():
             print(
-                "-",
-                function.__name__,
-                function.__doc__.replace("\n", " ").replace("     ", " "),
+                "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
-    if args.sequence == "A008592":
-        return A008592(args.start, args.limit)
-    elif args.sequence == "A181391":
-        return A181391(args.start, args.limit, args.plot)
-    elif args.sequence == "A000142":
-        return A000142(args.start, args.limit, args.plot)
-    elif args.sequence == "A000290":
-        return A000290(args.start, args.limit, args.plot)
-    elif args.sequence == "A000079":
-        return A000079(args.start, args.limit, args.plot)
-    elif args.sequence == "A000045":
-        return A000045(args.start, args.limit, args.plot)
-    elif args.sequence == "A115020":
-        return A115020()[args.start : args.start + args.limit]
-    elif args.sequence == "A000040":
-        return A000040(args.start, args.limit, args.plot)
-    elif args.sequence == "A000010":
-        return [A000010(x) for x in range(1, args.limit)]
-    elif args.sequence == "A000142":
-        return A000142(args.start, args.limit, args.plot)
-    elif args.sequence == "A000217":
-        return A000217(args.start, args.limit, args.plot)
-    elif args.sequence == "A000203":
-        return A000203(args.start, args.limit, args.plot)
-    elif args.sequence == "A006577":
-        return [A006577(n) for n in range(1, 101)]
-    elif args.sequence == "A000041":
-        return A000041(args.start)
-    elif args.sequence == "A001220":
-        return A001220(args.start, args.limit, args.plot)
+    if args.sequence not in oeis.series:
+        print("Unimplemented serie", file=sys.stderr)
+        exit(1)
+    serie = oeis.series[args.sequence](args.start, args.limit)
+    if args.plot:
+        plt.plot(list(range(len(serie))), serie)
+    else:
+        print(serie)
 
 
 if __name__ == "__main__":
-    print(main())
+    main()
