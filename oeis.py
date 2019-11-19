@@ -217,7 +217,7 @@ def A008592(start, limit):
 
 def partitions(n):
     if n == 0:
-        return []
+        return [[0]]
     if n == 1:
         return [[1]]
 
