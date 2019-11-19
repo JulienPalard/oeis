@@ -352,7 +352,6 @@ def main():
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
-        print("Randomly choosen:", args.sequence)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
@@ -362,6 +361,8 @@ def main():
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
     else:
+        print("#", args.sequence, end="\n\n")
+        print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
 
 
