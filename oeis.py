@@ -1,12 +1,13 @@
-"""
-Tool that return a given sequence
+"""Tool that return a given sequence
 """
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
+from random import choice
 import math
 from math import factorial
 import sys
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 __version__ = "0.0.1"
@@ -30,6 +31,7 @@ def parse_args():
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
+    parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
         "--start",
         type=int,
@@ -304,6 +306,41 @@ def A133058(start=0, limit=20):
     return sequence[start:]
 
 
+@oeis
+def A000005(start=0, limit=20):
+    "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
+    sequence = []
+
+    if start == 0:
+        start += 1
+
+    for i in range(start, start + limit):
+        divisors = 0
+        for j in range(int(math.sqrt(i)) + 1):
+            if j == 0:
+                continue
+            elif i % j == 0:
+                if i / j == j:
+                    divisors += 1
+                else:
+                    divisors += 2
+        sequence.append(divisors)
+    return sequence
+
+
+@oeis
+def A000108(start=0, limit=20):
+    """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
+    Also called Segner numbers.
+    """
+    sequence = []
+    for i in range(start, start + limit):
+        r = (factorial(2 * i) // factorial(i) // factorial(2 * i - i)) / (i + 1)
+        sequence.append(int(r))
+
+    return sequence
+
+
 def main():
     args = parse_args()
     if args.list:
@@ -312,6 +349,10 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+
+    if args.random:
+        args.sequence = choice(list(oeis.series.values())).__name__
+        print("Randomly choosen:", args.sequence)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
