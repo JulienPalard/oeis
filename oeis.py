@@ -93,7 +93,6 @@ def A006577(start, limit):
     return [steps(n) for n in range(start, start + limit)]
 
 
-
 @oeis
 def A000290(start=0, limit=20):
     "The squares: a(n) = n^2."
