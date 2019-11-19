@@ -151,7 +151,9 @@ def A000010(start, limit):
     return [phi(x) for x in range(start, start + limit)]
 
 
+@oeis
 def A000040(start=0, end=999, plot=False):
+    "Return all prime number betwenn range"
     result = []
     resultIndex = []
     i = 0
@@ -263,6 +265,7 @@ def A000203(start=0, limit=20):
 
 @oeis
 def A000004(limit=1):
+    "Return an array of n occurence of 0"
     result = []
     for i in range(limit):
         result.append(0)
@@ -270,7 +273,9 @@ def A000004(limit=1):
 
 
 @oeis
-def A001246():
+def A001246(start, limit):
+    "Squares of Catalan numbers"
+
     def catalan(n):
         if n == 0 or n == 1:
             return 1
@@ -283,23 +288,29 @@ def A001246():
                 catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
         return catalan[n]
 
+    result = []
     for i in range(10):
-        print((catalan(i)) * catalan(i))
+        result.append((catalan(i)) * catalan(i))
+    return result
 
 
 @oeis
-def A001247():
-    def bellNumber(n):
-        bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
+def A001247(start, limit):
+    "Squares of Bell number"
+
+    def bellNumber(start):
+        bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
         bell[0][0] = 1
-        for i in range(1, n + 1):
+        for i in range(1, start + 1):
             bell[i][0] = bell[i - 1][i - 1]
             for j in range(1, i + 1):
                 bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
-        return bell[n][0]
+        return bell[start][0]
 
-    for n in range(6):
-        print(bellNumber(n) * bellNumber(n))
+    result = []
+    for start in range(limit):
+        result.append(bellNumber(start) * bellNumber(start))
+    return result
 
 
 @oeis
