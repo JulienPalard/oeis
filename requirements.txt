@@ -23,6 +23,8 @@ kiwisolver==1.1.0         # via matplotlib
 matplotlib==3.1.1
 mccabe==0.6.1             # via flake8
 more-itertools==7.2.0     # via pytest, zipp
+mypy-extensions==0.4.3    # via mypy
+mypy==0.740
 numpy==1.17.4
 packaging==19.2           # via pytest
 pathspec==0.6.0           # via black
@@ -39,7 +41,8 @@ regex==2019.11.1          # via black
 requests==2.22.0          # via flit
 six==1.13.0               # via cycler, packaging, pip-tools, python-dateutil
 toml==0.10.0              # via black
-typed-ast==1.4.0          # via black
+typed-ast==1.4.0          # via black, mypy
+typing-extensions==3.7.4.1  # via mypy
 urllib3==1.25.7           # via requests
 wcwidth==0.1.7            # via pytest
 zipp==0.6.0               # via importlib-metadata
