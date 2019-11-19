@@ -278,7 +278,7 @@ def A000203(start=0, limit=20, plot=False):
     sequence = []
     for i in range(start, start + limit):
         divisors = []
-        for j in range(int(math.sqrt(i))+1):
+        for j in range(int(math.sqrt(i)) + 1):
             if j == 0:
                 continue
             elif i % j == 0:
