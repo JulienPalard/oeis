@@ -1,13 +1,14 @@
-"""
-Tool that return a given sequence
+"""Tool that return a given sequence
 """
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
+from random import choice
 import math
 from math import factorial
 from typing import Collection, Dict, List, Callable
 import sys
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 __version__ = "0.0.1"
@@ -31,6 +32,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
+    parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
         "--start",
         type=int,
@@ -309,6 +311,28 @@ def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A000005(start: int = 0, limit: int = 20) -> Collection[int]:
+    "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
+    sequence = []
+
+    if start == 0:
+        start += 1
+
+    for i in range(start, start + limit):
+        divisors = 0
+        for j in range(int(math.sqrt(i)) + 1):
+            if j == 0:
+                continue
+            elif i % j == 0:
+                if i / j == j:
+                    divisors += 1
+                else:
+                    divisors += 2
+        sequence.append(divisors)
+    return sequence
+
+
+@oeis
 def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
     Also called Segner numbers.
@@ -332,6 +356,10 @@ def main() -> None:
             else:
                 print("-", name)
         exit(0)
+
+    if args.random:
+        args.sequence = choice(list(oeis.series.values())).__name__
+        print("Randomly choosen:", args.sequence)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
