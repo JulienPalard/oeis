@@ -161,6 +161,7 @@ def A000040(start=0, end=999, plot=False):
     else:
         return result
 
+
 @oeis
 def A000142(start=0, limit=20):
     """Factorial numbers: n! = 1*2*3*4*...*n
