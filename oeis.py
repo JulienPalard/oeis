@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--dark_plot", action="store_true", help="Print a dark dark dark graph"
+        "--dark-plot", action="store_true", help="Print a dark dark dark graph"
     )
 
     return parser.parse_args()
@@ -148,7 +148,7 @@ def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
-    "The prime numbers."
+    "Return all prime number betwenn range"
     result = []
     resultIndex = []
     i = 0
@@ -198,7 +198,6 @@ def A000142(start: int = 0, limit: int = 20) -> Collection[int]:
 @oeis
 def A000217(start: int = 0, limit: int = 20) -> Collection[int]:
     "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
-
     sequence = []
     x = []
     for i in range(start, start + limit):
@@ -297,6 +296,56 @@ def A000203(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A000004(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Return an array of n occurence of 0"
+    result = []
+    for i in range(limit):
+        result.append(0)
+    return result
+
+
+@oeis
+def A001246(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Squares of Catalan numbers"
+
+    def catalan(n: int) -> int:
+        if n == 0 or n == 1:
+            return 1
+        catalan = [0 for i in range(n + 1)]
+        catalan[0] = 1
+        catalan[1] = 1
+        for i in range(2, n + 1):
+            catalan[i] = 0
+            for j in range(i):
+                catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
+        return catalan[n]
+
+    result = []
+    for i in range(10):
+        result.append((catalan(i)) * catalan(i))
+    return result
+
+
+@oeis
+def A001247(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Squares of Bell number"
+
+    def bellNumber(start: int) -> int:
+        bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
+        bell[0][0] = 1
+        for i in range(1, start + 1):
+            bell[i][0] = bell[i - 1][i - 1]
+            for j in range(1, i + 1):
+                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
+        return bell[start][0]
+
+    result = []
+    for start in range(limit):
+        result.append(bellNumber(start) * bellNumber(start))
+    return result
+
+
+@oeis
 def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
@@ -376,9 +425,7 @@ def main() -> None:
         for i in range(len(serie)):
             colors.append(np.random.rand())
         with plt.style.context("dark_background"):
-            plt.scatter(
-                list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,
-            )
+            plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5)
         plt.show()
     else:
         print("#", args.sequence, end="\n\n")
