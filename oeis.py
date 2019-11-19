@@ -43,6 +43,10 @@ def parse_args():
         help="Define the starting point of the sequence (default: 0)",
     )
 
+    parser.add_argument(
+        "--dark-plot", action="store_true", help="Print a dark dark dark graph"
+    )
+
     return parser.parse_args()
 
 
@@ -143,8 +147,23 @@ def A115020(start, limit):
 
 
 @oeis
-def A000040(start, end):
-    "The prime numbers."
+def A000010(start, limit):
+    "Euler totient function phi(n): count numbers <= n and prime to n."
+
+    def phi(n):
+        numbers = []
+        i = 0
+        for i in range(n):
+            if math.gcd(i, n) == 1:
+                numbers.append(i)
+        return len(numbers)
+
+    return [phi(x) for x in range(start, start + limit)]
+
+
+@oeis
+def A000040(start=0, end=999, plot=False):
+    "Return all prime number betwenn range"
     result = []
     resultIndex = []
     i = 0
@@ -158,21 +177,6 @@ def A000040(start, end):
                 resultIndex.append(i)
                 i = i + 1
     return result
-
-
-@oeis
-def A000010(start, limit):
-    "Euler totient function phi(n): count numbers <= n and prime to n."
-
-    def phi(n):
-        numbers = []
-        i = 0
-        for i in range(n):
-            if math.gcd(i, n) == 1:
-                numbers.append(i)
-        return len(numbers)
-
-    return [phi(x) for x in range(start, start + limit)]
 
 
 @oeis
@@ -244,7 +248,7 @@ def A000041(start, limit):
 
 
 @oeis
-def A001220(start, limit, plot):
+def A001220(start, limit):
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
@@ -290,6 +294,56 @@ def A000203(start=0, limit=20):
                     divisors.append(i / j)
         sequence.append(int(sum(divisors)))
     return sequence
+
+
+@oeis
+def A000004(limit=1):
+    "Return an array of n occurence of 0"
+    result = []
+    for i in range(limit):
+        result.append(0)
+    return result
+
+
+@oeis
+def A001246(start, limit):
+    "Squares of Catalan numbers"
+
+    def catalan(n):
+        if n == 0 or n == 1:
+            return 1
+        catalan = [0 for i in range(n + 1)]
+        catalan[0] = 1
+        catalan[1] = 1
+        for i in range(2, n + 1):
+            catalan[i] = 0
+            for j in range(i):
+                catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
+        return catalan[n]
+
+    result = []
+    for i in range(10):
+        result.append((catalan(i)) * catalan(i))
+    return result
+
+
+@oeis
+def A001247(start, limit):
+    "Squares of Bell number"
+
+    def bellNumber(start):
+        bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
+        bell[0][0] = 1
+        for i in range(1, start + 1):
+            bell[i][0] = bell[i - 1][i - 1]
+            for j in range(1, i + 1):
+                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
+        return bell[start][0]
+
+    result = []
+    for start in range(limit):
+        result.append(bellNumber(start) * bellNumber(start))
+    return result
 
 
 @oeis
@@ -356,7 +410,6 @@ def main():
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
-        print("Randomly choosen:", args.sequence)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
@@ -365,7 +418,23 @@ def main():
 
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
-        if args.file:
+        plt.show()
+    elif args.dark_plot:
+        colors = []
+        for i in range(len(serie)):
+            colors.append(np.random.rand())
+        with plt.style.context("dark_background"):
+            plt.scatter(
+                list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,
+            )
+        plt.show()
+    else:
+        print("#", args.sequence, end="\n\n")
+        print(oeis.series[args.sequence].__doc__, end="\n\n")
+        print(serie)
+
+    if args.file:
+        if args.plot or args.dark_plot:
             if not os.path.exists("graph"):
                 print("No graph directory found, creating...")
                 try:
@@ -377,9 +446,7 @@ def main():
             plt.savefig(f"graph/{args.sequence}.png")
             print(f"Graph printed in graph/{args.sequence}.png")
         else:
-            plt.show()
-    else:
-        print(serie)
+            print("You cannot use --file without --plot or --dark_plot")
 
 
 if __name__ == "__main__":
