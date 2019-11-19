@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+
 __version__ = "0.0.1"
 
 
@@ -51,6 +52,7 @@ oeis = OEISRegistry()
 
 @oeis
 def A181391(start=0, limit=20, plot=False):
+    "Van Eck's sequence: For n >= 1, if there exists an m < n such that a(m) = a(n), take the largest such m and set a(n+1) = n-m; otherwise a(n+1) = 0. Start with a(1)=0."
     sequence = [0]
     last_pos = {}
 
@@ -78,6 +80,7 @@ def A181391(start=0, limit=20, plot=False):
 
 @oeis
 def A006577(n):
+    "Number of halving and tripling steps to reach 1 in '3x+1' problem, or -1 if 1 is never reached."
     if n == 1:
         return 0
 
@@ -101,6 +104,7 @@ def A006577(n):
 
 @oeis
 def A000290(start=0, limit=20, plot=False):
+    "The squares: a(n) = n^2."
     sequence = []
     x = []
     for i in range(start, start + limit):
@@ -116,19 +120,23 @@ def A000290(start=0, limit=20, plot=False):
 
 @oeis
 def A000079(start=0, limit=20, plot=False):
-    sequence = []
-    for i in range(start, start + limit):
-        sequence.append(2 ** i)
+    "Powers of 2: a(n) = 2^n."
+    seq = []
+    for n in range(start, limit):
+        seq.append(2 ** n)
 
     if plot:
-        plt.plot(sequence)
+        plt.plot(seq, "r-o", label="power")
+        plt.title = "Power"
         plt.show()
-
-    return sequence
+        return seq
+    else:
+        return seq
 
 
 @oeis
 def A000045(start=0, limit=20, plot=False):
+    "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = []
     sequence.append(0)
     sequence.append(1)
@@ -144,6 +152,7 @@ def A000045(start=0, limit=20, plot=False):
 
 @oeis
 def A115020():
+    "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
         if n >= 0:
@@ -154,6 +163,7 @@ def A115020():
 
 @oeis
 def A000040(start, end, plot=False):
+    "The prime numbers."
     result = []
     resultIndex = []
     i = 0
@@ -176,6 +186,7 @@ def A000040(start, end, plot=False):
 
 @oeis
 def A000010(n):
+    "Euler totient function phi(n): count numbers <= n and prime to n."
     numbers = []
     i = 0
     for i in range(n):
@@ -184,23 +195,10 @@ def A000010(n):
     return len(numbers)
 
 
-@oeis
-def A000079(start=0, limit=20, plot=False):
-    seq = []
-    for n in range(start, limit):
-        seq.append(2 ** n)
-
-    if plot:
-        plt.plot(seq, "r-o", label="power")
-        plt.title = "Power"
-        plt.show()
-        return seq
-    else:
-        return seq
-
 
 @oeis
 def A000142(start=0, limit=20, plot=False):
+    "Factorial numbers: n! = 1*2*3*4*...*n (order of symmetric group S_n, number of permutations of n letters)."
     sequence = []
     colors = []
     x = []
@@ -218,6 +216,8 @@ def A000142(start=0, limit=20, plot=False):
 
 @oeis
 def A000217(start=0, limit=20, plot=False):
+    "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
+
     sequence = []
     x = []
     for i in range(start, start + limit):
@@ -241,6 +241,7 @@ def A000217(start=0, limit=20, plot=False):
 
 @oeis
 def A008592(start, limit):
+    "Multiples of 10: a(n) = 10 * n."
     nterms = limit + 1
     end = limit + start
     my_list = []
@@ -270,6 +271,7 @@ def partitions(n):
 
 @oeis
 def A000041(n):
+    "a(n) is the number of partitions of n (the partition numbers)."
     return len(partitions(n))
 
 
@@ -277,7 +279,7 @@ def main():
     args = parse_args()
     if args.list:
         for function in oeis.series:
-            print("-", function.__name__)
+            print("-", function.__name__, function.__doc__)
         exit(0)
     if args.sequence == "A008592":
         return A008592(args.start, args.limit)
@@ -302,7 +304,7 @@ def main():
     elif args.sequence == "A000217":
         return A000217(args.start, args.limit, args.plot)
     elif args.sequence == "A006577":
-        return [A006577(n) for n in xrange(1, 101)]
+        return [A006577(n) for n in range(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
 
