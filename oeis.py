@@ -6,6 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 from math import factorial
+from typing import Iterator
 import sys
 
 
@@ -53,7 +54,7 @@ oeis = OEISRegistry()
 
 
 @oeis
-def A181391(start=0, limit=20):
+def A181391(start: int = 0, limit: int = 20) -> Iterator[int]:
     """Van Eck's sequence: For n >= 1,
     if there exists an m < n such that a(m) = a(n),
     take the largest such m and set a(n+1) = n-m;
@@ -71,7 +72,7 @@ def A181391(start=0, limit=20):
 
 
 @oeis
-def A006577(start, limit):
+def A006577(start: int = 0, limit: int = 20) -> Iterator[int]:
     """Number of halving and tripling steps to reach 1 in '3x+1' problem,
     or -1 if 1 is never reached.
     """
@@ -94,7 +95,7 @@ def A006577(start, limit):
 
 
 @oeis
-def A000290(start=0, limit=20):
+def A000290(start: int = 0, limit: int = 20) -> Iterator[int]:
     "The squares: a(n) = n^2."
     sequence = []
     x = []
@@ -106,7 +107,7 @@ def A000290(start=0, limit=20):
 
 
 @oeis
-def A000079(start=0, limit=20):
+def A000079(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Powers of 2: a(n) = 2^n."
     seq = []
     for n in range(start, limit):
@@ -115,7 +116,7 @@ def A000079(start=0, limit=20):
 
 
 @oeis
-def A000045(start=0, limit=20):
+def A000045(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = []
     sequence.append(0)
@@ -126,7 +127,7 @@ def A000045(start=0, limit=20):
 
 
 @oeis
-def A115020(start, limit):
+def A115020(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
@@ -137,7 +138,7 @@ def A115020(start, limit):
 
 
 @oeis
-def A000040(start, end):
+def A000040(start: int = 0, limit: int = 20) -> Iterator[int]:
     "The prime numbers."
     result = []
     resultIndex = []
@@ -155,7 +156,7 @@ def A000040(start, end):
 
 
 @oeis
-def A000010(start, limit):
+def A000010(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
     def phi(n):
@@ -170,7 +171,7 @@ def A000010(start, limit):
 
 
 @oeis
-def A000142(start=0, limit=20):
+def A000142(start: int = 0, limit: int = 20) -> Iterator[int]:
     """Factorial numbers: n! = 1*2*3*4*...*n
     (order of symmetric group S_n, number of permutations of n letters).
     """
@@ -186,7 +187,7 @@ def A000142(start=0, limit=20):
 
 
 @oeis
-def A000217(start=0, limit=20):
+def A000217(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
 
     sequence = []
@@ -203,7 +204,7 @@ def A000217(start=0, limit=20):
 
 
 @oeis
-def A008592(start, limit):
+def A008592(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Multiples of 10: a(n) = 10 * n."
     end = limit + start
     my_list = []
@@ -232,13 +233,13 @@ def partitions(n):
 
 
 @oeis
-def A000041(start, limit):
+def A000041(start: int = 0, limit: int = 20) -> Iterator[int]:
     "a(n) is the number of partitions of n (the partition numbers)."
     return [len(partitions(n)) for n in range(start, start + limit)]
 
 
 @oeis
-def A001220(start, limit, plot):
+def A001220(start: int = 0, limit: int = 20) -> Iterator[int]:
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
@@ -266,7 +267,7 @@ def is_prime(n):
 
 
 @oeis
-def A000203(start=0, limit=20):
+def A000203(start: int = 0, limit: int = 20) -> Iterator[int]:
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
     if start == 0:
@@ -287,7 +288,7 @@ def A000203(start=0, limit=20):
 
 
 @oeis
-def A133058(start=0, limit=20):
+def A133058(start: int = 0, limit: int = 20) -> Iterator[int]:
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
@@ -305,7 +306,7 @@ def A133058(start=0, limit=20):
 
 
 @oeis
-def A000108(start=0, limit=20):
+def A000108(start: int = 0, limit: int = 20) -> Iterator[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
     Also called Segner numbers.
     """
@@ -321,9 +322,7 @@ def main():
     args = parse_args()
     if args.list:
         for name, function in oeis.series.items():
-            print(
-                "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
-            )
+            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
         exit(0)
 
     if args.sequence not in oeis.series:
