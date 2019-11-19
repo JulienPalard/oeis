@@ -29,5 +29,5 @@ def test_sequence():
 
 
 @given(integers(min_value=0, max_value=20), integers(min_value=1, max_value=20))
-def test_sequence_length(x, y):
-    assert len(A000142(x, y)) == y
+def test_sequence_length(start, limit):
+    assert len(A000142(start, limit)) == limit

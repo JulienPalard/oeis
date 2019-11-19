@@ -115,17 +115,6 @@ def A000079(start=0, limit=20):
 
 
 @oeis
-def A000045(start=0, limit=20):
-    "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
-    sequence = []
-    sequence.append(0)
-    sequence.append(1)
-    for i in range(2, limit):
-        sequence.append(sequence[i - 1] + sequence[i - 2])
-    return sequence
-
-
-@oeis
 def A115020(start, limit):
     "Count backwards from 100 in steps of 7."
     result = []
@@ -289,6 +278,7 @@ def A000045(start, limit, plot=False):
 
 @oeis
 def A265326(start, limit):
+    "n-th prime minus its binary reversal."
     binary = []
     binaryReversed = []
     sequence = []
@@ -300,8 +290,26 @@ def A265326(start, limit):
 
     for i in range(0, len(binary)):
         sequence.append(binary[i] - binaryReversed[i])
-        
+
     return sequence
+
+
+@oeis
+def A133058(start=0, limit=20):
+    """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
+    otherwise a(n) = a(n-1)/gcd(a(n-1),n).
+    """
+    sequence = []
+
+    for i in range(0, start + limit):
+        if i == 0 or i == 1:
+            sequence.append(1)
+        elif (math.gcd(i, sequence[i - 1])) == 1:
+            sequence.append(sequence[i - 1] + i + 1)
+        else:
+            sequence.append(int(sequence[i - 1] / math.gcd(sequence[i - 1], i)))
+
+    return sequence[start:]
 
 
 def main():
@@ -312,12 +320,14 @@ def main():
                 "-", name, function.__doc__.replace("\n", " ").replace("     ", " "),
             )
         exit(0)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
     serie = oeis.series[args.sequence](args.start, args.limit)
     if args.plot:
-        plt.plot(list(range(len(serie))), serie)
+        plt.scatter(list(range(len(serie))), serie)
+        plt.show()
     else:
         print(serie)
 
