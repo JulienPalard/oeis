@@ -5,6 +5,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from math import factorial
 
 
 __version__ = "0.0.1"
@@ -52,7 +53,11 @@ oeis = OEISRegistry()
 
 @oeis
 def A181391(start=0, limit=20, plot=False):
-    "Van Eck's sequence: For n >= 1, if there exists an m < n such that a(m) = a(n), take the largest such m and set a(n+1) = n-m; otherwise a(n+1) = 0. Start with a(1)=0."
+    """Van Eck's sequence: For n >= 1,
+    if there exists an m < n such that a(m) = a(n),
+    take the largest such m and set a(n+1) = n-m;
+    otherwise a(n+1) = 0. Start with a(1)=0.
+    """
     sequence = [0]
     last_pos = {}
 
@@ -80,7 +85,9 @@ def A181391(start=0, limit=20, plot=False):
 
 @oeis
 def A006577(n):
-    "Number of halving and tripling steps to reach 1 in '3x+1' problem, or -1 if 1 is never reached."
+    """Number of halving and tripling steps to reach 1 in '3x+1' problem,
+    or -1 if 1 is never reached.
+    """
     if n == 1:
         return 0
 
@@ -197,12 +204,14 @@ def A000010(n):
 
 @oeis
 def A000142(start=0, limit=20, plot=False):
-    "Factorial numbers: n! = 1*2*3*4*...*n (order of symmetric group S_n, number of permutations of n letters)."
+    """Factorial numbers: n! = 1*2*3*4*...*n
+    (order of symmetric group S_n, number of permutations of n letters).
+    """
     sequence = []
     colors = []
     x = []
     for i in range(start, start + limit):
-        sequence.append(math.factorial(i))
+        sequence.append(factorial(i))
         colors.append(np.random.rand())
         x.append(i)
 
@@ -223,11 +232,7 @@ def A000217(start=0, limit=20, plot=False):
         if i + 1 < 2:
             sequence.append(0)
         else:
-            sequence.append(
-                math.factorial(i + 1)
-                // math.factorial(2)
-                // math.factorial((i + 1) - 2)
-            )
+            sequence.append(factorial(i + 1) // factorial(2) // factorial((i + 1) - 2))
 
         x.append(i)
 
@@ -241,7 +246,6 @@ def A000217(start=0, limit=20, plot=False):
 @oeis
 def A008592(start, limit):
     "Multiples of 10: a(n) = 10 * n."
-    nterms = limit + 1
     end = limit + start
     my_list = []
     i = 0
@@ -276,6 +280,7 @@ def A000041(n):
 
 @oeis
 def A000203(start=0, limit=20, plot=False):
+    "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
     if start == 0:
         start += 1
@@ -312,7 +317,11 @@ def main():
     args = parse_args()
     if args.list:
         for function in oeis.series:
-            print("-", function.__name__, function.__doc__)
+            print(
+                "-",
+                function.__name__,
+                function.__doc__.replace("\n", " ").replace("     ", " "),
+            )
         exit(0)
     if args.sequence == "A008592":
         return A008592(args.start, args.limit)
