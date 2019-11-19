@@ -378,7 +378,9 @@ def main():
         for i in range(len(serie)):
             colors.append(np.random.rand())
         with plt.style.context("dark_background"):
-            plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,)
+            plt.scatter(
+                list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,
+            )
         plt.show()
     else:
         print(serie)
