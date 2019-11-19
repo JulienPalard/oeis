@@ -244,7 +244,7 @@ def A000041(start, limit):
 
 
 @oeis
-def A001220(start, limit, plot):
+def A001220(start, limit):
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
