@@ -1,12 +1,13 @@
-"""
-Tool that return a given sequence
+"""Tool that return a given sequence
 """
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
+from random import choice
 import math
 from math import factorial
 import sys
+
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 __version__ = "0.0.1"
@@ -30,11 +31,16 @@ def parse_args():
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
+    parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
         "--start",
         type=int,
         default=0,
         help="Define the starting point of the sequence (default: 0)",
+    )
+
+    parser.add_argument(
+        "--dark-plot", action="store_true", help="Print a dark dark dark graph"
     )
 
     return parser.parse_args()
@@ -137,8 +143,23 @@ def A115020(start, limit):
 
 
 @oeis
-def A000040(start, end):
-    "The prime numbers."
+def A000010(start, limit):
+    "Euler totient function phi(n): count numbers <= n and prime to n."
+
+    def phi(n):
+        numbers = []
+        i = 0
+        for i in range(n):
+            if math.gcd(i, n) == 1:
+                numbers.append(i)
+        return len(numbers)
+
+    return [phi(x) for x in range(start, start + limit)]
+
+
+@oeis
+def A000040(start=0, end=999, plot=False):
+    "Return all prime number betwenn range"
     result = []
     resultIndex = []
     i = 0
@@ -152,21 +173,6 @@ def A000040(start, end):
                 resultIndex.append(i)
                 i = i + 1
     return result
-
-
-@oeis
-def A000010(start, limit):
-    "Euler totient function phi(n): count numbers <= n and prime to n."
-
-    def phi(n):
-        numbers = []
-        i = 0
-        for i in range(n):
-            if math.gcd(i, n) == 1:
-                numbers.append(i)
-        return len(numbers)
-
-    return [phi(x) for x in range(start, start + limit)]
 
 
 @oeis
@@ -238,7 +244,8 @@ def A000041(start, limit):
 
 
 @oeis
-def A001220(start, limit, plot):
+def A001220(start, limit):
+    "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
     sequence = []
     for i in range(start, limit):
         if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
@@ -286,6 +293,56 @@ def A000203(start=0, limit=20):
 
 
 @oeis
+def A000004(limit=1):
+    "Return an array of n occurence of 0"
+    result = []
+    for i in range(limit):
+        result.append(0)
+    return result
+
+
+@oeis
+def A001246(start, limit):
+    "Squares of Catalan numbers"
+
+    def catalan(n):
+        if n == 0 or n == 1:
+            return 1
+        catalan = [0 for i in range(n + 1)]
+        catalan[0] = 1
+        catalan[1] = 1
+        for i in range(2, n + 1):
+            catalan[i] = 0
+            for j in range(i):
+                catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
+        return catalan[n]
+
+    result = []
+    for i in range(10):
+        result.append((catalan(i)) * catalan(i))
+    return result
+
+
+@oeis
+def A001247(start, limit):
+    "Squares of Bell number"
+
+    def bellNumber(start):
+        bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
+        bell[0][0] = 1
+        for i in range(1, start + 1):
+            bell[i][0] = bell[i - 1][i - 1]
+            for j in range(1, i + 1):
+                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
+        return bell[start][0]
+
+    result = []
+    for start in range(limit):
+        result.append(bellNumber(start) * bellNumber(start))
+    return result
+
+
+@oeis
 def A133058(start=0, limit=20):
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
@@ -303,6 +360,41 @@ def A133058(start=0, limit=20):
     return sequence[start:]
 
 
+@oeis
+def A000005(start=0, limit=20):
+    "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
+    sequence = []
+
+    if start == 0:
+        start += 1
+
+    for i in range(start, start + limit):
+        divisors = 0
+        for j in range(int(math.sqrt(i)) + 1):
+            if j == 0:
+                continue
+            elif i % j == 0:
+                if i / j == j:
+                    divisors += 1
+                else:
+                    divisors += 2
+        sequence.append(divisors)
+    return sequence
+
+
+@oeis
+def A000108(start=0, limit=20):
+    """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
+    Also called Segner numbers.
+    """
+    sequence = []
+    for i in range(start, start + limit):
+        r = (factorial(2 * i) // factorial(i) // factorial(2 * i - i)) / (i + 1)
+        sequence.append(int(r))
+
+    return sequence
+
+
 def main():
     args = parse_args()
     if args.list:
@@ -312,6 +404,9 @@ def main():
             )
         exit(0)
 
+    if args.random:
+        args.sequence = choice(list(oeis.series.values())).__name__
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
@@ -319,7 +414,18 @@ def main():
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
+    elif args.dark_plot:
+        colors = []
+        for i in range(len(serie)):
+            colors.append(np.random.rand())
+        with plt.style.context("dark_background"):
+            plt.scatter(
+                list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,
+            )
+        plt.show()
     else:
+        print("#", args.sequence, end="\n\n")
+        print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
 
 
