@@ -5,6 +5,7 @@ import argparse
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+from decimal import getcontext, Decimal
 
 __version__ = "0.0.1"
 
@@ -292,6 +293,44 @@ def A000041(n):
     return len(partitions(n))
 
 
+@oeis
+def A000004(limit=1):
+    result=[]
+    for i in range(limit):
+        result.append(0)
+    return result
+
+@oeis
+def A001246():
+    def catalan(n): 
+        if (n == 0 or n == 1): 
+            return 1
+        catalan = [0 for i in range(n + 1)] 
+        catalan[0] = 1
+        catalan[1] = 1
+        for i in range(2, n + 1): 
+            catalan[i] = 0
+            for j in range(i): 
+                catalan[i] = catalan[i] + catalan[j] * catalan[i-j-1] 
+        return catalan[n] 
+
+    for i in range (10): 
+        print ((catalan(i))*catalan(i))
+ 
+@oeis
+def A001247():
+    def bellNumber(n): 
+        bell = [[0 for i in range(n+1)] for j in range(n+1)] 
+        bell[0][0] = 1
+        for i in range(1, n+1): 
+            bell[i][0] = bell[i-1][i-1] 
+            for j in range(1, i+1): 
+                bell[i][j] = bell[i-1][j-1] + bell[i][j-1] 
+        return bell[n][0] 
+
+    for n in range(6): 
+        print(bellNumber(n)*bellNumber(n))
+
 def main():
     args = parse_args()
     if args.list:
@@ -324,6 +363,12 @@ def main():
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
         return A000041(args.start)
+    elif args.sequence == "A001246":
+        return A001246()
+    elif args.sequence == "A001247":
+        return A001247()
+    elif args.sequence == "A000004":
+        return A000004(args.limit)
 
 
 if __name__ == "__main__":
