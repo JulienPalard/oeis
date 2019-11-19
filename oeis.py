@@ -5,6 +5,7 @@ from random import choice
 import math
 from math import factorial
 import sys
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -361,9 +362,18 @@ def main():
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
     serie = oeis.series[args.sequence](args.start, args.limit)
+
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
         if args.file:
+            if not os.path.exists("graph"):
+                print("No graph directory found, creating...")
+                try:
+                    os.mkdir("graph")
+                except OSError:
+                    print("Creation of the graph directory failed")
+                else:
+                    print("Successfully created the graph directory")
             plt.savefig(f"graph/{args.sequence}.png")
             print(f"Graph printed in graph/{args.sequence}.png")
         else:
