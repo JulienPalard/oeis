@@ -171,6 +171,7 @@ def A000010(start, limit):
 
 @oeis
 def A023811(start, limit):
+    "Largest metadrome (number with digits in strict ascending order) in base n."
     def largest_metadrome(n):
         result = 0
         for i, j in enumerate(range(n - 2, -1, -1), start=1):
