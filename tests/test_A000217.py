@@ -28,6 +28,6 @@ def test_sequence():
     ]
 
 
-@given(integers(min_value=0, max_value=2000), integers(min_value=1, max_value=2000))
+@given(integers(min_value=0, max_value=200), integers(min_value=1, max_value=200))
 def test_sequence_length(x, y):
     assert len(A000217(x, y)) == y
