@@ -39,6 +39,10 @@ def parse_args():
         help="Define the starting point of the sequence (default: 0)",
     )
 
+    parser.add_argument(
+        "--dark_plot", action="store_true", help="Print a dark dark dark graph"
+    )
+
     return parser.parse_args()
 
 
@@ -360,6 +364,13 @@ def main():
     serie = oeis.series[args.sequence](args.start, args.limit)
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
+        plt.show()
+    elif args.dark_plot:
+        colors = []
+        for i in range(len(serie)):
+            colors.append(np.random.rand())
+        with plt.style.context("dark_background"):
+            plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5,)
         plt.show()
     else:
         print(serie)
