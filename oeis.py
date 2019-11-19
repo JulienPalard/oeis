@@ -257,6 +257,7 @@ def A000203(start=0, limit=20):
         sequence.append(int(sum(divisors)))
     return sequence
 
+
 @oeis
 def A000108(start=0, limit=20):
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!). 
@@ -264,10 +265,11 @@ def A000108(start=0, limit=20):
     """
     sequence = []
     for i in range(start, start + limit):
-        r = (factorial(2*i) // factorial(i) // factorial(2*i - i))/(i+1)
+        r = (factorial(2 * i) // factorial(i) // factorial(2 * i - i)) / (i + 1)
         sequence.append(int(r))
 
     return sequence
+
 
 def main():
     args = parse_args()
