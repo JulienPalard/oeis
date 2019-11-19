@@ -266,6 +266,7 @@ def fibonacci(n):
         return fibonacci(n - 1) + fibonacci(n - 2)
 
 
+@oeis
 def A000045(start, limit, plot=False):
 
     numbers = []
@@ -283,6 +284,24 @@ def A000045(start, limit, plot=False):
         plt.title("A000045 - Fibonacci")
         plt.show()
     return numbers
+
+
+@oeis
+def A265326(start, limit, plot=False):
+    binary = []
+    binaryReversed = []
+    sequence = []
+
+    for i in A000040(start, limit, plot):
+        number = bin(i)[2:].zfill(8).lstrip("0")
+        binary.append(int(number, 2))
+        binaryReversed.append(int(number[len(number) :: -1], 2))
+
+    for i in range(0, len(binary)):
+        sequence.append(binary[i] - binaryReversed[i])
+
+
+    return sequence
 
 
 def main():
@@ -317,6 +336,8 @@ def main():
         return A000041(args.start)
     elif args.sequence == "A000045":
         return A000045(args.start, args.limit, args.plot)
+    elif args.sequence == "A265326":
+        return A265326(args.start, args.limit, args.plot)
 
 
 if __name__ == "__main__":
