@@ -7,3 +7,4 @@ install:
 script:
   - pytest
   - black --diff --check oeis.py
+  - flake8
