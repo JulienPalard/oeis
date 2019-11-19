@@ -273,6 +273,38 @@ def A000041(n):
     return len(partitions(n))
 
 
+@oeis
+def A000203(start=0, limit=20, plot=False):
+    sequence = []
+    for i in range(start, start + limit):
+        divisors = []
+        for j in range(int(math.sqrt(i))+1):
+            if j == 0:
+                continue
+            elif i % j == 0:
+                if i / j == j:
+                    divisors.append(j)
+                else:
+                    divisors.append(j)
+                    divisors.append(i / j)
+        sequence.append(int(sum(divisors)))
+
+    if plot:
+        colors = []
+        for i in range(start, start + limit):
+            colors.append(np.random.rand())
+
+        plt.scatter(
+            range(start, start + limit),
+            sequence[start : start + limit],
+            s=50,
+            c=colors,
+            alpha=0.5,
+        )
+        plt.show()
+    return sequence
+
+
 def main():
     args = parse_args()
     if args.list:
@@ -301,6 +333,8 @@ def main():
         return A000142(args.start, args.limit, args.plot)
     elif args.sequence == "A000217":
         return A000217(args.start, args.limit, args.plot)
+    elif args.sequence == "A000203":
+        return A000203(args.start, args.limit, args.plot)
     elif args.sequence == "A006577":
         return [A006577(n) for n in xrange(1, 101)]
     elif args.sequence == "A000041":
