@@ -40,7 +40,7 @@ def parse_args():
     )
 
     parser.add_argument(
-        "--dark_plot", action="store_true", help="Print a dark dark dark graph"
+        "--dark-plot", action="store_true", help="Print a dark dark dark graph"
     )
 
     return parser.parse_args()
