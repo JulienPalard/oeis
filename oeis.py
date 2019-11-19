@@ -325,6 +325,7 @@ def A000005(start=0, limit=20):
         sequence.append(divisors)
     return sequence
 
+
 @oeis
 def A000108(start=0, limit=20):
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
