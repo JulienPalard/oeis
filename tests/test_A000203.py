@@ -1,33 +1,33 @@
-from oeis import A000203
+from oeis import A133058
 from hypothesis import given
 from hypothesis.strategies import integers
 
 
 def test_sequence():
-    assert A000203() == [
+    assert A133058() == [
         1,
-        3,
+        1,
         4,
-        7,
-        6,
-        12,
         8,
-        15,
-        13,
-        18,
+        2,
+        8,
+        4,
         12,
-        28,
-        14,
+        3,
+        1,
+        12,
         24,
+        2,
+        16,
+        8,
         24,
-        31,
-        18,
-        39,
-        20,
-        42,
+        3,
+        21,
+        7,
+        27,
     ]
 
 
 @given(integers(min_value=0, max_value=2000), integers(min_value=1, max_value=2000))
 def test_sequence_length(x, y):
-    assert len(A000203(x, y)) == y
+    assert len(A133058(x, y)) == y

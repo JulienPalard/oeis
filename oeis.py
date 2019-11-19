@@ -258,6 +258,22 @@ def A000203(start=0, limit=20):
     return sequence
 
 
+@oeis
+def A133058(start=0, limit=20):
+    "a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime, otherwise a(n) = a(n-1)/gcd(a(n-1),n). "
+    sequence = []
+
+    for i in range(0, start + limit):
+        if i == 0 or i == 1:
+            sequence.append(1)
+        elif (math.gcd(i, sequence[i - 1])) == 1:
+            sequence.append(sequence[i - 1] + i + 1)
+        else:
+            sequence.append(int(sequence[i - 1] / math.gcd(sequence[i - 1], i)))
+
+    return sequence[start:]
+
+
 def main():
     args = parse_args()
     if args.list:
