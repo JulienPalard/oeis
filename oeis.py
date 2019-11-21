@@ -402,6 +402,17 @@ def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Digital sum (i.e., sum of digits) of n; also called digsum(n)."
+    sequence = []
+
+    for n in range(start, start + limit):
+        sequence.append(sum(int(d) for d in str(n)))
+
+    return sequence
+
+
 def main() -> None:
     args = parse_args()
     if args.list:
