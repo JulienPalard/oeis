@@ -120,6 +120,6 @@ def test_sequence_length(start, limit):
     assert len(A001622(start, limit)) == limit
 
 
-@given(integers(min_value=0, max_value=1250))
+@given(integers(min_value=0, max_value=2000))
 def test_A001622(limit):
     assert A001622(limit=limit + 1)[:-1] == A001622(limit=limit)
