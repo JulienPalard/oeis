@@ -9,4 +9,4 @@ def test_sequence():
 
 @given(integers(min_value=0, max_value=200), integers(min_value=1, max_value=200))
 def test_sequence_length(start, limit):
-    assert len(A000108(start, limit)) == limit
+    assert len(A000120(start, limit)) == limit
