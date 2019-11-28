@@ -413,6 +413,21 @@ def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+    "1's-counting sequence: number of 1's in binary expansion of n (or the binary weight of n)."
+    sequence = []
+
+    for n in range(start, start + limit):
+        count = 0
+        binary = bin(n)
+        binary = binary[2:].replace("0", "")
+        count = binary.count("1")
+        sequence.append(count)
+
+    return sequence
+
+
 def main() -> None:
     args = parse_args()
     if args.list:
