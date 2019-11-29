@@ -449,7 +449,7 @@ def main() -> None:
         args.sequence = choice(list(oeis.series.values())).__name__
 
     if not args.sequence:
-        print(f"No sequence given, please see {__name__} --help, or try oeis --random")
+        print(f"No sequence given, please see oeis --help, or try oeis --random")
         exit(1)
 
     if args.sequence not in oeis.series:
