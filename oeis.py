@@ -428,6 +428,7 @@ def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
 
     return sequence
 
+
 @oeis
 def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
     "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
