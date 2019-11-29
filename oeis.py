@@ -419,14 +419,8 @@ def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
     """1's-counting sequence: number of 1's in binary
     expansion of n (or the binary weight of n).
     """
-    sequence = []
 
-    for n in range(start, start + limit):
-        count = 0
-        count = "{:b}".format(n).count("1")
-        sequence.append(count)
-
-    return sequence
+    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
 
 
 @oeis
