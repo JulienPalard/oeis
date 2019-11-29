@@ -433,7 +433,7 @@ def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
         return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
 
 
-def show_oeis_list():
+def show_oeis_list() -> None:
     for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
         if function.__doc__:
             print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
