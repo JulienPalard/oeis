@@ -4,6 +4,7 @@ import argparse
 from random import choice
 import math
 from math import factorial
+from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
@@ -422,12 +423,19 @@ def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
 
     for n in range(start, start + limit):
         count = 0
-        binary = bin(n)
-        binary = binary[2:].replace("0", "")
-        count = binary.count("1")
+        count = "{:b}".format(n).count("1")
         sequence.append(count)
 
     return sequence
+
+@oeis
+def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
+    with localcontext() as ctx:
+        ctx.prec = start + limit + 4
+        tau = (1 + Decimal(5).sqrt()) / 2
+
+        return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
 
 
 def main() -> None:
