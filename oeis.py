@@ -415,6 +415,15 @@ def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+    """1's-counting sequence: number of 1's in binary
+    expansion of n (or the binary weight of n).
+    """
+
+    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
+
+
+@oeis
 def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
     "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
     with localcontext() as ctx:
