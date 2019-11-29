@@ -448,9 +448,14 @@ def main() -> None:
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
 
+    if not args.sequence:
+        print(f"No sequence given, please see oeis --help, or try oeis --random")
+        exit(1)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
+
     serie = oeis.series[args.sequence](args.start, args.limit)
 
     if args.plot:
