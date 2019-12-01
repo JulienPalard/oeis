@@ -256,6 +256,29 @@ def A001220(start: int = 0, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A008587(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Multiples of 5."
+    sequence = []
+
+    for i in range(start, limit):
+        s = str(i)
+        l = len(s)
+        if s[l - 1] == "5" or s[l - 1] == "0":
+            sequence.append(i)
+    return sequence
+
+
+@oeis
+def A008589(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Multiples of 7."
+    sequence = []
+    for i in range(start, limit):
+        if i % 7 == 0:
+            sequence.append(i)
+    return sequence
+
+
 def is_prime(n: int) -> bool:
     if n % 2 == 0:
         return False
