@@ -284,7 +284,7 @@ def A008589(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000110(start: int = 0, limit: int = 20) -> Collection[int]:
-    """Bell or exponential numbers: number of ways 
+    """Bell or exponential numbers: number of ways
     to partition a set of n labeled elements.
     """
     sequence = []
