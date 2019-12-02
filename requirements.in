@@ -1,8 +1,10 @@
-pytest
-hypothesis
-numpy
-matplotlib
-flit
-pip-tools
 black
 flake8
+flit
+hypothesis
+matplotlib
+mypy
+numpy
+pip-tools
+pytest
+tox
