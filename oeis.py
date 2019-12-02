@@ -105,6 +105,7 @@ def A006577(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A008588(start: int = 0, limit: int = 200) -> Collection[int]:
+    "Nonnegative multiples of 6"
     myresult = []
     for n in range(0, 200, 6):
         if n >= 0:
