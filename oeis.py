@@ -1,17 +1,16 @@
 """Tool that return a given sequence
 """
 import argparse
-from random import choice
 import math
-from math import factorial
-from decimal import Decimal, localcontext
-from typing import Collection, Dict, List, Callable
-import sys
 import os
+import sys
+from decimal import Decimal, localcontext
+from math import factorial
+from random import choice
+from typing import Callable, Collection, Dict, List
 
-import numpy as np
 import matplotlib.pyplot as plt
-
+import numpy as np
 
 __version__ = "0.0.1"
 
@@ -285,7 +284,9 @@ def A008589(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000110(start: int = 0, limit: int = 20) -> Collection[int]:
-    "Bell or exponential numbers: number of ways to partition a set of n labeled elements."
+    """Bell or exponential numbers: number of ways 
+    to partition a set of n labeled elements.
+    """
     sequence = []
     for n in range(start, limit):
         bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
