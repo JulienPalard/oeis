@@ -263,8 +263,7 @@ def A008587(start: int = 0, limit: int = 20) -> Collection[int]:
 
     for i in range(start, limit):
         s = str(i)
-        l = len(s)
-        if s[l - 1] == "5" or s[l - 1] == "0":
+        if s[len(s) - 1] == "5" or s[len(s) - 1] == "0":
             sequence.append(i)
     return sequence
 
