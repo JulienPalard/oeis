@@ -415,6 +415,15 @@ def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+    """1's-counting sequence: number of 1's in binary
+    expansion of n (or the binary weight of n).
+    """
+
+    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
+
+
+@oeis
 def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
     "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
     with localcontext() as ctx:
@@ -424,25 +433,32 @@ def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
         return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
 
 
+def show_oeis_list() -> None:
+    for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
+        if function.__doc__:
+            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
+        else:
+            print("-", name)
+
+
 def main() -> None:
     args = parse_args()
 
     if args.list:
-        for name, function in oeis.series.items():
-            if function.__doc__:
-                print(
-                    "-", name, function.__doc__.replace("\n", " ").replace("     ", " ")
-                )
-            else:
-                print("-", name)
+        show_oeis_list()
         exit(0)
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
 
+    if not args.sequence:
+        print(f"No sequence given, please see oeis --help, or try oeis --random")
+        exit(1)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
+
     serie = oeis.series[args.sequence](args.start, args.limit)
 
     if args.plot:
