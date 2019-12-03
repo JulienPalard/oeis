@@ -12,3 +12,6 @@ requires = [
   "matplotlib",
   "sympy",
 ]
+
+[tool.flit.scripts]
+oeis = "oeis:main"
