@@ -4,9 +4,11 @@ import argparse
 from random import choice
 import math
 from math import factorial
+from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 from sympy.ntheory import primefactors
+import os
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -34,6 +36,9 @@ def parse_args() -> argparse.Namespace:
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
     parser.add_argument("--random", action="store_true", help="Pick a random sequence")
+    parser.add_argument(
+        "--file", action="store_true", help="Generates a png of the sequence's plot"
+    )
     parser.add_argument(
         "--start",
         type=int,
@@ -405,25 +410,63 @@ def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Digital sum (i.e., sum of digits) of n; also called digsum(n)."
+    sequence = []
+
+    for n in range(start, start + limit):
+        sequence.append(sum(int(d) for d in str(n)))
+
+    return sequence
+
+
+@oeis
+def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+    """1's-counting sequence: number of 1's in binary
+    expansion of n (or the binary weight of n).
+    """
+
+    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
+
+
+@oeis
+def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
+    with localcontext() as ctx:
+        ctx.prec = start + limit + 4
+        tau = (1 + Decimal(5).sqrt()) / 2
+
+        return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
+
+
+def show_oeis_list() -> None:
+    for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
+        if function.__doc__:
+            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
+        else:
+            print("-", name)
+
+
 def main() -> None:
     args = parse_args()
     if args.list:
-        for name, function in oeis.series.items():
-            if function.__doc__:
-                print(
-                    "-", name, function.__doc__.replace("\n", " ").replace("     ", " ")
-                )
-            else:
-                print("-", name)
+        show_oeis_list()
         exit(0)
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
 
+    if not args.sequence:
+        print(f"No sequence given, please see oeis --help, or try oeis --random")
+        exit(1)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
+
     serie = oeis.series[args.sequence](args.start, args.limit)
+
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
@@ -438,6 +481,21 @@ def main() -> None:
         print("#", args.sequence, end="\n\n")
         print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
+
+    if args.file:
+        if args.plot or args.dark_plot:
+            if not os.path.exists("graph"):
+                print("No graph directory found, creating...")
+                try:
+                    os.mkdir("graph")
+                except OSError:
+                    print("Creation of the graph directory failed")
+                else:
+                    print("Successfully created the graph directory")
+            plt.savefig(f"graph/{args.sequence}.png")
+            print(f"Graph printed in graph/{args.sequence}.png")
+        else:
+            print("You cannot use --file without --plot or --dark_plot")
 
 
 if __name__ == "__main__":
