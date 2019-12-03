@@ -6,6 +6,7 @@ import math
 from math import factorial
 from typing import Collection, Dict, List, Callable
 import sys
+from sympy.ntheory import primefactors
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -113,6 +114,12 @@ def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
         x.append(i)
 
     return sequence
+
+
+@oeis
+def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Number of distinct primes dividing n (also called omega(n))."
+    return([len(primefactors(n)) for n in range(start, limit)])
 
 
 @oeis
