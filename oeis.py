@@ -119,6 +119,14 @@ def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
 
     return sequence
 
+def A001462(n=6):
+    "Golomb's sequence: F(n) = 1 + F(n - F(n - 1))"
+    dp = [0] * (n + 1)
+    dp[1] = 1
+    for i in range(2, n + 1):
+        dp[i] = 1 + dp[i - dp[dp[i - 1]]]
+
+    return dp
 
 @oeis
 def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
