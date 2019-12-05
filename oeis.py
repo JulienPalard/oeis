@@ -2,8 +2,7 @@
 Tool that return a given sequence
 """
 import argparse
-import numpy as np
-import matplotlib.pyplot as plt
+
 import math
 
 __version__ = "0.0.1"
@@ -79,7 +78,22 @@ def A006577(n):
 
     return x
 
+#A000566 OEIS Jp Hayek
+def aList():
 
+     x, y = 1, 1
+
+     yield 0
+
+     while True:
+
+         yield x
+
+         x, y = x + y + 5, y + 5
+
+A000566 = aList()
+
+##print([next(A000566) for i in range(50)])
 
 
 def A115020():
@@ -154,6 +168,8 @@ def main():
         return [A000010(x) for x in range(1, args.limit)]
     elif args.sequence == "A006577":
         return [A006577(n) for n in xrange(1, 101)]
+    elif args.sequence == "A000566":
+        return print([next(A000566) for i in range(50)])
     if args.sequence == "A000041":
         print(affiche(args.start))
         print(partitions(args.start))
