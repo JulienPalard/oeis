@@ -9,8 +9,7 @@ from typing import Collection, Dict, List, Callable
 import sys
 import os
 
-import numpy as np
-import matplotlib.pyplot as plt
+
 
 
 __version__ = "0.0.1"
@@ -139,6 +138,22 @@ def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
         sequence.append(sequence[i - 1] + sequence[i - 2])
     return sequence
 
+@oeis
+def A000566(start: int = 0, limit: int = 20) -> Collection[int]:
+    def aList():
+
+        x, y = 1, 1
+
+        yield 0
+
+        while True:
+
+            yield x
+
+            x, y = x + y + 5, y + 5
+
+    A000566 = aList()
+    return [next(A000566) for i in range(50)]
 
 @oeis
 def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
