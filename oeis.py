@@ -8,6 +8,8 @@ from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 
@@ -140,19 +142,13 @@ def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000566(start: int = 0, limit: int = 20) -> Collection[int]:
-    def aList():
-
+    def A000566_generator():
         x, y = 1, 1
-
         yield 0
-
         while True:
-
             yield x
-
             x, y = x + y + 5, y + 5
-
-    A000566 = aList()
+    A000566 = A000566_generator()
     return [next(A000566) for i in range(50)]
 
 @oeis
