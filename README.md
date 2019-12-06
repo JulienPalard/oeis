@@ -41,7 +41,7 @@ Demo:
 
 We are using coding the [black]((https://github.com/psf/black) coding
 style, and tox to run some tests, so after creating a venv, and `pip
-install requirements.txt`, run `tox` or `tox -p auto` (parallel), it
+install requirements-dev.txt`, run `tox` or `tox -p auto` (parallel), it
 should look like this:
 
 ```

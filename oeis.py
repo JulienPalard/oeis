@@ -120,7 +120,7 @@ def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
 def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
     "Powers of 2: a(n) = 2^n."
     seq = []
-    for n in range(start, limit):
+    for n in range(start, start + limit):
         seq.append(2 ** n)
     return seq
 
@@ -135,7 +135,7 @@ def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
+def A115020(start: int = 0, limit: int = 15) -> Collection[int]:
     "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
@@ -266,11 +266,9 @@ def is_prime(n: int) -> bool:
 
 
 @oeis
-def A000203(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
-    if start == 0:
-        start += 1
     for i in range(start, start + limit):
         divisors = []
         for j in range(int(math.sqrt(i)) + 1):
@@ -312,7 +310,7 @@ def A001246(start: int = 0, limit: int = 20) -> Collection[int]:
         return catalan[n]
 
     result = []
-    for i in range(10):
+    for i in range(start, start + limit):
         result.append((catalan(i)) * catalan(i))
     return result
 
@@ -331,8 +329,8 @@ def A001247(start: int = 0, limit: int = 20) -> Collection[int]:
         return bell[start][0]
 
     result = []
-    for start in range(limit):
-        result.append(bellNumber(start) * bellNumber(start))
+    for i in range(start, start + limit):
+        result.append(bellNumber(i) ** 2)
     return result
 
 
@@ -355,12 +353,9 @@ def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A000005(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000005(start: int = 1, limit: int = 20) -> Collection[int]:
     "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
     sequence = []
-
-    if start == 0:
-        start += 1
 
     for i in range(start, start + limit):
         divisors = 0
@@ -420,15 +415,11 @@ def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A007947(start: int = 0, limit: int = 20) -> Collection[int]:
+def A007947(start: int = 1, limit: int = 20) -> Collection[int]:
     """Largest squarefree number dividing n:
     the squarefree kernel of n, rad(n), radical of n.
     """
     sequence = []
-
-    if start < 1:
-        start = 1
-
     for i in range(start, start + limit):
         if i < 2:
             sequence.append(1)
