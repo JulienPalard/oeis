@@ -2,9 +2,6 @@ language: python
 dist: xenial
 python: 3.7
 install:
-  - flit install
+  - pip install tox
 script:
-  - pytest
-  - black --diff --check oeis.py
-  - flake8
-  - mypy oeis.py --ignore-missing-imports --strict
+  - tox -p auto
