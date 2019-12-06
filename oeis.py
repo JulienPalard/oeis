@@ -28,10 +28,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
-        "--limit",
-        type=int,
-        default=20,
-        help="Define the limit of the sequence, (default: 20)",
+        "--limit", type=int, help="Qty of numbers to print.",
     )
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
@@ -41,10 +38,7 @@ def parse_args() -> argparse.Namespace:
         "--file", action="store_true", help="Generates a png of the sequence's plot"
     )
     parser.add_argument(
-        "--start",
-        type=int,
-        default=0,
-        help="Define the starting point of the sequence (default: 0)",
+        "--start", type=int, help="Define the starting point of the sequence.",
     )
 
     parser.add_argument(
@@ -54,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-Serie = Callable[[int, int], Collection[int]]
+Serie = Callable[..., Collection[int]]
 
 
 class OEISRegistry:
@@ -475,7 +469,12 @@ def main() -> None:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
 
-    serie = oeis.series[args.sequence](args.start, args.limit)
+    kwargs = {}
+    if args.start:
+        kwargs["start"] = args.start
+    if args.limit:
+        kwargs["limit"] = args.limit
+    serie = oeis.series[args.sequence](**kwargs)
 
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
