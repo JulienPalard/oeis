@@ -437,7 +437,7 @@ def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A007947(start: int = 0, limit: int = 20) -> Collection[int]:
-    """Largest squarefree number dividing n: 
+    """Largest squarefree number dividing n:
     the squarefree kernel of n, rad(n), radical of n.
     """
     sequence = []
