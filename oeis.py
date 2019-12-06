@@ -134,12 +134,10 @@ def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
 @oeis
 def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
-    sequence = []
-    sequence.append(0)
-    sequence.append(1)
-    for i in range(2, limit):
+    sequence = [1, 1]
+    for i in range(2, start  +limit):
         sequence.append(sequence[i - 1] + sequence[i - 2])
-    return sequence
+    return sequence[start:]
 
 
 @oeis
