@@ -8,6 +8,8 @@ from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
+from sympy import primefactors
+from functools import reduce
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -431,6 +433,26 @@ def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
         tau = (1 + Decimal(5).sqrt()) / 2
 
         return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
+
+
+@oeis
+def A007947(start: int = 0, limit: int = 20) -> Collection[int]:
+    """Largest squarefree number dividing n: 
+    the squarefree kernel of n, rad(n), radical of n.
+    """
+    sequence = []
+
+    if start < 1:
+        start = 1
+
+    for i in range(start, start + limit):
+        if i < 2:
+            sequence.append(1)
+        else:
+            n = reduce(lambda x, y: x * y, primefactors(i))
+            sequence.append(n)
+
+    return sequence
 
 
 def show_oeis_list() -> None:
