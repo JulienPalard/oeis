@@ -135,7 +135,7 @@ def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
 def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = [1, 1]
-    for i in range(2, start  +limit):
+    for i in range(2, start + limit):
         sequence.append(sequence[i - 1] + sequence[i - 2])
     return sequence[start:]
 
@@ -153,20 +153,17 @@ def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
-    "Return all prime number betwenn range"
-    result = []
-    resultIndex = []
-    i = 0
-    for val in range(start, limit + 1):
-        if val > 1:
-            for n in range(2, val):
-                if (val % n) == 0:
-                    break
-            else:
-                result.append(val)
-                resultIndex.append(i)
-                i = i + 1
-    return result
+    "Return all primes number between range"
+    result: List[int] = []
+    i = 2
+    while len(result) < (limit + start):
+        for n in range(2, int(i ** 0.5) + 1):
+            if (i % n) == 0:
+                break
+        else:
+            result.append(i)
+        i = i + 1
+    return result[start:]
 
 
 @oeis
