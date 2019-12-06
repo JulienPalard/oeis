@@ -146,18 +146,11 @@ def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
     "Return all primes number between range"
-    result: List[int] = []
-    i = 2
-    while len(result) < (limit + start):
-        for n in range(2, int(i ** 0.5) + 1):
-            if (i % n) == 0:
-                break
-        else:
-            result.append(i)
-        i = i + 1
-    return result[start:]
+    from sympy import sieve
+
+    return list(sieve[start : start + limit])
 
 
 @oeis
