@@ -236,13 +236,15 @@ def A000041(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A001220(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001220(start: int = 0, limit: int = 2) -> Collection[int]:
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
-    sequence = []
-    for i in range(start, limit):
+    sequence: List[int] = []
+    i = 1
+    while len(sequence) < start + limit:
+        i += 1
         if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
             sequence.append(i)
-    return sequence
+    return sequence[start:]
 
 
 def is_prime(n: int) -> bool:
