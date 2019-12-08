@@ -195,7 +195,6 @@ def A000142(start: int = 0, limit: int = 20) -> Collection[int]:
         sequence.append(factorial(i))
         colors.append(np.random.rand())
         x.append(i)
-
     return sequence
 
 
@@ -249,6 +248,39 @@ def A000041(start: int = 0, limit: int = 20) -> Collection[int]:
     "a(n) is the number of partitions of n (the partition numbers)."
     return [len(partitions(n)) for n in range(start, start + limit)]
 
+@oeis
+def A007318(start: int = 0, limit: int = 20) -> Collection[int]:
+
+    def combinaison(x, y):
+      if y == x:
+            return 1
+      elif y == 1: 
+            return x
+      elif y > x:          
+            return 0
+      else:                
+            a = math.factorial(x)
+            b = math.factorial(y)
+            c = math.factorial(x-y)  
+            div = a // (b * c)
+            return div
+    
+    sequence = []
+    
+    for i in range(start, start + limit):
+        x = []
+        for k in range(0,limit):
+            
+            if combinaison(i,k) != 0 :
+                  x.append(combinaison(i,k))
+        sequence.append(x)
+      
+    return sequence
+
+
+@oeis
+def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
+"Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
 
 @oeis
 def A001220(start: int = 0, limit: int = 20) -> Collection[int]:
