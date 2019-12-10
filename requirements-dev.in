@@ -8,3 +8,4 @@ numpy
 pip-tools
 pytest
 tox
+sympy
