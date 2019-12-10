@@ -117,7 +117,7 @@ def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A001462(start: int = 0, limit: int = 20) -> Collection[int]:
-    "Golomb's sequence: F(n) = 1 + F(n - F(n - 1))"
+    "Golomb's sequence: F(n + 1) = 1 + F(n + 1 – F(F(n)))"
     seq = [0] * (n + 1)
     seq[1] = 1
     for i in range(2, n + 1):
