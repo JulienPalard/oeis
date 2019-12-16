@@ -35,7 +35,7 @@ py==1.8.0                 # via pytest, tox
 pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
 pyparsing==2.4.5          # via matplotlib, packaging
-pytest==5.3.1
+pytest==5.3.2
 python-dateutil==2.8.1    # via matplotlib
 pytoml==0.1.21            # via flit, flit-core
 regex==2019.12.9          # via black
@@ -51,4 +51,4 @@ virtualenv==16.7.8        # via tox
 wcwidth==0.1.7            # via pytest
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==42.0.2        # via kiwisolver
+# setuptools
