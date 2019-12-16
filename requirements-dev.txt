@@ -41,7 +41,7 @@ pytoml==0.1.21            # via flit, flit-core
 regex==2019.12.9          # via black
 requests==2.22.0          # via flit
 six==1.13.0               # via cycler, packaging, pip-tools, python-dateutil, tox
-sympy==1.4
+sympy==1.5
 toml==0.10.0              # via black, tox
 tox==3.14.2
 typed-ast==1.4.0          # via black, mypy
