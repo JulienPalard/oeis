@@ -17,7 +17,7 @@ filelock==3.0.12          # via tox
 flake8==3.7.9
 flit-core==2.1.0          # via flit
 flit==2.1.0
-hypothesis==4.53.2
+hypothesis==4.54.0
 idna==2.8                 # via requests
 kiwisolver==1.1.0         # via matplotlib
 matplotlib==3.1.2
@@ -51,4 +51,4 @@ virtualenv==16.7.8        # via tox
 wcwidth==0.1.7            # via pytest
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==42.0.2        # via kiwisolver
+# setuptools
