@@ -17,7 +17,7 @@ filelock==3.0.12          # via tox
 flake8==3.7.9
 flit-core==2.1.0          # via flit
 flit==2.1.0
-hypothesis==4.54.0
+hypothesis==4.55.1
 idna==2.8                 # via requests
 kiwisolver==1.1.0         # via matplotlib
 matplotlib==3.1.2
@@ -41,6 +41,7 @@ pytoml==0.1.21            # via flit, flit-core
 regex==2019.12.9          # via black
 requests==2.22.0          # via flit
 six==1.13.0               # via cycler, packaging, pip-tools, python-dateutil, tox
+sortedcontainers==2.1.0   # via hypothesis
 sympy==1.5
 toml==0.10.0              # via black, tox
 tox==3.14.2
