@@ -25,7 +25,7 @@ mccabe==0.6.1             # via flake8
 more-itertools==8.0.2     # via pytest
 mpmath==1.1.0             # via sympy
 mypy-extensions==0.4.3    # via mypy
-mypy==0.750
+mypy==0.760
 numpy==1.17.4
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
