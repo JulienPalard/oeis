@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--file", action="store_true", help="Generates a png of the sequence's plot"
     )
+
     parser.add_argument(
         "--start", type=int, help="Define the starting point of the sequence.",
     )
@@ -436,6 +437,7 @@ def show_oeis_list() -> None:
             print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
         else:
             print("-", name)
+
 
 
 @oeis
