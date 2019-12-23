@@ -1,6 +1,4 @@
 from oeis import A000142
-from hypothesis import given
-from hypothesis.strategies import integers
 
 
 def test_sequence():
@@ -26,8 +24,3 @@ def test_sequence():
         6402373705728000,
         121645100408832000,
     ]
-
-
-@given(integers(min_value=0, max_value=20), integers(min_value=1, max_value=20))
-def test_sequence_length(x, y):
-    assert len(A000142(x, y)) == y
