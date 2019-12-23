@@ -440,7 +440,7 @@ def show_oeis_list() -> None:
 
 @oeis
 def A000326(start: int = 0, limit: int = 10) -> Collection[int]:
-    """Pentagonal numbers: a(n) = n*(3*n-1)/2:"""
+    """Pentagonal numbers: a(n) = n*(3*n-1)/2: """
     return [n * (3 * n - 1) // 2 for n in range(start, start + limit)]
 
 
