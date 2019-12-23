@@ -170,7 +170,7 @@ def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A023811(start, limit):
+def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
     "Largest metadrome (number with digits in strict ascending order) in base n."
 
     def largest_metadrome(n):
