@@ -1,8 +1,0 @@
-pytest
-hypothesis
-numpy
-matplotlib
-flit
-pip-tools
-black
-flake8

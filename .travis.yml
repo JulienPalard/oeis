@@ -1,10 +1,14 @@
 language: python
-dist: xenial
-python: 3.7
+matrix:
+  include:
+    - python: "3.6"
+      env: TOX_ENV=py36
+    - python: "3.7"
+      env: TOX_ENV=py37
+    - python: "3.8"
+      env: TOX_ENV=py38,black,flake8,mypy
 install:
-  - pip install -r requirements.txt
-  - flit install
+  - pip uninstall -y virtualenv
+  - pip install tox
 script:
-  - pytest
-  - black --diff --check oeis.py
-  - flake8
+  - tox -e $TOX_ENV
