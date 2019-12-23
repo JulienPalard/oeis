@@ -10,4 +10,8 @@ classifiers = ["License :: OSI Approved :: MIT License"]
 requires = [
   "numpy",
   "matplotlib",
+  "sympy",
 ]
+
+[tool.flit.scripts]
+oeis = "oeis:main"
