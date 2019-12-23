@@ -19,7 +19,7 @@ Demo:
 - black
 - travis
 - hypothesis
-- flit
+- flit (use flit install -s)
 
 ## Contributing
 
