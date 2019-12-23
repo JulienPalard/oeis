@@ -131,7 +131,6 @@ def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
     return([len(primefactors(n)) for n in range(start, start + limit)])
 
 
-
 @oeis
 def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
