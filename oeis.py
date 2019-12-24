@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--file", action="store_true", help="Generates a png of the sequence's plot"
     )
+
     parser.add_argument(
         "--start", type=int, help="Define the starting point of the sequence.",
     )
@@ -288,7 +289,7 @@ def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
 def A000004(start: int = 0, limit: int = 20) -> Collection[int]:
     "Return an array of n occurence of 0"
     result = []
-    for i in range(limit):
+    for _i in range(limit):
         result.append(0)
     return result
 
@@ -438,6 +439,12 @@ def show_oeis_list() -> None:
             print("-", name)
 
 
+@oeis
+def A000326(start: int = 0, limit: int = 10) -> Collection[int]:
+    """Pentagonal numbers: a(n) = n*(3*n-1)/2:"""
+    return [n * (3 * n - 1) // 2 for n in range(start, start + limit)]
+
+
 def main() -> None:
     args = parse_args()
     if args.list:
@@ -467,7 +474,7 @@ def main() -> None:
         plt.show()
     elif args.dark_plot:
         colors = []
-        for i in range(len(serie)):
+        for _i in range(len(serie)):
             colors.append(np.random.rand())
         with plt.style.context("dark_background"):
             plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5)
