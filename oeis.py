@@ -8,10 +8,10 @@ from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
-from sympy import primefactors
 from functools import reduce
 
 import numpy as np
+from sympy.ntheory import primefactors
 import matplotlib.pyplot as plt
 
 
@@ -124,6 +124,12 @@ def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
     for n in range(start, start + limit):
         seq.append(2 ** n)
     return seq
+
+
+@oeis
+def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Number of distinct primes dividing n (also called omega(n))."
+    return [len(primefactors(n)) for n in range(start, start + limit)]
 
 
 @oeis
