@@ -4,8 +4,12 @@ import argparse
 from random import choice
 import math
 from math import factorial
+from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
+import os
+from sympy import primefactors
+from functools import reduce
 
 import numpy as np
 from sympy.ntheory import primefactors
@@ -25,20 +29,17 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
-        "--limit",
-        type=int,
-        default=20,
-        help="Define the limit of the sequence, (default: 20)",
+        "--limit", type=int, help="Qty of numbers to print.",
     )
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
     )
     parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
-        "--start",
-        type=int,
-        default=0,
-        help="Define the starting point of the sequence (default: 0)",
+        "--file", action="store_true", help="Generates a png of the sequence's plot"
+    )
+    parser.add_argument(
+        "--start", type=int, help="Define the starting point of the sequence.",
     )
 
     parser.add_argument(
@@ -48,7 +49,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-Serie = Callable[[int, int], Collection[int]]
+Serie = Callable[..., Collection[int]]
 
 
 class OEISRegistry:
@@ -120,7 +121,7 @@ def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
 def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
     "Powers of 2: a(n) = 2^n."
     seq = []
-    for n in range(start, limit):
+    for n in range(start, start + limit):
         seq.append(2 ** n)
     return seq
 
@@ -134,16 +135,14 @@ def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
 @oeis
 def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
-    sequence = []
-    sequence.append(0)
-    sequence.append(1)
-    for i in range(2, limit):
+    sequence = [1, 1]
+    for i in range(2, start + limit):
         sequence.append(sequence[i - 1] + sequence[i - 2])
-    return sequence
+    return sequence[start:]
 
 
 @oeis
-def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
+def A115020(start: int = 0, limit: int = 15) -> Collection[int]:
     "Count backwards from 100 in steps of 7."
     result = []
     for n in range(100, 0, -7):
@@ -154,21 +153,11 @@ def A115020(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A000040(start: int = 0, limit: int = 20) -> Collection[int]:
-    "Return all prime number betwenn range"
-    result = []
-    resultIndex = []
-    i = 0
-    for val in range(start, limit + 1):
-        if val > 1:
-            for n in range(2, val):
-                if (val % n) == 0:
-                    break
-            else:
-                result.append(val)
-                resultIndex.append(i)
-                i = i + 1
-    return result
+def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
+    "Return all primes number between range"
+    from sympy import sieve
+
+    return list(sieve[start : start + limit])
 
 
 @oeis
@@ -254,13 +243,15 @@ def A000041(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A001220(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001220(start: int = 0, limit: int = 2) -> Collection[int]:
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
-    sequence = []
-    for i in range(start, limit):
+    sequence: List[int] = []
+    i = 1
+    while len(sequence) < start + limit:
+        i += 1
         if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
             sequence.append(i)
-    return sequence
+    return sequence[start:]
 
 
 def is_prime(n: int) -> bool:
@@ -282,11 +273,9 @@ def is_prime(n: int) -> bool:
 
 
 @oeis
-def A000203(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
     sequence = []
-    if start == 0:
-        start += 1
     for i in range(start, start + limit):
         divisors = []
         for j in range(int(math.sqrt(i)) + 1):
@@ -328,7 +317,7 @@ def A001246(start: int = 0, limit: int = 20) -> Collection[int]:
         return catalan[n]
 
     result = []
-    for i in range(10):
+    for i in range(start, start + limit):
         result.append((catalan(i)) * catalan(i))
     return result
 
@@ -347,8 +336,8 @@ def A001247(start: int = 0, limit: int = 20) -> Collection[int]:
         return bell[start][0]
 
     result = []
-    for start in range(limit):
-        result.append(bellNumber(start) * bellNumber(start))
+    for i in range(start, start + limit):
+        result.append(bellNumber(i) ** 2)
     return result
 
 
@@ -371,12 +360,9 @@ def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A000005(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000005(start: int = 1, limit: int = 20) -> Collection[int]:
     "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
     sequence = []
-
-    if start == 0:
-        start += 1
 
     for i in range(start, start + limit):
         divisors = 0
@@ -405,25 +391,84 @@ def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Digital sum (i.e., sum of digits) of n; also called digsum(n)."
+    sequence = []
+
+    for n in range(start, start + limit):
+        sequence.append(sum(int(d) for d in str(n)))
+
+    return sequence
+
+
+@oeis
+def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+    """1's-counting sequence: number of 1's in binary
+    expansion of n (or the binary weight of n).
+    """
+
+    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
+
+
+@oeis
+def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
+    with localcontext() as ctx:
+        ctx.prec = start + limit + 4
+        tau = (1 + Decimal(5).sqrt()) / 2
+
+        return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
+
+
+@oeis
+def A007947(start: int = 1, limit: int = 20) -> Collection[int]:
+    """Largest squarefree number dividing n:
+    the squarefree kernel of n, rad(n), radical of n.
+    """
+    sequence = []
+    for i in range(start, start + limit):
+        if i < 2:
+            sequence.append(1)
+        else:
+            n = reduce(lambda x, y: x * y, primefactors(i))
+            sequence.append(n)
+
+    return sequence
+
+
+def show_oeis_list() -> None:
+    for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
+        if function.__doc__:
+            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
+        else:
+            print("-", name)
+
+
 def main() -> None:
     args = parse_args()
     if args.list:
-        for name, function in oeis.series.items():
-            if function.__doc__:
-                print(
-                    "-", name, function.__doc__.replace("\n", " ").replace("     ", " ")
-                )
-            else:
-                print("-", name)
+        show_oeis_list()
         exit(0)
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).__name__
 
+    if not args.sequence:
+        print(f"No sequence given, please see oeis --help, or try oeis --random")
+        exit(1)
+
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
-    serie = oeis.series[args.sequence](args.start, args.limit)
+
+    kwargs = {}
+    if args.start:
+        kwargs["start"] = args.start
+    if args.limit:
+        kwargs["limit"] = args.limit
+    serie = oeis.series[args.sequence](**kwargs)
+
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
@@ -438,6 +483,21 @@ def main() -> None:
         print("#", args.sequence, end="\n\n")
         print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(serie)
+
+    if args.file:
+        if args.plot or args.dark_plot:
+            if not os.path.exists("graph"):
+                print("No graph directory found, creating...")
+                try:
+                    os.mkdir("graph")
+                except OSError:
+                    print("Creation of the graph directory failed")
+                else:
+                    print("Successfully created the graph directory")
+            plt.savefig(f"graph/{args.sequence}.png")
+            print(f"Graph printed in graph/{args.sequence}.png")
+        else:
+            print("You cannot use --file without --plot or --dark_plot")
 
 
 if __name__ == "__main__":
