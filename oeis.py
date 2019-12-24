@@ -157,7 +157,7 @@ def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
 def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
     "Largest metadrome (number with digits in strict ascending order) in base n."
 
-    def largest_metadrome(n):
+    def largest_metadrome(n: int) -> int:
         result = 0
         for i, j in enumerate(range(n - 2, -1, -1), start=1):
             result += i * n ** j
