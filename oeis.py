@@ -185,20 +185,6 @@ def A000010(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
-def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
-    def largest_metadrome(n):
-        result = 0
-        for i, j in enumerate(range(n - 2, -1, -1), start=1):
-            result += i * n ** j
-        return result
-
-    tab = []
-    for n in range(start, start + limit):
-        tab.append(largest_metadrome(n))
-    return tab
-
-
-@oeis
 def A000142(start: int = 0, limit: int = 20) -> Collection[int]:
     """Factorial numbers: n! = 1*2*3*4*...*n
     (order of symmetric group S_n, number of permutations of n letters).
