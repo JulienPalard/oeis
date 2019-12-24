@@ -446,6 +446,19 @@ def A007947(start: int = 1, limit: int = 20) -> Collection[int]:
     return sequence
 
 
+@oeis
+def A002275(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Repunits: (10^n - 1)/9. Often denoted by R_n."
+    sequence = []
+    for i in range(start, limit):
+        if i == 0:
+            sequence.append(0)
+        else:
+            sequence.append(int("1" * i))
+
+    return sequence
+
+
 def show_oeis_list() -> None:
     for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
         if function.__doc__:
