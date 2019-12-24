@@ -161,6 +161,22 @@ def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Largest metadrome (number with digits in strict ascending order) in base n."
+
+    def largest_metadrome(n: int) -> int:
+        result = 0
+        for i, j in enumerate(range(n - 2, -1, -1), start=1):
+            result += i * n ** j
+        return result
+
+    tab = []
+    for n in range(start, start + limit):
+        tab.append(largest_metadrome(n))
+    return tab
+
+
+@oeis
 def A000010(start: int = 0, limit: int = 20) -> Collection[int]:
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
@@ -453,6 +469,7 @@ def A000326(start: int = 0, limit: int = 10) -> Collection[int]:
 
 def main() -> None:
     args = parse_args()
+
     if args.list:
         show_oeis_list()
         exit(0)
