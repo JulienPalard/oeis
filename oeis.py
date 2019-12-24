@@ -8,7 +8,6 @@ from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
-from sympy import primefactors
 from functools import reduce
 
 import numpy as np
