@@ -251,10 +251,12 @@ def A001220(start: int = 0, limit: int = 2) -> Collection[int]:
 def A008587(start: int = 0, limit: int = 20) -> Collection[int]:
     "Multiples of 5."
     sequence = []
-
-    for i in range(start, limit):
-        if i % 5 == 0:
-            sequence.append(i)
+    j = 0
+    while j < limit:
+        if start % 5 == 0:
+            sequence.append(start)
+            j += 1
+        start += 1
     return sequence
 
 
@@ -262,9 +264,12 @@ def A008587(start: int = 0, limit: int = 20) -> Collection[int]:
 def A008589(start: int = 0, limit: int = 20) -> Collection[int]:
     "Multiples of 7."
     sequence = []
-    for i in range(start, limit):
-        if i % 7 == 0:
-            sequence.append(i)
+    j = 0
+    while j < limit:
+        if start % 7 == 0:
+            sequence.append(start)
+            j += 1
+        start += 1
     return sequence
 
 
