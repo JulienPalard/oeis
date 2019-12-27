@@ -17,7 +17,7 @@ filelock==3.0.12          # via tox
 flake8==3.7.9
 flit-core==2.1.0          # via flit
 flit==2.1.0
-hypothesis==4.55.2
+hypothesis==4.56.3
 idna==2.8                 # via requests
 kiwisolver==1.1.0         # via matplotlib
 matplotlib==3.1.2
@@ -25,8 +25,8 @@ mccabe==0.6.1             # via flake8
 more-itertools==8.0.2     # via pytest
 mpmath==1.1.0             # via sympy
 mypy-extensions==0.4.3    # via mypy
-mypy==0.760
-numpy==1.17.4
+mypy==0.761
+numpy==1.18.0
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
 pip-tools==4.3.0

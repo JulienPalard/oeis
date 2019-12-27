@@ -8,10 +8,10 @@ from decimal import Decimal, localcontext
 from typing import Collection, Dict, List, Callable
 import sys
 import os
-from sympy import primefactors
 from functools import reduce
 
 import numpy as np
+from sympy.ntheory import primefactors
 import matplotlib.pyplot as plt
 
 
@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--file", action="store_true", help="Generates a png of the sequence's plot"
     )
+
     parser.add_argument(
         "--start", type=int, help="Define the starting point of the sequence.",
     )
@@ -126,6 +127,12 @@ def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
 
 
 @oeis
+def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Number of distinct primes dividing n (also called omega(n))."
+    return [len(primefactors(n)) for n in range(start, start + limit)]
+
+
+@oeis
 def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
     sequence = [1, 1]
@@ -151,6 +158,22 @@ def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
     from sympy import sieve
 
     return list(sieve[start : start + limit])
+
+
+@oeis
+def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
+    "Largest metadrome (number with digits in strict ascending order) in base n."
+
+    def largest_metadrome(n: int) -> int:
+        result = 0
+        for i, j in enumerate(range(n - 2, -1, -1), start=1):
+            result += i * n ** j
+        return result
+
+    tab = []
+    for n in range(start, start + limit):
+        tab.append(largest_metadrome(n))
+    return tab
 
 
 @oeis
@@ -331,7 +354,7 @@ def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
 def A000004(start: int = 0, limit: int = 20) -> Collection[int]:
     "Return an array of n occurence of 0"
     result = []
-    for i in range(limit):
+    for _i in range(limit):
         result.append(0)
     return result
 
@@ -481,8 +504,15 @@ def show_oeis_list() -> None:
             print("-", name)
 
 
+@oeis
+def A000326(start: int = 0, limit: int = 10) -> Collection[int]:
+    """Pentagonal numbers: a(n) = n*(3*n-1)/2:"""
+    return [n * (3 * n - 1) // 2 for n in range(start, start + limit)]
+
+
 def main() -> None:
     args = parse_args()
+
     if args.list:
         show_oeis_list()
         exit(0)
@@ -510,7 +540,7 @@ def main() -> None:
         plt.show()
     elif args.dark_plot:
         colors = []
-        for i in range(len(serie)):
+        for _i in range(len(serie)):
             colors.append(np.random.rand())
         with plt.style.context("dark_background"):
             plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5)
