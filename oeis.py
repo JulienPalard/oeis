@@ -370,26 +370,27 @@ def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
 
 @oeis
 def A000121(start: int = 0, limit: int = 20) -> Collection[int]:
-    """Number of representations of n as a sum of Fibonacci 
+    """Number of representations of n as a sum of Fibonacci
     numbers (1 is allowed twice as a part).
     """
-    sequence=[]
-    for i in range(0,limit):
-        sequence.append(recursivity(start+i))
+    sequence = []
+    for i in range(0, limit):
+        sequence.append(recursivity(start + i))
     print(sequence)
     return sequence
 
-def recursivity(n:int , recurseHigh:bool = True) -> int:
-    if n == 0: return 1
+
+def recursivity(n: int, recurseHigh: bool = True) -> int:
+    if n == 0:
+        return 1
     a, b = 1, 1
     while a + b <= n:
         a, b = b, a + b
     res = 0
-    if recurseHigh: res += recursivity(n - b)
+    if recurseHigh:
+        res += recursivity(n - b)
     res += recursivity(n - a, n - a < a)
     return res
-
-
 
 
 @oeis
