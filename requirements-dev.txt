@@ -17,7 +17,7 @@ filelock==3.0.12          # via tox
 flake8==3.7.9
 flit-core==2.1.0          # via flit
 flit==2.1.0
-hypothesis==4.56.3
+hypothesis==4.57.1
 idna==2.8                 # via requests
 kiwisolver==1.1.0         # via matplotlib
 matplotlib==3.1.2
