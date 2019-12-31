@@ -302,7 +302,8 @@ def A000110(start: int = 0, limit: int = 20) -> Collection[int]:
     to partition a set of n labeled elements.
     """
     sequence = []
-    for n in range(start, limit):
+
+    for n in range(start, start + limit):
         bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
         bell[0][0] = 1
         for i in range(1, n + 1):

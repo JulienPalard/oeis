@@ -1,0 +1,11 @@
+black
+flake8
+flit
+hypothesis
+matplotlib
+mypy
+numpy
+pip-tools
+pytest
+tox
+sympy
