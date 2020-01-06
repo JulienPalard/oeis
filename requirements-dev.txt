@@ -42,7 +42,7 @@ regex==2019.12.9          # via black
 requests==2.22.0          # via flit
 six==1.13.0               # via cycler, packaging, pip-tools, python-dateutil, tox
 sortedcontainers==2.1.0   # via hypothesis
-sympy==1.5
+sympy==1.5.1
 toml==0.10.0              # via black, tox
 tox==3.14.3
 typed-ast==1.4.0          # via black, mypy
