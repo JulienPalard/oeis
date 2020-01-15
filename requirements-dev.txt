@@ -15,8 +15,8 @@ docutils==0.15.2          # via flit
 entrypoints==0.3          # via flake8
 filelock==3.0.12          # via tox
 flake8==3.7.9
-flit-core==2.1.0          # via flit
-flit==2.1.0
+flit-core==2.2.0          # via flit
+flit==2.2.0
 hypothesis==5.1.1
 idna==2.8                 # via requests
 kiwisolver==1.1.0         # via matplotlib
