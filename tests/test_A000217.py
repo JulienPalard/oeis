@@ -2,7 +2,7 @@ from oeis import A000217
 
 
 def test_sequence():
-    assert A000217() == [
+    assert A000217[:20] == [
         0,
         1,
         3,

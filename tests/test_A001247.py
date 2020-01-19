@@ -2,7 +2,7 @@ from oeis import A001247
 
 
 def test_A001247():
-    assert A001247(limit=10) == [
+    assert A001247[:10] == [
         1,
         1,
         4,

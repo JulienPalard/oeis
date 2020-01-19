@@ -1,18 +1,16 @@
 import pytest
-from inspect import signature
-from oeis import oeis
+from itertools import product
+from oeis import oeis, A001220
 
 
-@pytest.mark.parametrize("serie", oeis.series.values())
-def test_limit(serie):
-    sig = signature(serie)
-    assert len(serie()) == sig.parameters["limit"].default
-
-
-@pytest.mark.parametrize("serie", oeis.series.values())
-def test_start(serie):
-    sig = signature(serie)
-    assert serie()[1:] == serie(
-        start=sig.parameters["start"].default + 1,
-        limit=sig.parameters["limit"].default - 1,
-    )
+@pytest.mark.parametrize(
+    "serie,start,stop",
+    product(oeis.series.values(), list(range(4)), list(range(2, 6))),
+)
+def test_semantics(serie, start, stop):
+    """Test the semantics are the same as the range builtin function.
+    """
+    if serie == A001220:
+        pytest.skip("Way too long to test A001220 with more than 2 elements.")
+    assert len(range(stop)) == len(serie[:stop])
+    assert len(range(start, stop)) == len(serie[start:stop])

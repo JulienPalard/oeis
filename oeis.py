@@ -1,11 +1,12 @@
-"""Tool that return a given sequence
+"""Implementation of a few integer sequences from the OEIS.
 """
 import argparse
 from random import choice
 import math
+from itertools import count
 from math import factorial
 from decimal import Decimal, localcontext
-from typing import Collection, Dict, List, Callable
+from typing import overload, Union, Dict, List, Callable, Iterable, Sequence
 import sys
 import os
 from functools import reduce
@@ -28,7 +29,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
-        "--limit", type=int, help="Qty of numbers to print.",
+        "--stop", type=int, help="End point of the sequence (excluded).", default=20
     )
     parser.add_argument(
         "--plot", action="store_true", help="Print a sweet sweet sweet graph"
@@ -49,41 +50,86 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-Serie = Callable[..., Collection[int]]
+SerieGenerator = Callable[..., Iterable[int]]
+
+
+class IntegerSequence:
+    def __init__(self, source: SerieGenerator, name: str) -> None:
+        self.name = name
+        self._source = source
+        self._source_iterator = iter(source())
+        self._known: List[int] = []
+
+    def _extend(self, n: int) -> None:
+        """Grow the serie.
+        """
+        while len(self._known) < n:
+            try:
+                self._known.append(next(self._source_iterator))
+            except StopIteration:
+                break
+
+    @overload
+    def __getitem__(self, key: int) -> int:
+        ...
+
+    @overload
+    def __getitem__(self, key: slice) -> Sequence[int]:
+        ...
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
+        if isinstance(key, slice):
+            if key.start is not None and key.start < 0:
+                raise ValueError("Expected a non-negative indice")
+            else:
+                self._extend(key.stop)
+                return self._known[key.start : key.stop]
+        else:
+            if key < 0:
+                raise ValueError("Expected a non-negative indice")
+            try:
+                return next(iter(self._source(start=key)))
+            except TypeError:
+                pass
+            self._extend(key + 1)
+            return self._known[key]
 
 
 class OEISRegistry:
     def __init__(self) -> None:
-        self.series: Dict[str, Serie] = {}
+        self.series: Dict[str, IntegerSequence] = {}
 
-    def __call__(self, function: Serie) -> Serie:
-        self.series[function.__name__] = function
-        return function
+    def __getitem__(self, key: str) -> IntegerSequence:
+        return self.series[key]
+
+    def __call__(self, function: SerieGenerator) -> IntegerSequence:
+        wrapped = IntegerSequence(function, name=function.__name__)
+        self.series[function.__name__] = wrapped
+        return wrapped
 
 
 oeis = OEISRegistry()
 
 
 @oeis
-def A181391(start: int = 0, limit: int = 20) -> Collection[int]:
-    """Van Eck's sequence: For n >= 1,
-    if there exists an m < n such that a(m) = a(n),
-    take the largest such m and set a(n+1) = n-m;
-    otherwise a(n+1) = 0. Start with a(1)=0.
+def A181391() -> Iterable[int]:
+    """Van Eck's sequence:
+    For n >= 1, if there exists an m < n such that a(m) = a(n), take
+    the largest such m and set a(n+1) = n-m; otherwise a(n+1) =
+    0. Start with a(1)=0.
     """
-    sequence = [0]
     last_pos: Dict[int, int] = {}
-
-    for i in range(start + limit):
-        new_value = i - last_pos.get(sequence[i], i)
-        sequence.append(new_value)
-        last_pos[sequence[i]] = i
-
-    return sequence[start : start + limit]
+    yield 0
+    cur_value = 0
+    for i in count():
+        next_value = i - last_pos.get(cur_value, i)
+        last_pos[cur_value] = i
+        yield next_value
+        cur_value = next_value
 
 
 @oeis
-def A006577(start: int = 0, limit: int = 20) -> Collection[int]:
+def A006577() -> Iterable[int]:
     """Number of halving and tripling steps to reach 1 in '3x+1' problem,
     or -1 if 1 is never reached.
     """
@@ -102,66 +148,55 @@ def A006577(start: int = 0, limit: int = 20) -> Collection[int]:
                 break
         return x
 
-    return [steps(n) for n in range(start, start + limit)]
+    return (steps(n) for n in count())
 
 
 @oeis
-def A000290(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000290() -> Iterable[int]:
     "The squares: a(n) = n^2."
-    sequence = []
-    x = []
-    for i in range(start, start + limit):
-        sequence.append(i * i)
-        x.append(i)
-
-    return sequence
+    return (n ** 2 for n in count())
 
 
 @oeis
-def A000079(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000079() -> Iterable[int]:
     "Powers of 2: a(n) = 2^n."
-    seq = []
-    for n in range(start, start + limit):
-        seq.append(2 ** n)
-    return seq
+    return (2 ** n for n in count())
 
 
 @oeis
-def A001221(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001221() -> Iterable[int]:
     "Number of distinct primes dividing n (also called omega(n))."
-    return [len(primefactors(n)) for n in range(start, start + limit)]
+    return (len(primefactors(n)) for n in count(1))
 
 
 @oeis
-def A000045(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000045() -> Iterable[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
-    sequence = [1, 1]
-    for i in range(2, start + limit):
-        sequence.append(sequence[i - 1] + sequence[i - 2])
-    return sequence[start:]
+    a, b = (1, 1)
+    yield 1
+    while True:
+        a, b = b, a + b
+        yield a
 
 
 @oeis
-def A115020(start: int = 0, limit: int = 15) -> Collection[int]:
+def A115020() -> Iterable[int]:
     "Count backwards from 100 in steps of 7."
-    result = []
-    for n in range(100, 0, -7):
-        if n >= 0:
-            result.append(n)
-
-    return result[start : start + limit]
+    return [n for n in range(100, 0, -7)]
 
 
 @oeis
-def A000040(start: int = 1, limit: int = 20) -> Collection[int]:
-    "Return all primes number between range"
+def A000040() -> Iterable[int]:
+    """Primes number.
+    """
     from sympy import sieve
 
-    return list(sieve[start : start + limit])
+    for i in count(1):
+        yield sieve[i]
 
 
 @oeis
-def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
+def A023811() -> Iterable[int]:
     "Largest metadrome (number with digits in strict ascending order) in base n."
 
     def largest_metadrome(n: int) -> int:
@@ -170,14 +205,12 @@ def A023811(start: int = 0, limit: int = 20) -> Collection[int]:
             result += i * n ** j
         return result
 
-    tab = []
-    for n in range(start, start + limit):
-        tab.append(largest_metadrome(n))
-    return tab
+    for n in count():
+        yield largest_metadrome(n)
 
 
 @oeis
-def A000010(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000010() -> Iterable[int]:
     "Euler totient function phi(n): count numbers <= n and prime to n."
 
     def phi(n: int) -> int:
@@ -188,52 +221,31 @@ def A000010(start: int = 0, limit: int = 20) -> Collection[int]:
                 numbers.append(i)
         return len(numbers)
 
-    return [phi(x) for x in range(start, start + limit)]
+    return (phi(x) for x in count())
 
 
 @oeis
-def A000142(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000142() -> Iterable[int]:
     """Factorial numbers: n! = 1*2*3*4*...*n
     (order of symmetric group S_n, number of permutations of n letters).
     """
-    sequence = []
-    colors = []
-    x = []
-    for i in range(start, start + limit):
-        sequence.append(factorial(i))
-        colors.append(np.random.rand())
-        x.append(i)
-
-    return sequence
+    return (factorial(i) for i in count())
 
 
 @oeis
-def A000217(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000217() -> Iterable[int]:
     "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
-    sequence = []
-    x = []
-    for i in range(start, start + limit):
+    for i in count():
         if i + 1 < 2:
-            sequence.append(0)
+            yield 0
         else:
-            sequence.append(factorial(i + 1) // factorial(2) // factorial((i + 1) - 2))
-
-        x.append(i)
-
-    return sequence
+            yield factorial(i + 1) // factorial(2) // factorial((i + 1) - 2)
 
 
 @oeis
-def A008592(start: int = 0, limit: int = 20) -> Collection[int]:
+def A008592() -> Iterable[int]:
     "Multiples of 10: a(n) = 10 * n."
-    end = limit + start
-    my_list = []
-    i = 0
-    print("A008592 sequence:")
-    while i < end:
-        my_list.append(i * 10)
-        i += 1
-    return my_list[start:end]
+    return (10 * n for n in count())
 
 
 def partitions(n: int) -> List[List[int]]:
@@ -253,90 +265,54 @@ def partitions(n: int) -> List[List[int]]:
 
 
 @oeis
-def A000041(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000041() -> Iterable[int]:
     "a(n) is the number of partitions of n (the partition numbers)."
-    return [len(partitions(n)) for n in range(start, start + limit)]
+    return (len(partitions(n)) for n in count())
 
 
 @oeis
-def A001220(start: int = 0, limit: int = 2) -> Collection[int]:
+def A001220() -> Iterable[int]:
     "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
-    sequence: List[int] = []
-    i = 1
-    while len(sequence) < start + limit:
-        i += 1
-        if is_prime(i) and (2 ** (i - 1) - 1) % (i ** 2) == 0:
-            sequence.append(i)
-    return sequence[start:]
+    yield 1093
+    yield 3511
+    # No other has been found yet...
+    # for i in count(3512):
+    #     if i in sieve and (2 ** (i - 1) - 1) % (i ** 2) == 0:
+    #         yield i
 
 
 @oeis
-def A008587(start: int = 0, limit: int = 20) -> Collection[int]:
+def A008587(start: int = 0) -> Iterable[int]:
     "Multiples of 5."
-    sequence = []
-    j = 0
-    while j < limit:
-        if start % 5 == 0:
-            sequence.append(start)
-            j += 1
-        start += 1
-    return sequence
+    return (n * 5 for n in count(start))
 
 
 @oeis
-def A008589(start: int = 0, limit: int = 20) -> Collection[int]:
+def A008589(start: int = 0) -> Iterable[int]:
     "Multiples of 7."
-    sequence = []
-    j = 0
-    while j < limit:
-        if start % 7 == 0:
-            sequence.append(start)
-            j += 1
-        start += 1
-    return sequence
+    return (n * 7 for n in count(start))
 
 
 @oeis
-def A000110(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000110() -> Iterable[int]:
     """Bell or exponential numbers: number of ways
     to partition a set of n labeled elements.
     """
-    sequence = []
 
-    for n in range(start, start + limit):
+    for n in count():
         bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
         bell[0][0] = 1
         for i in range(1, n + 1):
             bell[i][0] = bell[i - 1][i - 1]
             for j in range(1, i + 1):
                 bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
-        sequence.append(bell[n][0])
-    return sequence
-
-
-def is_prime(n: int) -> bool:
-    if n % 2 == 0:
-        return False
-    elif n % 3 == 0:
-        return False
-    elif n % 5 == 0:
-        return False
-    elif n % 7 == 0:
-        return False
-    elif n % 9 == 0:
-        return False
-    else:
-        for i in range(2, math.floor(math.sqrt(n))):
-            if n % i == 0:
-                return False
-        return True
+        yield bell[n][0]
 
 
 @oeis
-def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
+def A000203() -> Iterable[int]:
     "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
-    sequence = []
-    for i in range(start, start + limit):
+    for i in count(1):
         divisors = []
         for j in range(int(math.sqrt(i)) + 1):
             if j == 0:
@@ -347,21 +323,18 @@ def A000203(start: int = 1, limit: int = 20) -> Collection[int]:
                 else:
                     divisors.append(j)
                     divisors.append(i // j)
-        sequence.append(int(sum(divisors)))
-    return sequence
+        yield int(sum(divisors))
 
 
 @oeis
-def A000004(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000004() -> Iterable[int]:
     "Return an array of n occurence of 0"
-    result = []
-    for _i in range(limit):
-        result.append(0)
-    return result
+    while True:
+        yield 0
 
 
 @oeis
-def A001246(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001246() -> Iterable[int]:
     "Squares of Catalan numbers"
 
     def catalan(n: int) -> int:
@@ -376,14 +349,12 @@ def A001246(start: int = 0, limit: int = 20) -> Collection[int]:
                 catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
         return catalan[n]
 
-    result = []
-    for i in range(start, start + limit):
-        result.append((catalan(i)) * catalan(i))
-    return result
+    for i in count():
+        yield catalan(i) ** 2
 
 
 @oeis
-def A001247(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001247() -> Iterable[int]:
     "Squares of Bell number"
 
     def bellNumber(start: int) -> int:
@@ -395,36 +366,31 @@ def A001247(start: int = 0, limit: int = 20) -> Collection[int]:
                 bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
         return bell[start][0]
 
-    result = []
-    for i in range(start, start + limit):
-        result.append(bellNumber(i) ** 2)
-    return result
+    for i in count():
+        yield bellNumber(i) ** 2
 
 
 @oeis
-def A133058(start: int = 0, limit: int = 20) -> Collection[int]:
+def A133058() -> Iterable[int]:
     """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
-    sequence = []
-
-    for i in range(0, start + limit):
+    last = 1
+    for i in count():
         if i == 0 or i == 1:
-            sequence.append(1)
-        elif (math.gcd(i, sequence[i - 1])) == 1:
-            sequence.append(sequence[i - 1] + i + 1)
+            yield 1
+        elif (math.gcd(i, last)) == 1:
+            last = last + i + 1
+            yield last
         else:
-            sequence.append(int(sequence[i - 1] / math.gcd(sequence[i - 1], i)))
-
-    return sequence[start:]
+            last = int(last / math.gcd(last, i))
+            yield last
 
 
 @oeis
-def A000005(start: int = 1, limit: int = 20) -> Collection[int]:
+def A000005() -> Iterable[int]:
     "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
-    sequence = []
-
-    for i in range(start, start + limit):
+    for i in count(1):
         divisors = 0
         for j in range(int(math.sqrt(i)) + 1):
             if j == 0:
@@ -434,67 +400,56 @@ def A000005(start: int = 1, limit: int = 20) -> Collection[int]:
                     divisors += 1
                 else:
                     divisors += 2
-        sequence.append(divisors)
-    return sequence
+        yield divisors
 
 
 @oeis
-def A000108(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000108() -> Iterable[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
     Also called Segner numbers.
     """
-    sequence = []
-    for i in range(start, start + limit):
+    for i in count():
         r = (factorial(2 * i) // factorial(i) // factorial(2 * i - i)) / (i + 1)
-        sequence.append(int(r))
-
-    return sequence
+        yield int(r)
 
 
 @oeis
-def A007953(start: int = 0, limit: int = 20) -> Collection[int]:
+def A007953() -> Iterable[int]:
     "Digital sum (i.e., sum of digits) of n; also called digsum(n)."
-    sequence = []
-
-    for n in range(start, start + limit):
-        sequence.append(sum(int(d) for d in str(n)))
-
-    return sequence
+    for n in count():
+        yield sum(int(d) for d in str(n))
 
 
 @oeis
-def A000120(start: int = 0, limit: int = 20) -> Collection[int]:
+def A000120() -> Iterable[int]:
     """1's-counting sequence: number of 1's in binary
     expansion of n (or the binary weight of n).
     """
 
-    return ["{:b}".format(n).count("1") for n in range(start, start + limit)]
+    return ("{:b}".format(n).count("1") for n in count())
 
 
 @oeis
-def A001622(start: int = 0, limit: int = 20) -> Collection[int]:
+def A001622() -> Iterable[int]:
     "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
     with localcontext() as ctx:
-        ctx.prec = start + limit + 4
+        ctx.prec = 99999
         tau = (1 + Decimal(5).sqrt()) / 2
-
-        return [(math.floor(tau * 10 ** n) % 10) for n in range(start, start + limit)]
+        for n in count():
+            yield math.floor(tau * 10 ** n) % 10
 
 
 @oeis
-def A007947(start: int = 1, limit: int = 20) -> Collection[int]:
+def A007947(start: int = 0) -> Iterable[int]:
     """Largest squarefree number dividing n:
     the squarefree kernel of n, rad(n), radical of n.
     """
-    sequence = []
-    for i in range(start, start + limit):
+    start += 1
+    for i in count(start):
         if i < 2:
-            sequence.append(1)
+            yield 1
         else:
-            n = reduce(lambda x, y: x * y, primefactors(i))
-            sequence.append(n)
-
-    return sequence
+            yield reduce(lambda x, y: x * y, primefactors(i))
 
 
 def show_oeis_list() -> None:
@@ -506,9 +461,9 @@ def show_oeis_list() -> None:
 
 
 @oeis
-def A000326(start: int = 0, limit: int = 10) -> Collection[int]:
+def A000326() -> Iterable[int]:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2:"""
-    return [n * (3 * n - 1) // 2 for n in range(start, start + limit)]
+    return (n * (3 * n - 1) // 2 for n in count())
 
 
 def main() -> None:
@@ -519,7 +474,7 @@ def main() -> None:
         exit(0)
 
     if args.random:
-        args.sequence = choice(list(oeis.series.values())).__name__
+        args.sequence = choice(list(oeis.series.values())).name
 
     if not args.sequence:
         print(f"No sequence given, please see oeis --help, or try oeis --random")
@@ -529,12 +484,7 @@ def main() -> None:
         print("Unimplemented serie", file=sys.stderr)
         exit(1)
 
-    kwargs = {}
-    if args.start:
-        kwargs["start"] = args.start
-    if args.limit:
-        kwargs["limit"] = args.limit
-    serie = oeis.series[args.sequence](**kwargs)
+    serie = oeis.series[args.sequence][args.start : args.stop]
 
     if args.plot:
         plt.scatter(list(range(len(serie))), serie)

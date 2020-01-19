@@ -2,11 +2,13 @@
 
 ## Project
 
-Implement some [OEIS](https://oeis.org) sequences.
+This project is the implementation of a few sequences from the [OEIS](https://oeis.org).
+
 
 ## Usage
 
-After installing the project in a venv using `flit install -s`, use the `oeis` script:
+After installing the project in a venv using `flit install -s`, use
+the `oeis` script:
 
 ```
 $ oeis --random
@@ -20,26 +22,40 @@ Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1.
 Learn more by running `oeis --help`.
 
 
-## Side goals
+## Usage as a library
 
-Demo:
-- argparse
-- pytest
-- pylint
-- tox
-- mypy
-- flake8
-- bandit
-- flake8-bugbear
-- black
-- travis
-- hypothesis
-- flit (use flit install -s)
+You can import sequences individually:
+
+```python3
+>>> from oeis import A000045
+>>> print(*A000045[:10], sep=", ")
+1, 1, 2, 3, 5, 8, 13, 21, 34, 55
+
+```
+
+Or as a dict:
+
+```python3
+>>> from oeis import oeis
+>>> print(*oeis["A000045"][:10], sep=", ")
+1, 1, 2, 3, 5, 8, 13, 21, 34, 55
+
+```
+
+All sequences can be accessed as normal Python sequences:
+
+```python3
+>>> A000045[0] == A000045[1]
+True
+>>> A000045[100:101]
+[573147844013817084101]
+
+```
 
 
 ## Contributing
 
-We are using coding the [black]((https://github.com/psf/black) coding
+We are using the [black]((https://github.com/psf/black) coding
 style, and tox to run some tests, so after creating a venv, and `pip
 install requirements-dev.txt`, run `tox` or `tox -p auto` (parallel), it
 should look like this:

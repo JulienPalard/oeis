@@ -64,4 +64,4 @@ KNOWN_PRIMES = [
 
 
 def test_prime():
-    assert A000040(limit=len(KNOWN_PRIMES)) == KNOWN_PRIMES
+    assert A000040[: len(KNOWN_PRIMES)] == KNOWN_PRIMES
