@@ -6,7 +6,7 @@ matrix:
     - python: "3.7"
       env: TOX_ENV=py37
     - python: "3.8"
-      env: TOX_ENV=py38,black,flake8,mypy
+      env: TOX_ENV=py38,flake8,mypy,black,pylint
 install:
   - pip uninstall -y virtualenv
   - pip install tox
