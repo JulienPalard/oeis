@@ -6,7 +6,7 @@ import math
 from itertools import count
 from math import factorial
 from decimal import Decimal, localcontext
-from typing import overload, Union, Dict, List, Callable, Iterable, Sequence
+from typing import overload, Union, Dict, List, Callable, Iterable, Sequence, Optional
 import sys
 import os
 from functools import reduce
@@ -54,8 +54,9 @@ SerieGenerator = Callable[..., Iterable[int]]
 
 
 class IntegerSequence:
-    def __init__(self, source: SerieGenerator, name: str) -> None:
+    def __init__(self, source: SerieGenerator, name: str, doc: Optional[str]) -> None:
         self.name = name
+        self.doc = doc
         self._source = source
         self._source_iterator = iter(source())
         self._known: List[int] = []
@@ -103,7 +104,9 @@ class OEISRegistry:
         return self.series[key]
 
     def __call__(self, function: SerieGenerator) -> IntegerSequence:
-        wrapped = IntegerSequence(function, name=function.__name__)
+        wrapped = IntegerSequence(
+            function, name=function.__name__, doc=function.__doc__
+        )
         self.series[function.__name__] = wrapped
         return wrapped
 
@@ -453,9 +456,9 @@ def A007947(start: int = 0) -> Iterable[int]:
 
 
 def show_oeis_list() -> None:
-    for name, function in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
-        if function.__doc__:
-            print("-", name, function.__doc__.replace("\n", " ").replace("     ", " "))
+    for name, sequence in sorted(oeis.series.items(), key=lambda kvp: kvp[0]):
+        if sequence.doc:
+            print("-", name, sequence.doc.replace("\n", " ").replace("     ", " "))
         else:
             print("-", name)
 
@@ -498,7 +501,7 @@ def main() -> None:
         plt.show()
     else:
         print("#", args.sequence, end="\n\n")
-        print(oeis.series[args.sequence].__doc__, end="\n\n")
+        print(oeis.series[args.sequence].doc, end="\n\n")
         print(serie)
 
     if args.file:
