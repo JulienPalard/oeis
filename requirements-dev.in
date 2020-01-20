@@ -3,8 +3,9 @@ flake8
 hypothesis
 matplotlib
 mypy
-numpy
 pip-tools
 pytest
 tox
 sympy
+pylint
+isort
