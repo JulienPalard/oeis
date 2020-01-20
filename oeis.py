@@ -256,26 +256,19 @@ def A008592() -> Iterable[int]:
     return (10 * n for n in count())
 
 
-def partitions(n: int) -> List[List[int]]:
-    if n == 0:
-        return [[0]]
-    if n == 1:
-        return [[1]]
-
-    partition = [[n]]
-
-    for i in range(1, n):
-        for p in partitions(n - i):
-            if [i] + p == sorted([i] + p):
-                partition.append([i] + p)
-
-    return partition
-
-
 @oeis
 def A000041() -> Iterable[int]:
     "a(n) is the number of partitions of n (the partition numbers)."
-    return (len(partitions(n)) for n in count())
+
+    def partitions(n):
+        parts = [0] * (n + 1)
+        parts[0] = 1
+        for value in range(1, n + 1):
+            for j in range(value, n + 1):
+                parts[j] += parts[j - value]
+        return parts[n]
+
+    return (partitions(n) for n in count())
 
 
 @oeis
