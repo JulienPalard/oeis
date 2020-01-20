@@ -26,6 +26,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
+        "--start", type=int, help="Define the starting point of the sequence.",
+    )
+    parser.add_argument(
         "--stop", type=int, help="End point of the sequence (excluded).", default=20
     )
     parser.add_argument(
@@ -35,15 +38,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--file", action="store_true", help="Generates a png of the sequence's plot"
     )
-
-    parser.add_argument(
-        "--start", type=int, help="Define the starting point of the sequence.",
-    )
-
     parser.add_argument(
         "--dark-plot", action="store_true", help="Print a dark dark dark graph"
     )
-
     return parser.parse_args()
 
 
