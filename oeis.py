@@ -11,12 +11,15 @@ import sys
 import os
 from functools import reduce
 
+from sympy import sieve
 import numpy as np
 from sympy.ntheory import primefactors
 import matplotlib.pyplot as plt
 
 
 def parse_args() -> argparse.Namespace:
+    """Parses command line arguments.
+    """
     parser = argparse.ArgumentParser(description="Print a sweet sequence")
     parser.add_argument(
         "sequence",
@@ -48,12 +51,20 @@ SerieGenerator = Callable[..., Iterable[int]]
 
 
 class IntegerSequence:
+    """This class holds information for a integer sequence like: Its name,
+    its description, a function to generate its values, and provide a
+    nice cached access to it.
+    """
+
     def __init__(self, source: SerieGenerator, name: str, doc: Optional[str]) -> None:
         self.name = name
         self.doc = doc
         self._source = source
         self._source_iterator = iter(source())
         self._known: List[int] = []
+
+    def __iter__(self):
+        return self._source()
 
     def _extend(self, n: int) -> None:
         """Grow the serie.
@@ -76,21 +87,23 @@ class IntegerSequence:
         if isinstance(key, slice):
             if key.start is not None and key.start < 0:
                 raise ValueError("Expected a non-negative indice")
-            else:
-                self._extend(key.stop)
-                return self._known[key.start : key.stop]
-        else:
-            if key < 0:
-                raise ValueError("Expected a non-negative indice")
-            try:
-                return next(iter(self._source(start=key)))
-            except TypeError:
-                pass
-            self._extend(key + 1)
-            return self._known[key]
+            self._extend(key.stop)
+            return self._known[key.start : key.stop]
+        if key < 0:
+            raise ValueError("Expected a non-negative indice")
+        try:
+            return next(iter(self._source(start=key)))
+        except TypeError:
+            pass
+        self._extend(key + 1)
+        return self._known[key]
 
 
 class OEISRegistry:
+    """A dict-like object to store OEIS sequences, used as a decorator,
+    wrapping simple generators to full IntegerSequence instances.
+    """
+
     def __init__(self) -> None:
         self.series: Dict[str, IntegerSequence] = {}
 
@@ -179,15 +192,13 @@ def A000045() -> Iterable[int]:
 @oeis
 def A115020() -> Iterable[int]:
     "Count backwards from 100 in steps of 7."
-    return [n for n in range(100, 0, -7)]
+    return range(100, 0, -7)
 
 
 @oeis
 def A000040() -> Iterable[int]:
     """Primes number.
     """
-    from sympy import sieve
-
     for i in count(1):
         yield sieve[i]
 
@@ -468,18 +479,18 @@ def main() -> None:
 
     if args.list:
         show_oeis_list()
-        exit(0)
+        sys.exit(0)
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).name
 
     if not args.sequence:
         print(f"No sequence given, please see oeis --help, or try oeis --random")
-        exit(1)
+        sys.exit(1)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
-        exit(1)
+        sys.exit(1)
 
     serie = oeis.series[args.sequence][args.start : args.stop]
 
@@ -496,7 +507,7 @@ def main() -> None:
     else:
         print("#", args.sequence, end="\n\n")
         print(oeis.series[args.sequence].doc, end="\n\n")
-        print(serie)
+        print(*serie, sep=", ")
 
     if args.file:
         if args.plot or args.dark_plot:
