@@ -23,7 +23,7 @@ more-itertools==8.0.2     # via pytest
 mpmath==1.1.0             # via sympy
 mypy-extensions==0.4.3    # via mypy
 mypy==0.761
-numpy==1.18.1
+numpy==1.18.1             # via matplotlib
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
 pip-tools==4.3.0
@@ -33,7 +33,7 @@ pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
 pylint==2.4.4
 pyparsing==2.4.5          # via matplotlib, packaging
-pytest==5.3.2
+pytest==5.3.4
 python-dateutil==2.8.1    # via matplotlib
 regex==2019.12.9          # via black
 six==1.13.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox
