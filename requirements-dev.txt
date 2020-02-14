@@ -23,7 +23,7 @@ more-itertools==8.0.2     # via pytest
 mpmath==1.1.0             # via sympy
 mypy-extensions==0.4.3    # via mypy
 mypy==0.761
-numpy==1.18.1
+numpy==1.18.1             # via matplotlib
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
 pip-tools==4.3.0
@@ -36,11 +36,11 @@ pyparsing==2.4.5          # via matplotlib, packaging
 pytest==5.3.2
 python-dateutil==2.8.1    # via matplotlib
 regex==2019.12.9          # via black
-six==1.13.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox
+six==1.14.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox
 sortedcontainers==2.1.0   # via hypothesis
 sympy==1.5.1
 toml==0.10.0              # via black, tox
-tox==3.14.3
+tox==3.14.4
 typed-ast==1.4.0          # via black, mypy
 typing-extensions==3.7.4.1  # via mypy
 virtualenv==16.7.8        # via tox
