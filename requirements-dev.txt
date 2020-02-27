@@ -23,10 +23,10 @@ more-itertools==8.0.2     # via pytest
 mpmath==1.1.0             # via sympy
 mypy-extensions==0.4.3    # via mypy
 mypy==0.761
-numpy==1.18.1
+numpy==1.18.1             # via matplotlib
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
-pip-tools==4.3.0
+pip-tools==4.5.1
 pluggy==0.13.1            # via pytest, tox
 py==1.8.0                 # via pytest, tox
 pycodestyle==2.5.0        # via flake8
