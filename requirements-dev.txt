@@ -26,7 +26,7 @@ mypy==0.770               # via -r requirements-dev.in
 numpy==1.18.1             # via matplotlib
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
-pip-tools==4.3.0          # via -r requirements-dev.in
+pip-tools==5.1.2          # via -r requirements-dev.in
 pluggy==0.13.1            # via pytest, tox
 py==1.8.0                 # via pytest, tox
 pycodestyle==2.5.0        # via flake8
@@ -48,4 +48,5 @@ wcwidth==0.1.7            # via pytest
 wrapt==1.11.2             # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
+# pip
 # setuptools
