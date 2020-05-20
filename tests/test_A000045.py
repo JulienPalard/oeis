@@ -10,4 +10,10 @@ def test_A000045(i):
 
 
 def test_A000045_start():
-    assert A000045[:2] == [1, 1]
+    """I personally prefer fib to start with (1, 1) as it's originally a
+    study of rabbit population, which cannot bootstrap itself with 0
+    rabbits.
+
+    But the OEIS is explicit about A000045 starting by 0: "with F(0) = 0".
+    """
+    assert A000045[:2] == [0, 1]

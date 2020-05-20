@@ -201,8 +201,8 @@ def A001221() -> Iterator[int]:
 @oeis
 def A000045() -> Iterator[int]:
     "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
-    a, b = (1, 1)
-    yield 1
+    a, b = (0, 1)
+    yield 0
     while True:
         a, b = b, a + b
         yield a
@@ -496,7 +496,7 @@ def main() -> None:  # pylint: disable=too-many-branches
         args.sequence = choice(list(oeis.series.values())).name
 
     if not args.sequence:
-        print(f"No sequence given, please see oeis --help, or try oeis --random")
+        print("No sequence given, please see oeis --help, or try oeis --random")
         sys.exit(1)
 
     if args.sequence not in oeis.series:
