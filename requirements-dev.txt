@@ -33,7 +33,7 @@ pycodestyle==2.5.0        # via flake8
 pyflakes==2.1.1           # via flake8
 pylint==2.5.2             # via -r requirements-dev.in
 pyparsing==2.4.5          # via matplotlib, packaging
-pytest==5.3.2             # via -r requirements-dev.in
+pytest==5.4.2             # via -r requirements-dev.in
 python-dateutil==2.8.1    # via matplotlib
 regex==2019.12.9          # via black
 six==1.13.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox
