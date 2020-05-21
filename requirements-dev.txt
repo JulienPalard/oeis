@@ -13,7 +13,7 @@ cycler==0.10.0            # via matplotlib
 entrypoints==0.3          # via flake8
 filelock==3.0.12          # via tox
 flake8==3.7.9             # via -r requirements-dev.in
-hypothesis==5.1.1         # via -r requirements-dev.in
+hypothesis==5.15.0        # via -r requirements-dev.in
 isort==4.3.21             # via -r requirements-dev.in, pylint
 kiwisolver==1.1.0         # via matplotlib
 lazy-object-proxy==1.4.3  # via astroid
