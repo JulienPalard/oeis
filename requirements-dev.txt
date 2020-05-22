@@ -10,9 +10,8 @@ attrs==19.3.0             # via black, hypothesis, pytest
 black==19.10b0            # via -r requirements-dev.in
 click==7.0                # via black, pip-tools
 cycler==0.10.0            # via matplotlib
-entrypoints==0.3          # via flake8
 filelock==3.0.12          # via tox
-flake8==3.7.9             # via -r requirements-dev.in
+flake8==3.8.1             # via -r requirements-dev.in
 hypothesis==5.1.1         # via -r requirements-dev.in
 isort==4.3.21             # via -r requirements-dev.in, pylint
 kiwisolver==1.1.0         # via matplotlib
@@ -29,8 +28,8 @@ pathspec==0.6.0           # via black
 pip-tools==5.1.2          # via -r requirements-dev.in
 pluggy==0.13.1            # via pytest, tox
 py==1.8.0                 # via pytest, tox
-pycodestyle==2.5.0        # via flake8
-pyflakes==2.1.1           # via flake8
+pycodestyle==2.6.0        # via flake8
+pyflakes==2.2.0           # via flake8
 pylint==2.5.2             # via -r requirements-dev.in
 pyparsing==2.4.5          # via matplotlib, packaging
 pytest==5.4.2             # via -r requirements-dev.in
