@@ -25,7 +25,7 @@ mypy==0.770               # via -r requirements-dev.in
 numpy==1.18.1             # via matplotlib
 packaging==19.2           # via pytest, tox
 pathspec==0.6.0           # via black
-pip-tools==5.1.2          # via -r requirements-dev.in
+pip-tools==5.2.0          # via -r requirements-dev.in
 pluggy==0.13.1            # via pytest, tox
 py==1.8.0                 # via pytest, tox
 pycodestyle==2.6.0        # via flake8
