@@ -12,7 +12,7 @@ click==7.0                # via black, pip-tools
 cycler==0.10.0            # via matplotlib
 filelock==3.0.12          # via tox
 flake8==3.8.1             # via -r requirements-dev.in
-hypothesis==5.1.1         # via -r requirements-dev.in
+hypothesis==5.16.1        # via -r requirements-dev.in
 isort==4.3.21             # via -r requirements-dev.in, pylint
 kiwisolver==1.1.0         # via matplotlib
 lazy-object-proxy==1.4.3  # via astroid
