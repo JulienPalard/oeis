@@ -5,6 +5,7 @@ matplotlib
 mypy
 pip-tools
 pytest
+pytest-cov
 tox
 sympy
 pylint

@@ -9,6 +9,7 @@ astroid==2.4.2            # via pylint
 attrs==19.3.0             # via black, hypothesis, pytest
 black==19.10b0            # via -r requirements-dev.in
 click==7.1.2              # via black, pip-tools
+coverage==5.1             # via pytest-cov
 cycler==0.10.0            # via matplotlib
 distlib==0.3.0            # via virtualenv
 filelock==3.0.12          # via tox, virtualenv
@@ -33,7 +34,8 @@ pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
 pylint==2.5.3             # via -r requirements-dev.in
 pyparsing==2.4.7          # via matplotlib, packaging
-pytest==5.4.3             # via -r requirements-dev.in
+pytest-cov==2.10.0        # via -r requirements-dev.in
+pytest==5.4.3             # via -r requirements-dev.in, pytest-cov
 python-dateutil==2.8.1    # via matplotlib
 regex==2020.6.8           # via black
 six==1.15.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox, virtualenv
