@@ -15,6 +15,7 @@ distlib==0.3.0            # via virtualenv
 filelock==3.0.12          # via tox, virtualenv
 flake8==3.8.3             # via -r requirements-dev.in
 hypothesis==5.18.0        # via -r requirements-dev.in
+iniconfig==1.0.0          # via pytest
 isort==4.3.21             # via -r requirements-dev.in, pylint
 kiwisolver==1.2.0         # via matplotlib
 lazy-object-proxy==1.4.3  # via astroid
@@ -35,18 +36,17 @@ pyflakes==2.2.0           # via flake8
 pylint==2.5.3             # via -r requirements-dev.in
 pyparsing==2.4.7          # via matplotlib, packaging
 pytest-cov==2.10.0        # via -r requirements-dev.in
-pytest==5.4.3             # via -r requirements-dev.in, pytest-cov
+pytest==6.0.0             # via -r requirements-dev.in, pytest-cov
 python-dateutil==2.8.1    # via matplotlib
 regex==2020.6.8           # via black
 six==1.15.0               # via astroid, cycler, packaging, pip-tools, python-dateutil, tox, virtualenv
 sortedcontainers==2.2.2   # via hypothesis
 sympy==1.6                # via -r requirements-dev.in
-toml==0.10.1              # via black, pylint, tox
+toml==0.10.1              # via black, pylint, pytest, tox
 tox==3.15.2               # via -r requirements-dev.in
 typed-ast==1.4.1          # via black, mypy
 typing-extensions==3.7.4.2  # via mypy
 virtualenv==20.0.24       # via tox
-wcwidth==0.2.4            # via pytest
 wrapt==1.12.1             # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
