@@ -32,7 +32,7 @@ pluggy==0.13.1            # via pytest, tox
 py==1.8.2                 # via pytest, tox
 pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
-pylint==2.5.3             # via -r requirements-dev.in
+pylint==2.6.0             # via -r requirements-dev.in
 pyparsing==2.4.7          # via matplotlib, packaging
 pytest-cov==2.10.0        # via -r requirements-dev.in
 pytest==5.4.3             # via -r requirements-dev.in, pytest-cov
