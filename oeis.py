@@ -22,9 +22,8 @@ from functools import reduce
 
 
 def parse_args() -> argparse.Namespace:
-    """Parses command line arguments.
-    """
-    parser = argparse.ArgumentParser(description="Print a sweet sequence")
+    """Parses command line arguments."""
+    parser = argparse.ArgumentParser(description="Print a sweet sweet sequence")
     parser.add_argument(
         "sequence",
         type=str,
@@ -33,7 +32,9 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--list", action="store_true", help="List implemented series")
     parser.add_argument(
-        "--start", type=int, help="Define the starting point of the sequence.",
+        "--start",
+        type=int,
+        help="Define the starting point of the sequence.",
     )
     parser.add_argument(
         "--stop", type=int, help="End point of the sequence (excluded).", default=20
@@ -71,8 +72,7 @@ class IntegerSequence:
         return self._source()
 
     def _extend(self, n: int) -> None:
-        """Grow the serie.
-        """
+        """Grow the serie."""
         while len(self._known) < n:
             try:
                 self._known.append(next(self._source_iterator))
@@ -217,8 +217,7 @@ def A115020() -> Iterator[int]:
 
 @oeis
 def A000040() -> Iterator[int]:
-    """Primes number.
-    """
+    """Primes number."""
     from sympy import sieve
 
     for i in count(1):
@@ -484,8 +483,7 @@ def A000326() -> Iterator[int]:
 
 
 def main() -> None:  # pylint: disable=too-many-branches
-    """Command line entry point.
-    """
+    """Command line entry point."""
     args = parse_args()
 
     if args.list:

@@ -1,1 +1,3 @@
-__import__("setuptools").setup()
+import setuptools
+
+setuptools.setup()
