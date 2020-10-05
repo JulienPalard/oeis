@@ -15,7 +15,7 @@ cycler==0.10.0            # via matplotlib
 distlib==0.3.1            # via virtualenv
 filelock==3.0.12          # via tox, virtualenv
 flake8==3.8.3             # via -r requirements-dev.in
-hypothesis==5.36.1        # via -r requirements-dev.in
+hypothesis==5.37.0        # via -r requirements-dev.in
 iniconfig==1.0.1          # via pytest
 isort==5.5.3              # via -r requirements-dev.in, pylint
 kiwisolver==1.2.0         # via matplotlib
