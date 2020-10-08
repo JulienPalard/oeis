@@ -518,11 +518,11 @@ def A000326() -> Iterator[int]:
 @oeis
 def A165736() -> Iterator[int]:
  """n^n^n^... modulo 10^10"""
- n=0
+ n=1
  while True:
-  x=(n+1)
+  x=(n)
   for t in range(10):
-   x=pow((n+1),x,pow(10,10))
+   x=pow((n),x,pow(10,10))
   yield x
   n=n+1
  
