@@ -515,6 +515,17 @@ def A000326() -> Iterator[int]:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
     return (n * (3 * n - 1) // 2 for n in count())
 
+@oeis
+def A165736() -> Iterator[int]:
+ """n^n^n^... modulo 10^10"""
+ n=0
+ while True:
+  x=(n+1)
+  for t in range(10):
+   x=pow((n+1),x,pow(10,10))
+  yield x
+  n=n+1
+ 
 
 @oeis
 def A001462() -> Iterator[int]:
@@ -604,7 +615,6 @@ def main() -> None:  # pylint: disable=too-many-branches
             print(f"Graph printed in graph/{args.sequence}.png")
         else:
             print("You cannot use --file without --plot or --dark_plot")
-
 
 if __name__ == "__main__":
     main()
