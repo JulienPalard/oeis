@@ -1,5 +1,4 @@
-"""Implementation of a few integer sequences from the OEIS.
-"""
+"""Implementation of a few integer sequences from the OEIS."""
 import argparse
 import math
 from itertools import count
@@ -22,7 +21,7 @@ from functools import reduce
 
 
 def parse_args() -> argparse.Namespace:
-    """Parses command line arguments."""
+    """Parse command line arguments."""
     parser = argparse.ArgumentParser(description="Print a sweet sweet sequence")
     parser.add_argument(
         "sequence",
@@ -56,12 +55,21 @@ SerieGenerator = Callable[..., Iterator[int]]
 
 
 class IntegerSequence:
-    """This class holds information for a integer sequence like: Its name,
-    its description, a function to generate its values, and provide a
-    nice cached access to it.
+    """This class holds information for a integer sequence.
+
+    Its name, its description, a function to generate its values, and
+    provide a nice cached access to it.
     """
 
     def __init__(self, source: SerieGenerator, name: str, doc: Optional[str]) -> None:
+        """Build a new sequence.
+
+        Typically called as:
+
+            IntegerSequence(function, name=function.__name__, doc=function.__doc__)
+
+        if the sequence is implemented by a generator function.
+        """
         self.name = name
         self.doc = doc
         self._source = source
@@ -69,6 +77,7 @@ class IntegerSequence:
         self._known: List[int] = []
 
     def __iter__(self) -> Iterator[int]:
+        """Iterate over an integer sequence."""
         return self._source()
 
     def _extend(self, n: int) -> None:
@@ -81,13 +90,14 @@ class IntegerSequence:
 
     @overload
     def __getitem__(self, key: int) -> int:
-        ...
+        """Return a value from an integer sequence."""
 
     @overload
     def __getitem__(self, key: slice) -> Sequence[int]:
-        ...
+        """Return a slice from an integer sequence."""
 
     def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
+        """Return a value from the sequence (or a slice of it)."""
         if isinstance(key, slice):
             if key.start is not None and key.start < 0:
                 raise ValueError("Expected a non-negative indice")
@@ -104,18 +114,24 @@ class IntegerSequence:
 
 
 class OEISRegistry:
-    """A dict-like object to store OEIS sequences, used as a decorator,
-    wrapping simple generators to full IntegerSequence instances.
+    """A dict-like object to store OEIS sequences.
+
+    Used as a decorator, wrapping simple generators to full
+    IntegerSequence instances.
     """
 
     def __init__(self) -> None:
+        """Initialize an empty registry."""
         self.series: Dict[str, IntegerSequence] = {}
 
     def __getitem__(self, key: str) -> IntegerSequence:
+        """Return a sequence by name."""
         return self.series[key]
 
     def print_list(self) -> None:
-        """Print a list of OEIS series, like:
+        """Print a list of OEIS series.
+
+        Like:
         - A000004 Return an array of n occurence of 0
         - A000005 d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n.
         - ...
@@ -127,6 +143,7 @@ class OEISRegistry:
                 print("-", name)
 
     def __call__(self, function: SerieGenerator) -> IntegerSequence:
+        """Register a new integer sequence in the registry."""
         wrapped = IntegerSequence(
             function, name=function.__name__, doc=function.__doc__
         )
@@ -139,7 +156,8 @@ oeis = OEISRegistry()
 
 @oeis
 def A181391() -> Iterator[int]:
-    """Van Eck's sequence:
+    """Van Eck's sequence.
+
     For n >= 1, if there exists an m < n such that a(m) = a(n), take
     the largest such m and set a(n+1) = n-m; otherwise a(n+1) =
     0. Start with a(1)=0.
@@ -156,9 +174,7 @@ def A181391() -> Iterator[int]:
 
 @oeis
 def A006577() -> Iterator[int]:
-    """Number of halving and tripling steps to reach 1 in '3x+1' problem,
-    or -1 if 1 is never reached.
-    """
+    """Give the number of halving and tripling steps to reach 1 in '3x+1' problem."""
 
     def steps(n: int) -> int:
         if n == 1:
@@ -179,19 +195,22 @@ def A006577() -> Iterator[int]:
 
 @oeis
 def A000290() -> Iterator[int]:
-    "The squares: a(n) = n^2."
+    """Squares numbers: a(n) = n^2."""
     return (n ** 2 for n in count())
 
 
 @oeis
 def A000079() -> Iterator[int]:
-    "Powers of 2: a(n) = 2^n."
+    """Powers of 2: a(n) = 2^n."""
     return (2 ** n for n in count())
 
 
 @oeis
 def A001221() -> Iterator[int]:
-    "Number of distinct primes dividing n (also called omega(n))."
+    """omage(n).
+
+    Number of distinct primes dividing n.
+    """
     from sympy.ntheory import primefactors
 
     for n in count(1):
@@ -200,7 +219,7 @@ def A001221() -> Iterator[int]:
 
 @oeis
 def A000045() -> Iterator[int]:
-    "Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."
+    """Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."""
     a, b = (0, 1)
     yield 0
     while True:
@@ -210,7 +229,7 @@ def A000045() -> Iterator[int]:
 
 @oeis
 def A115020() -> Iterator[int]:
-    "Count backwards from 100 in steps of 7."
+    """Count backwards from 100 in steps of 7."""
     for i in range(100, 0, -7):
         yield i
 
@@ -226,7 +245,10 @@ def A000040() -> Iterator[int]:
 
 @oeis
 def A023811() -> Iterator[int]:
-    "Largest metadrome (number with digits in strict ascending order) in base n."
+    """Largest metadrome.
+
+    (number with digits in strict ascending order) in base n.
+    """
 
     def largest_metadrome(n: int) -> int:
         result = 0
@@ -240,7 +262,7 @@ def A023811() -> Iterator[int]:
 
 @oeis
 def A000010() -> Iterator[int]:
-    "Euler totient function phi(n): count numbers <= n and prime to n."
+    """Euler totient function phi(n): count numbers <= n and prime to n."""
 
     def phi(n: int) -> int:
         numbers = []
@@ -255,7 +277,8 @@ def A000010() -> Iterator[int]:
 
 @oeis
 def A000142() -> Iterator[int]:
-    """Factorial numbers: n! = 1*2*3*4*...*n
+    """Factorial numbers: n! = 1*2*3*4*...*n.
+
     (order of symmetric group S_n, number of permutations of n letters).
     """
     return (factorial(i) for i in count())
@@ -263,7 +286,7 @@ def A000142() -> Iterator[int]:
 
 @oeis
 def A000217() -> Iterator[int]:
-    "Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."
+    """Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."""
     for i in count():
         if i + 1 < 2:
             yield 0
@@ -273,13 +296,16 @@ def A000217() -> Iterator[int]:
 
 @oeis
 def A008592() -> Iterator[int]:
-    "Multiples of 10: a(n) = 10 * n."
+    """Multiples of 10: a(n) = 10 * n."""
     return (10 * n for n in count())
 
 
 @oeis
 def A000041() -> Iterator[int]:
-    "a(n) is the number of partitions of n (the partition numbers)."
+    """Parittion numbers.
+
+    a(n) is the number of partitions of n (the partition numbers).
+    """
 
     def partitions(n: int) -> int:
         parts = [0] * (n + 1)
@@ -294,7 +320,7 @@ def A000041() -> Iterator[int]:
 
 @oeis
 def A001220() -> Iterator[int]:
-    "Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."
+    """Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."""
     yield 1093
     yield 3511
     # No other has been found yet...
@@ -305,22 +331,22 @@ def A001220() -> Iterator[int]:
 
 @oeis
 def A008587(start: int = 0) -> Iterator[int]:
-    "Multiples of 5."
+    """Multiples of 5."""
     return (n * 5 for n in count(start))
 
 
 @oeis
 def A008589(start: int = 0) -> Iterator[int]:
-    "Multiples of 7."
+    """Multiples of 7."""
     return (n * 7 for n in count(start))
 
 
 @oeis
 def A000110() -> Iterator[int]:
-    """Bell or exponential numbers: number of ways
-    to partition a set of n labeled elements.
-    """
+    """Bell or exponential numbers.
 
+    Number of ways to partition a set of n labeled elements.
+    """
     for n in count():
         bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
         bell[0][0] = 1
@@ -333,7 +359,10 @@ def A000110() -> Iterator[int]:
 
 @oeis
 def A000203() -> Iterator[int]:
-    "a(n) = sigma(n), the sum of the divisors of n. Also called sigma_1(n)."
+    """Give sum of the divisors of n.
+
+    a(n) = sigma(n). Also called sigma_1(n).
+    """
     for i in count(1):
         divisors = []
         for j in range(int(math.sqrt(i)) + 1):
@@ -350,14 +379,14 @@ def A000203() -> Iterator[int]:
 
 @oeis
 def A000004() -> Iterator[int]:
-    "Return an array of n occurence of 0"
+    """Return an infinite sequence of 0."""
     while True:
         yield 0
 
 
 @oeis
 def A001246() -> Iterator[int]:
-    "Squares of Catalan numbers"
+    """Squares of Catalan numbers."""
 
     def catalan(n: int) -> int:
         if n in (0, 1):
@@ -377,7 +406,7 @@ def A001246() -> Iterator[int]:
 
 @oeis
 def A001247() -> Iterator[int]:
-    "Squares of Bell number"
+    """Squares of Bell number."""
 
     def bellNumber(start: int) -> int:
         bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
@@ -394,7 +423,9 @@ def A001247() -> Iterator[int]:
 
 @oeis
 def A133058() -> Iterator[int]:
-    """a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
+    """« Fly straight, dammit » sequence.
+
+    a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
     last = 1
@@ -411,7 +442,7 @@ def A133058() -> Iterator[int]:
 
 @oeis
 def A000005() -> Iterator[int]:
-    "d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."
+    """d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."""
     for i in count(1):
         divisors = 0
         for j in range(int(math.sqrt(i)) + 1):
@@ -428,6 +459,7 @@ def A000005() -> Iterator[int]:
 @oeis
 def A000108() -> Iterator[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
+
     Also called Segner numbers.
     """
     for i in count():
@@ -437,23 +469,24 @@ def A000108() -> Iterator[int]:
 
 @oeis
 def A007953() -> Iterator[int]:
-    "Digital sum (i.e., sum of digits) of n; also called digsum(n)."
+    """Digital sum (i.e., sum of digits) of n; also called digsum(n)."""
     for n in count():
         yield sum(int(d) for d in str(n))
 
 
 @oeis
 def A000120() -> Iterator[int]:
-    """1's-counting sequence: number of 1's in binary
-    expansion of n (or the binary weight of n).
-    """
+    """1's-counting sequence.
 
+    number of 1's in binary expansion of n (or the binary weight of
+    n).
+    """
     return ("{:b}".format(n).count("1") for n in count())
 
 
 @oeis
 def A001622() -> Iterator[int]:
-    "Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."
+    """Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."""
     with localcontext() as ctx:
         ctx.prec = 99999
         tau = (1 + Decimal(5).sqrt()) / 2
@@ -463,8 +496,9 @@ def A001622() -> Iterator[int]:
 
 @oeis
 def A007947(start: int = 0) -> Iterator[int]:
-    """Largest squarefree number dividing n:
-    the squarefree kernel of n, rad(n), radical of n.
+    """Largest squarefree number dividing n.
+
+    The squarefree kernel of n, rad(n), radical of n.
     """
     from sympy.ntheory import primefactors
 
@@ -478,7 +512,7 @@ def A007947(start: int = 0) -> Iterator[int]:
 
 @oeis
 def A000326() -> Iterator[int]:
-    """Pentagonal numbers: a(n) = n*(3*n-1)/2:"""
+    """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
     return (n * (3 * n - 1) // 2 for n in count())
 
 
