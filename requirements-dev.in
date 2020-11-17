@@ -5,7 +5,7 @@ matplotlib
 mypy
 pip-tools
 pytest
-pytest-cov
+coverage
 tox
 sympy
 pylint
