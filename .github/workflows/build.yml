@@ -30,14 +30,14 @@ jobs:
             .tox
           key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
       - name: tox
-        if: ${{ startsWith(matrix.os, 'windows') }}
+        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
           python3 -m venv .venv
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/python -m pip install tox
           .venv/bin/tox -q -p all
       - name: tox
-        if: ${{ !startsWith(matrix.os, 'windows') }}
+        if: ${{ startsWith(matrix.os, 'windows') }}
         run: |
           py -3.8 -m venv .venv
           .venv/bin/python -m pip install --upgrade pip
