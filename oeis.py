@@ -535,6 +535,21 @@ def A004767() -> Iterator[int]:
     return (4 * n + 3 for n in count())
 
 
+@oeis
+def A004086() -> Iterator[int]:
+    """Digit reversal of n."""
+
+    def reverse(n: int) -> int:
+        result = 0
+        while n > 0:
+            unit = n % 10
+            result = result * 10 + unit
+            n = n // 10
+        return result
+
+    return (reverse(n) for n in count())
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
@@ -593,3 +608,20 @@ def main() -> None:  # pylint: disable=too-many-branches
 
 if __name__ == "__main__":
     main()
+
+
+@oeis
+def A001969(start: int = 0) -> Iterator[int]:
+    """Evil numbers: numbers with an even number of 1's in their binary expansion."""
+    for i in count(start):
+        binary = bin(i)
+        setBits = [ones for ones in binary[2:] if ones == "1"]
+        if (len(setBits) % 2) == 0:
+            yield i
+
+
+@oeis
+def A070939(start: int = 0) -> Iterator[int]:
+    """Length of binary representation of n."""
+    for i in count(start):
+        yield len(format(i, "b"))
