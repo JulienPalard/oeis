@@ -578,7 +578,7 @@ if __name__ == "__main__":
 
 @oeis
 def A001969(start: int = 0) -> Iterator[int]:
-    """Evil numbers: numbers with an even number of 1's in their binary expansion. """
+    """Evil numbers: numbers with an even number of 1's in their binary expansion."""
     for i in count(start):
         binary = bin(i)
         setBits = [ones for ones in binary[2:] if ones == "1"]

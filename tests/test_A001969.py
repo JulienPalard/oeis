@@ -1,6 +1,4 @@
 from oeis import A001969
-from hypothesis import given
-from hypothesis.strategies import integers
 
 
 def test_sequence():
