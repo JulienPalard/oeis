@@ -9,7 +9,7 @@ def test_increasing(n):
 
 
 @given(integers(min_value=1, max_value=120))
-def test_increasing(n):
+def test_consistency(n):
     assert A001462[n - 1] == A001462[:1820].count(n)
 
 

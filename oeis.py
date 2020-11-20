@@ -16,7 +16,6 @@ from typing import (
     Iterator,
 )
 import sys
-import os
 from functools import reduce, lru_cache
 
 
@@ -43,7 +42,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--random", action="store_true", help="Pick a random sequence")
     parser.add_argument(
-        "--file", action="store_true", help="Generates a png of the sequence's plot"
+        "--file", help="Write a png of the sequence's plot to the given png file."
     )
     parser.add_argument(
         "--dark-plot", action="store_true", help="Print a dark dark dark graph"
@@ -139,8 +138,6 @@ class OEISRegistry:
         for name, sequence in sorted(self.series.items(), key=lambda kvp: kvp[0]):
             if sequence.doc:
                 print("-", name, sequence.doc.replace("\n", " ").replace("     ", " "))
-            else:
-                print("-", name)
 
     def __call__(self, function: SerieGenerator) -> IntegerSequence:
         """Register a new integer sequence in the registry."""
@@ -568,7 +565,7 @@ def main() -> None:  # pylint: disable=too-many-branches
 
     if args.list:
         oeis.print_list()
-        sys.exit(0)
+        return
 
     if args.random:
         args.sequence = choice(list(oeis.series.values())).name
@@ -583,12 +580,12 @@ def main() -> None:  # pylint: disable=too-many-branches
 
     serie = oeis.series[args.sequence][args.start : args.stop]
 
-    if args.plot:
+    if args.plot:  # pragma: no cover
         import matplotlib.pyplot as plt
 
         plt.scatter(list(range(len(serie))), serie)
         plt.show()
-    elif args.dark_plot:
+    elif args.dark_plot:  # pragma: no cover
         import matplotlib.pyplot as plt
 
         colors = []
@@ -604,18 +601,13 @@ def main() -> None:  # pylint: disable=too-many-branches
 
     if args.file:
         if args.plot or args.dark_plot:
-            if not os.path.exists("graph"):
-                print("No graph directory found, creating...")
-                try:
-                    os.mkdir("graph")
-                except OSError:
-                    print("Creation of the graph directory failed")
-                else:
-                    print("Successfully created the graph directory")
-            plt.savefig(f"graph/{args.sequence}.png")
-            print(f"Graph printed in graph/{args.sequence}.png")
+            plt.savefig(args.file)
+            print(f"Graph printed in {args.file}")
         else:
-            print("You cannot use --file without --plot or --dark_plot")
+            print(
+                "You cannot use --file without --plot or --dark_plot", file=sys.stderr
+            )
+            sys.exit(1)
 
 
 if __name__ == "__main__":
