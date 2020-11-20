@@ -515,6 +515,10 @@ def A000326() -> Iterator[int]:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
     return (n * (3 * n - 1) // 2 for n in count())
 
+@oeis
+def A004767() -> Iterator[int]:
+    """a(n) = 4*n + 3"""
+    return (4 * n + 3 for n in count())
 
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
