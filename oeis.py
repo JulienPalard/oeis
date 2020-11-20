@@ -517,6 +517,18 @@ def A000326() -> Iterator[int]:
 
 
 @oeis
+def A165736() -> Iterator[int]:
+    """Give n^n^n^... modulo 10^10."""
+    n = 1
+    while True:
+        x = n
+        for t in range(1, 11):
+            x = pow(n, x, pow(10, t))
+        yield x
+        n = n + 1
+
+
+@oeis
 def A001462() -> Iterator[int]:
     """Give n terms of Golomb sequence."""
 
