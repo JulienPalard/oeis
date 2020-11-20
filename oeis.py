@@ -593,8 +593,6 @@ def main() -> None:  # pylint: disable=too-many-branches
 
 if __name__ == "__main__":
     main()
-<<<<<<< Updated upstream
-=======
 
 
 @oeis
@@ -612,4 +610,3 @@ def A070939(start: int = 0) -> Iterator[int]:
     """Length of binary representation of n."""
     for i in count(start):
         yield len(format(i, "b"))
->>>>>>> Stashed changes
