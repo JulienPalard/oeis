@@ -14,20 +14,25 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
     - name: tox
       run: |
-        python3 -m pip install --user tox
-        PATH="$HOME/.local/bin/:$PATH" tox -q -p all
+        python3 -m pip install tox
+        tox -q -p all
 
   build_macos:
     name: 'macOS'
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
     - name: tox
       run: |
-        python3 -m pip install --user tox
-        PATH="$HOME/.local/bin/:$PATH" tox -q -p all
+        tox -q -p all
 
   build_ubuntu:
     name: 'Ubuntu'
