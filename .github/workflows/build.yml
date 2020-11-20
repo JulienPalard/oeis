@@ -17,7 +17,7 @@ jobs:
     - name: tox
       run: |
         python3 -m pip install --user tox
-        PATH="$HOME/.local/bin/:$PATH" tox -p all
+        PATH="$HOME/.local/bin/:$PATH" tox -q -p all
 
   build_macos:
     name: 'macOS'
@@ -27,7 +27,7 @@ jobs:
     - name: tox
       run: |
         python3 -m pip install --user tox
-        PATH="$HOME/.local/bin/:$PATH" tox -p all
+        PATH="$HOME/.local/bin/:$PATH" tox -q -p all
 
   build_ubuntu:
     name: 'Ubuntu'
@@ -37,4 +37,4 @@ jobs:
     - name: tox
       run: |
         python3 -m pip install --user tox
-        PATH="$HOME/.local/bin/:$PATH" tox -p all
+        PATH="$HOME/.local/bin/:$PATH" tox -q -p all
