@@ -608,3 +608,13 @@ def main() -> None:  # pylint: disable=too-many-branches
 
 if __name__ == "__main__":
     main()
+
+
+@oeis
+def A001969(start: int = 0) -> Iterator[int]:
+    """Evil numbers: numbers with an even number of 1's in their binary expansion."""
+    for i in count(start):
+        binary = bin(i)
+        setBits = [ones for ones in binary[2:] if ones == "1"]
+        if (len(setBits) % 2) == 0:
+            yield i
