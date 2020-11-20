@@ -13,4 +13,4 @@ def test_sequence(n):
 def test_sequence_other_values():
     for i in range(100):
         result = random.choices("123456789", k=5)
-        assert A004086[int(''.join(result))] == int(''.join(reversed(result)))
+        assert A004086[int("".join(result))] == int("".join(reversed(result)))
