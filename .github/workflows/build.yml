@@ -7,30 +7,30 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-    name: %{{ matrix.os }}
+    name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.6'
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-    - uses: actions/cache@v2
-      with:
-        path: |
-          .venv
-          .tox
-        key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
-    - name: tox
-      run: |
-        python3.8 -m venv .venv
-        .venv/bin/python -m pip install --user tox
-        .venv/bin/tox -q -p all
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            .venv
+            .tox
+          key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
+      - name: tox
+        run: |
+          python3.8 -m venv .venv
+          .venv/bin/python -m pip install --user tox
+          .venv/bin/tox -q -p all
