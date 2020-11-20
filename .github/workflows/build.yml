@@ -1,6 +1,12 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 jobs:
   build_ubuntu:
@@ -19,10 +25,10 @@ jobs:
           python-version: '3.7'
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: '3.8'
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.9'
       - uses: actions/cache@v2
         with:
           path: |
@@ -30,16 +36,8 @@ jobs:
             .tox
           key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
       - name: tox
-        if: ${{ !startsWith(matrix.os, 'windows') }}
         run: |
-          python3 -m venv .venv
-          .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install tox
-          .venv/bin/tox -q -p all
-      - name: tox
-        if: ${{ startsWith(matrix.os, 'windows') }}
-        run: |
-          py -3.8 -m venv .venv
+          python3.8 -m venv .venv
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/python -m pip install tox
           .venv/bin/tox -q -p all
