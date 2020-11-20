@@ -516,6 +516,12 @@ def A000326() -> Iterator[int]:
     return (n * (3 * n - 1) // 2 for n in count())
 
 
+@oeis
+def A004767() -> Iterator[int]:
+    """Integers of a(n) = 4*n + 3."""
+    return (4 * n + 3 for n in count())
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
