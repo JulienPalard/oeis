@@ -10,7 +10,7 @@ def test_increasing(n):
 
 @given(integers(min_value=1, max_value=120))
 def test_increasing(n):
-    assert A001462[n-1] == A001462[:1820].count(n)
+    assert A001462[n - 1] == A001462[:1820].count(n)
 
 
 def test_sequence():
