@@ -1,4 +1,16 @@
 from oeis import A001462
+from hypothesis import given
+from hypothesis.strategies import integers
+
+
+@given(integers(min_value=1, max_value=1000))
+def test_increasing(n):
+    assert A001462[n] <= A001462[n + 1]
+
+
+@given(integers(min_value=1, max_value=120))
+def test_increasing(n):
+    assert A001462[n-1] == A001462[:1820].count(n)
 
 
 def test_sequence():
