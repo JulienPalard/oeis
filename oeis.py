@@ -535,6 +535,21 @@ def A004767() -> Iterator[int]:
     return (4 * n + 3 for n in count())
 
 
+@oeis
+def A004086() -> Iterator[int]:
+    """Digit reversal of n."""
+
+    def reverse(n: int) -> int:
+        result = 0
+        while n > 0:
+            unit = n % 10
+            result = result * 10 + unit
+            n = n // 10
+        return result
+
+    return (reverse(n) for n in count())
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
