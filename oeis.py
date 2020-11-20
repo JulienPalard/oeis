@@ -529,6 +529,13 @@ def A001462() -> Iterator[int]:
     return (findGolomb(n) for n in count(1))
 
 
+@oeis
+def A004767() -> Iterator[int]:
+    """Integers of a(n) = 4*n + 3."""
+    return (4 * n + 3 for n in count())
+
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
