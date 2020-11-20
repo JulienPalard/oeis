@@ -535,7 +535,6 @@ def A004767() -> Iterator[int]:
     return (4 * n + 3 for n in count())
 
 
-
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
