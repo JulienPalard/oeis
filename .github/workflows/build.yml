@@ -28,5 +28,5 @@ jobs:
         python-version: '3.9'
     - name: tox
       run: |
-        python3 -m pip install --user tox
+        python3.8 -m pip install --user tox
         PATH="$HOME/.local/bin/:$PATH" tox -q -p all
