@@ -518,7 +518,7 @@ def A000326() -> Iterator[int]:
 
 @oeis
 def A004767() -> Iterator[int]:
-    """a(n) = 4*n + 3"""
+    """Integers of a(n) = 4*n + 3."""
     return (4 * n + 3 for n in count())
 
 
