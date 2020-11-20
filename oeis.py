@@ -17,7 +17,7 @@ from typing import (
 )
 import sys
 import os
-from functools import reduce
+from functools import reduce, lru_cache
 
 
 def parse_args() -> argparse.Namespace:
@@ -514,6 +514,19 @@ def A007947(start: int = 0) -> Iterator[int]:
 def A000326() -> Iterator[int]:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
     return (n * (3 * n - 1) // 2 for n in count())
+
+
+@oeis
+def A001462() -> Iterator[int]:
+    """Give n terms of Golomb sequence."""
+
+    @lru_cache()
+    def findGolomb(n: int) -> int:
+        if n == 1:
+            return 1
+        return 1 + findGolomb(n - findGolomb(findGolomb(n - 1)))
+
+    return (findGolomb(n) for n in count(1))
 
 
 @oeis

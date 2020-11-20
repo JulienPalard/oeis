@@ -14,7 +14,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.6'
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.7'
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/.local
+          .tox
+        key: ${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
     - name: tox
       run: |
-        python3 -m pip install --user tox
+        python3.8 -m pip install --user tox
         PATH="$HOME/.local/bin/:$PATH" tox -q -p all
