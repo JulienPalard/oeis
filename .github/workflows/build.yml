@@ -9,32 +9,6 @@ on:
     - master
 
 jobs:
-  build_win_amd64:
-    name: 'Windows (x64)'
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - name: tox
-      run: |
-        python -m pip install tox
-        tox -q -p all
-
-  build_macos:
-    name: 'macOS'
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - name: tox
-      run: |
-        python3 -m pip install tox
-        tox -q -p all
-
   build_ubuntu:
     name: 'Ubuntu'
     runs-on: ubuntu-latest
