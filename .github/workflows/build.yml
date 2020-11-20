@@ -32,5 +32,5 @@ jobs:
       - name: tox
         run: |
           python3.8 -m venv .venv
-          .venv/bin/python -m pip install --user tox
+          .venv/bin/python -m pip install tox
           .venv/bin/tox -q -p all
