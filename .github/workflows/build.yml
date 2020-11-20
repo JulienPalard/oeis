@@ -19,7 +19,7 @@ jobs:
         python-version: '3.9'
     - name: tox
       run: |
-        python3 -m pip install tox
+        python -m pip install tox
         tox -q -p all
 
   build_macos:
@@ -32,6 +32,7 @@ jobs:
         python-version: '3.9'
     - name: tox
       run: |
+        python3 -m pip install tox
         tox -q -p all
 
   build_ubuntu:
