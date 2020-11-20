@@ -483,6 +483,15 @@ def A000120() -> Iterator[int]:
     """
     return ("{:b}".format(n).count("1") for n in count())
 
+@oeis
+def A007089(n) ->Iterator[int]:
+    """ Numbers in base 3.     """
+    quotient = n/3    
+    remainder = n%3
+    if quotient != 0: 
+        return (int(quotient)) + str(int(remainder))   
+
+
 
 @oeis
 def A001622() -> Iterator[int]:
@@ -492,6 +501,8 @@ def A001622() -> Iterator[int]:
         tau = (1 + Decimal(5).sqrt()) / 2
         for n in count():
             yield math.floor(tau * 10 ** n) % 10
+
+
 
 
 @oeis
