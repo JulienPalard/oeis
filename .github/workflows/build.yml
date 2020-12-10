@@ -13,31 +13,42 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-    name: ${{ matrix.os }}
+        tox:
+          - env: py36,coverage
+            python-version: '3.6'
+          - env: py37,coverage
+            python-version: '3.7'
+          - env: py38,coverage
+            python-version: '3.8'
+          - env: py39,coverage
+            python-version: '3.9'
+          - env: flake8
+            python-version: '3.8'
+          - env: mypy
+            python-version: '3.8'
+          - env: black
+            python-version: '3.8'
+          - env: pylint
+            python-version: '3.8'
+          - env: pydocstyle
+            python-version: '3.8'
+    name: ${{ matrix.tox.env }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.6'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+          python-version: ${{ matrix.tox.python-version }}
       - uses: actions/cache@v2
         with:
           path: |
             .venv
             .tox
-          key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
+          key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}-${{ matrix.tox.python-version }}
       - name: tox
         run: |
-          python3.8 -m venv .venv
+          python${{ matrix.tox.python-version }} -m venv .venv
+          python${{ matrix.tox.python-version }} --version
           .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install tox
-          .venv/bin/tox -q -p all
+          .venv/bin/python -m pip install --upgrade tox
+          .venv/bin/tox -q -e ${{ matrix.tox.env }}
