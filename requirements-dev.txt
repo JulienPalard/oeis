@@ -28,7 +28,7 @@ numpy==1.19.4             # via matplotlib
 packaging==20.4           # via pytest, tox
 pathspec==0.8.1           # via black
 pillow==8.0.1             # via matplotlib
-pip-tools==5.3.1          # via -r requirements-dev.in
+pip-tools==5.4.0          # via -r requirements-dev.in
 pluggy==0.13.1            # via pytest, tox
 py==1.9.0                 # via pytest, tox
 pycodestyle==2.6.0        # via flake8
