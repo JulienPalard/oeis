@@ -12,32 +12,51 @@ jobs:
   build_ubuntu:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-    name: ${{ matrix.os }}
+        os: [ubuntu-latest, macos-latest] # , windows-latest]  # see https://github.com/tox-dev/tox/issues/1570
+        tox:
+          # As in oeis.py the coverage is full for each version, we
+          # can run coverage independently for each version.
+          #
+          # Our tox.ini can combine coverage from multiple Python
+          # versions, like: `tox -e py36,py37,py38,py39,coverage`
+          # which is usefull if we need an `if sys.version >= ...`.
+          #
+          # But it would require some adjustment in this github
+          # workflow, like using artifacts to gather the coverage
+          # files, or installing multiple Pythons to let tox combine
+          # them.
+          - env: py36,coverage
+            python-version: '3.6'
+          - env: py37,coverage
+            python-version: '3.7'
+          - env: py38,coverage
+            python-version: '3.8'
+          - env: py39,coverage
+            python-version: '3.9'
+        include:
+          - tox:
+              env: flake8,mypy,black,pylint,pydocstyle
+              python-version: '3.8'
+            os: ubuntu-latest
+
+    name: ${{ matrix.tox.env }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.6'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
+          python-version: ${{ matrix.tox.python-version }}
       - uses: actions/cache@v2
         with:
           path: |
             .venv
             .tox
-          key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}
-      - name: tox
+          key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}-${{ matrix.tox.python-version }}
+      - name: setup tox
         run: |
-          python3.8 -m venv .venv
-          .venv/bin/python -m pip install --upgrade pip
-          .venv/bin/python -m pip install tox
-          .venv/bin/tox -q -p all
+          python --version
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade tox
+      - name: run ${{ matrix.tox.env }}
+        run: |
+          tox -q -e ${{ matrix.tox.env }} -p all
