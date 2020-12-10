@@ -600,14 +600,11 @@ def main() -> None:  # pylint: disable=too-many-branches
         print(*serie, sep=", ")
 
     if args.file:
-        if args.plot or args.dark_plot:
-            plt.savefig(args.file)
-            print(f"Graph printed in {args.file}")
-        else:
-            print(
-                "You cannot use --file without --plot or --dark_plot", file=sys.stderr
-            )
-            sys.exit(1)
+        import matplotlib.pyplot as plt
+
+        plt.scatter(list(range(len(serie))), serie)
+        plt.savefig(args.file)
+        print(f"Graph printed in {args.file}")
 
 
 if __name__ == "__main__":

@@ -47,17 +47,6 @@ def test_main_random(monkeypatch, capsys):
 def test_main_plot_to_file(monkeypatch, capsys, tmpdir):
     tmpdir = Path(tmpdir)
     pngfile = tmpdir / "test.png"
-    monkeypatch.setattr(
-        sys, "argv", ["oeis", "A000290", "--plot", "--file", str(pngfile)]
-    )
+    monkeypatch.setattr(sys, "argv", ["oeis", "A000290", "--file", str(pngfile)])
     oeis.main()
     assert pngfile.exists()
-
-
-def test_main_plot_to_file_error(monkeypatch, capsys, tmpdir):
-    tmpdir = Path(tmpdir)
-    pngfile = tmpdir / "test.png"
-    monkeypatch.setattr(sys, "argv", ["oeis", "A000290", "--file", str(pngfile)])
-    with pytest.raises(SystemExit):
-        oeis.main()
-    assert capsys.readouterr().err
