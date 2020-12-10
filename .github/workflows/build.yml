@@ -47,8 +47,8 @@ jobs:
           key: ${{ matrix.os }}-${{ hashFiles('tox.ini') }}-${{ hashFiles('requirements-dev.txt') }}-${{ matrix.tox.python-version }}
       - name: tox
         run: |
-          python${{ matrix.tox.python-version }} -m venv .venv
-          python${{ matrix.tox.python-version }} --version
+          python -m venv .venv
+          python --version
           .venv/bin/python -m pip install --upgrade pip
           .venv/bin/python -m pip install --upgrade tox
           .venv/bin/tox -q -e ${{ matrix.tox.env }}
