@@ -33,16 +33,12 @@ jobs:
             python-version: '3.8'
           - env: py39,coverage
             python-version: '3.9'
-          - env: flake8
-            python-version: '3.8'
-          - env: mypy
-            python-version: '3.8'
-          - env: black
-            python-version: '3.8'
-          - env: pylint
-            python-version: '3.8'
-          - env: pydocstyle
-            python-version: '3.8'
+        include:
+          - tox:
+              env: flake8,mypy,black,pylint,pydocstyle
+              python-version: '3.8'
+            os: ubuntu-latest
+
     name: ${{ matrix.tox.env }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     steps:
