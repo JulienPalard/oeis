@@ -1,5 +1,10 @@
 # OEIS
 
+
+[![PyPI](https://img.shields.io/pypi/v/oeis.svg)](https://pypi.org/project/oeis/)
+[![PyPI](https://img.shields.io/pypi/l/oeis.svg)](https://github.com/JulienPalard/oeis/blob/master/LICENSE)
+[![Tests](https://github.com/JulienPalard/oeis/workflows/Tests/badge.svg)](https://github.com/JulienPalard/oeis/actions?query=workflow%3ATests)
+
 ## Project
 
 This project is the implementation of a few sequences from the [OEIS](https://oeis.org).
