@@ -14,6 +14,7 @@ from typing import (
     Sequence,
     Optional,
     Iterator,
+    Iterable,
 )
 import sys
 from functools import reduce, lru_cache
@@ -50,7 +51,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-SerieGenerator = Callable[..., Iterator[int]]
+SerieGenerator = Callable[..., Iterable[int]]
 
 
 class IntegerSequence:
@@ -77,7 +78,7 @@ class IntegerSequence:
 
     def __iter__(self) -> Iterator[int]:
         """Iterate over an integer sequence."""
-        return self._source()
+        return iter(self._source())
 
     def _extend(self, n: int) -> None:
         """Grow the serie."""
@@ -152,7 +153,7 @@ oeis = OEISRegistry()
 
 
 @oeis
-def A181391() -> Iterator[int]:
+def A181391() -> Iterable[int]:
     """Van Eck's sequence.
 
     For n >= 1, if there exists an m < n such that a(m) = a(n), take
@@ -170,7 +171,7 @@ def A181391() -> Iterator[int]:
 
 
 @oeis
-def A006577() -> Iterator[int]:
+def A006577() -> Iterable[int]:
     """Give the number of halving and tripling steps to reach 1 in '3x+1' problem."""
 
     def steps(n: int) -> int:
@@ -191,19 +192,19 @@ def A006577() -> Iterator[int]:
 
 
 @oeis
-def A000290() -> Iterator[int]:
+def A000290() -> Iterable[int]:
     """Squares numbers: a(n) = n^2."""
     return (n ** 2 for n in count())
 
 
 @oeis
-def A000079() -> Iterator[int]:
+def A000079() -> Iterable[int]:
     """Powers of 2: a(n) = 2^n."""
     return (2 ** n for n in count())
 
 
 @oeis
-def A001221() -> Iterator[int]:
+def A001221() -> Iterable[int]:
     """omage(n).
 
     Number of distinct primes dividing n.
@@ -215,7 +216,7 @@ def A001221() -> Iterator[int]:
 
 
 @oeis
-def A000045() -> Iterator[int]:
+def A000045() -> Iterable[int]:
     """Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."""
     a, b = (0, 1)
     yield 0
@@ -225,14 +226,14 @@ def A000045() -> Iterator[int]:
 
 
 @oeis
-def A115020() -> Iterator[int]:
+def A115020() -> Iterable[int]:
     """Count backwards from 100 in steps of 7."""
     for i in range(100, 0, -7):
         yield i
 
 
 @oeis
-def A000040() -> Iterator[int]:
+def A000040() -> Iterable[int]:
     """Primes number."""
     from sympy import sieve
 
@@ -241,7 +242,7 @@ def A000040() -> Iterator[int]:
 
 
 @oeis
-def A023811() -> Iterator[int]:
+def A023811() -> Iterable[int]:
     """Largest metadrome.
 
     (number with digits in strict ascending order) in base n.
@@ -258,7 +259,7 @@ def A023811() -> Iterator[int]:
 
 
 @oeis
-def A000010() -> Iterator[int]:
+def A000010() -> Iterable[int]:
     """Euler totient function phi(n): count numbers <= n and prime to n."""
 
     def phi(n: int) -> int:
@@ -273,7 +274,7 @@ def A000010() -> Iterator[int]:
 
 
 @oeis
-def A000142() -> Iterator[int]:
+def A000142() -> Iterable[int]:
     """Factorial numbers: n! = 1*2*3*4*...*n.
 
     (order of symmetric group S_n, number of permutations of n letters).
@@ -282,7 +283,7 @@ def A000142() -> Iterator[int]:
 
 
 @oeis
-def A000217() -> Iterator[int]:
+def A000217() -> Iterable[int]:
     """Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."""
     for i in count():
         if i + 1 < 2:
@@ -292,13 +293,13 @@ def A000217() -> Iterator[int]:
 
 
 @oeis
-def A008592() -> Iterator[int]:
+def A008592() -> Iterable[int]:
     """Multiples of 10: a(n) = 10 * n."""
     return (10 * n for n in count())
 
 
 @oeis
-def A000041() -> Iterator[int]:
+def A000041() -> Iterable[int]:
     """Parittion numbers.
 
     a(n) is the number of partitions of n (the partition numbers).
@@ -316,7 +317,7 @@ def A000041() -> Iterator[int]:
 
 
 @oeis
-def A001220() -> Iterator[int]:
+def A001220() -> Iterable[int]:
     """Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."""
     yield 1093
     yield 3511
@@ -327,19 +328,19 @@ def A001220() -> Iterator[int]:
 
 
 @oeis
-def A008587(start: int = 0) -> Iterator[int]:
+def A008587(start: int = 0) -> Iterable[int]:
     """Multiples of 5."""
     return (n * 5 for n in count(start))
 
 
 @oeis
-def A008589(start: int = 0) -> Iterator[int]:
+def A008589(start: int = 0) -> Iterable[int]:
     """Multiples of 7."""
     return (n * 7 for n in count(start))
 
 
 @oeis
-def A000110() -> Iterator[int]:
+def A000110() -> Iterable[int]:
     """Bell or exponential numbers.
 
     Number of ways to partition a set of n labeled elements.
@@ -355,7 +356,7 @@ def A000110() -> Iterator[int]:
 
 
 @oeis
-def A000203() -> Iterator[int]:
+def A000203() -> Iterable[int]:
     """Give sum of the divisors of n.
 
     a(n) = sigma(n). Also called sigma_1(n).
@@ -375,14 +376,14 @@ def A000203() -> Iterator[int]:
 
 
 @oeis
-def A000004() -> Iterator[int]:
+def A000004() -> Iterable[int]:
     """Return an infinite sequence of 0."""
     while True:
         yield 0
 
 
 @oeis
-def A001246() -> Iterator[int]:
+def A001246() -> Iterable[int]:
     """Squares of Catalan numbers."""
 
     def catalan(n: int) -> int:
@@ -402,7 +403,7 @@ def A001246() -> Iterator[int]:
 
 
 @oeis
-def A001247() -> Iterator[int]:
+def A001247() -> Iterable[int]:
     """Squares of Bell number."""
 
     def bellNumber(start: int) -> int:
@@ -419,7 +420,7 @@ def A001247() -> Iterator[int]:
 
 
 @oeis
-def A133058() -> Iterator[int]:
+def A133058() -> Iterable[int]:
     """« Fly straight, dammit » sequence.
 
     a(0)=a(1)=1; for n>1, a(n) = a(n-1) + n + 1 if a(n-1) and n are coprime,
@@ -438,7 +439,7 @@ def A133058() -> Iterator[int]:
 
 
 @oeis
-def A000005() -> Iterator[int]:
+def A000005() -> Iterable[int]:
     """d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."""
     for i in count(1):
         divisors = 0
@@ -454,7 +455,7 @@ def A000005() -> Iterator[int]:
 
 
 @oeis
-def A000108() -> Iterator[int]:
+def A000108() -> Iterable[int]:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
 
     Also called Segner numbers.
@@ -465,14 +466,14 @@ def A000108() -> Iterator[int]:
 
 
 @oeis
-def A007953() -> Iterator[int]:
+def A007953() -> Iterable[int]:
     """Digital sum (i.e., sum of digits) of n; also called digsum(n)."""
     for n in count():
         yield sum(int(d) for d in str(n))
 
 
 @oeis
-def A000120() -> Iterator[int]:
+def A000120() -> Iterable[int]:
     """1's-counting sequence.
 
     number of 1's in binary expansion of n (or the binary weight of
@@ -482,7 +483,7 @@ def A000120() -> Iterator[int]:
 
 
 @oeis
-def A001622() -> Iterator[int]:
+def A001622() -> Iterable[int]:
     """Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."""
     with localcontext() as ctx:
         ctx.prec = 99999
@@ -492,7 +493,7 @@ def A001622() -> Iterator[int]:
 
 
 @oeis
-def A007947(start: int = 0) -> Iterator[int]:
+def A007947(start: int = 0) -> Iterable[int]:
     """Largest squarefree number dividing n.
 
     The squarefree kernel of n, rad(n), radical of n.
@@ -508,13 +509,13 @@ def A007947(start: int = 0) -> Iterator[int]:
 
 
 @oeis
-def A000326() -> Iterator[int]:
+def A000326() -> Iterable[int]:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
     return (n * (3 * n - 1) // 2 for n in count())
 
 
 @oeis
-def A165736() -> Iterator[int]:
+def A165736() -> Iterable[int]:
     """Give n^n^n^... modulo 10^10."""
     n = 1
     while True:
@@ -526,7 +527,7 @@ def A165736() -> Iterator[int]:
 
 
 @oeis
-def A001462() -> Iterator[int]:
+def A001462() -> Iterable[int]:
     """Give n terms of Golomb sequence."""
 
     @lru_cache()
@@ -539,13 +540,13 @@ def A001462() -> Iterator[int]:
 
 
 @oeis
-def A004767() -> Iterator[int]:
+def A004767() -> Iterable[int]:
     """Integers of a(n) = 4*n + 3."""
     return (4 * n + 3 for n in count())
 
 
 @oeis
-def A004086() -> Iterator[int]:
+def A004086() -> Iterable[int]:
     """Digit reversal of n."""
 
     def reverse(n: int) -> int:
@@ -612,7 +613,7 @@ if __name__ == "__main__":
 
 
 @oeis
-def A001969(start: int = 0) -> Iterator[int]:
+def A001969(start: int = 0) -> Iterable[int]:
     """Evil numbers: numbers with an even number of 1's in their binary expansion."""
     for i in count(start):
         binary = bin(i)
@@ -622,7 +623,7 @@ def A001969(start: int = 0) -> Iterator[int]:
 
 
 @oeis
-def A070939(start: int = 0) -> Iterator[int]:
+def A070939(start: int = 0) -> Iterable[int]:
     """Length of binary representation of n."""
     for i in count(start):
         yield len(format(i, "b"))
