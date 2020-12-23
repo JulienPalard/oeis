@@ -7,4 +7,4 @@ def test_A165736():
 5380859375 290415616 5320085777 5354315776 609963179 0 4460652421 2551504896
 1075718247 1076734976""".split()
     from_oeis_org = [int(i) for i in from_oeis_org]
-    assert A165736[: len(from_oeis_org)] == from_oeis_org
+    assert A165736[1 : 1 + len(from_oeis_org)] == from_oeis_org

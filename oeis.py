@@ -2,22 +2,20 @@
 import argparse
 import math
 from itertools import count
-from math import factorial
+from functools import lru_cache, reduce
 from random import random, choice
 from decimal import Decimal, localcontext
 from typing import (
-    overload,
-    Union,
-    Dict,
-    List,
     Callable,
-    Sequence,
-    Optional,
-    Iterator,
+    Dict,
     Iterable,
+    Iterator,
+    List,
+    Sequence,
+    Union,
+    overload,
 )
 import sys
-from functools import reduce, lru_cache
 
 
 def parse_args() -> argparse.Namespace:
@@ -33,6 +31,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--start",
         type=int,
+        default=None,
         help="Define the starting point of the sequence.",
     )
     parser.add_argument(
@@ -54,27 +53,73 @@ def parse_args() -> argparse.Namespace:
 SerieGenerator = Callable[..., Iterable[int]]
 
 
-class IntegerSequence:
+class IntegerSequence:  # pylint: disable=too-few-public-methods
     """This class holds information for a integer sequence.
 
     Its name, its description, a function to generate its values, and
     provide a nice cached access to it.
     """
 
-    def __init__(self, source: SerieGenerator, name: str, doc: Optional[str]) -> None:
-        """Build a new sequence.
+    def __init__(self, offset, **kwargs):
+        """Build a new integer sequence starting at the given offset."""
+        self.offset = offset
+        super().__init__(**kwargs)
 
-        Typically called as:
+    def check_key(self, key):
+        """Check the given key is correct knowing the sequence offset."""
+        if key < self.offset:
+            raise IndexError(
+                f"{type(self).__name__} starts at offset {self.offset}, not {key}."
+            )
 
-            IntegerSequence(function, name=function.__name__, doc=function.__doc__)
+    def check_slice(self, key: slice) -> slice:
+        """Check if the given slice is correct knowing the sequence offset.
 
-        if the sequence is implemented by a generator function.
+        Returns a new slice object taking the offset into account.
         """
-        self.name = name
-        self.doc = doc
+        start = key.start or 0
+        if key.stop is None:
+            raise IndexError("Infinite slices of sequences is not implemented yet.")
+        if key.start is None and self.offset != 0:
+            raise IndexError(
+                f"Not providing a start index for {type(self).__name__} is "
+                f"ambiguous, as it starts at offset {self.offset}."
+            )
+        if start < self.offset:
+            raise IndexError(
+                f"{type(self).__name__} starts at offset {self.offset}, not {start}."
+            )
+        return slice(start - self.offset, key.stop - self.offset, key.step)
+
+    @overload
+    def __getitem__(self, key: int) -> int:
+        """Return a value from an integer sequence."""
+
+    @overload
+    def __getitem__(self, key: slice) -> Sequence[int]:
+        """Return a slice from an integer sequence."""
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
+        """Return a slice or a value from an integer sequence."""
+        raise NotImplementedError
+
+
+class IntegerSequenceFromGenerator(IntegerSequence):
+    """IntegerSequence based on a generator.
+
+    Can be used like:
+
+    >>> s = IntegerSequenceFromGenerator(source=count)
+    >>> s[:10]
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    """
+
+    def __init__(self, source: SerieGenerator, **kwargs) -> None:
+        """Build a new sequence."""
         self._source = source
         self._source_iterator = iter(source())
         self._known: List[int] = []
+        super().__init__(**kwargs)
 
     def __iter__(self) -> Iterator[int]:
         """Iterate over an integer sequence."""
@@ -96,21 +141,56 @@ class IntegerSequence:
     def __getitem__(self, key: slice) -> Sequence[int]:
         """Return a slice from an integer sequence."""
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:  # type: ignore
         """Return a value from the sequence (or a slice of it)."""
         if isinstance(key, slice):
-            if key.start is not None and key.start < 0:
-                raise ValueError("Expected a non-negative indice")
+            key = self.check_slice(key)
             self._extend(key.stop)
-            return self._known[key.start : key.stop]
-        if key < 0:
-            raise ValueError("Expected a non-negative indice")
+            return self._known[key]
+        self.check_key(key)
         try:
-            return next(iter(self._source(start=key)))
+            return next(iter(self._source(start=key - self.offset)))
         except TypeError:
             pass
         self._extend(key + 1)
-        return self._known[key]
+        return self._known[key - self.offset]
+
+
+class IntegerSequenceFromFunction(
+    IntegerSequence
+):  # pylint: disable=too-few-public-methods
+    """IntegerSequence based on a function.
+
+    Can be used like:
+
+    >>> s = IntegerSequenceFromFunction(source=lambda x: x)
+    >>> s[:10]
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    """
+
+    def __init__(self, source: Callable[[int], int], **kwargs) -> None:
+        """Build a new sequence."""
+        self._source = lru_cache(maxsize=4096)(source)
+        self._known: List[int] = []
+        super().__init__(**kwargs)
+
+    @overload
+    def __getitem__(self, key: int) -> int:
+        """Return a value from an integer sequence."""
+
+    @overload
+    def __getitem__(self, key: slice) -> Sequence[int]:
+        """Return a slice from an integer sequence."""
+
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:  # type: ignore
+        """Return a value from the sequence (or a slice of it)."""
+        if isinstance(key, slice):
+            self.check_slice(key)
+            return [
+                self._source(i) for i in range(key.start or 0, key.stop, key.step or 1)
+            ]
+        self.check_key(key)
+        return self._source(key)
 
 
 class OEISRegistry:
@@ -137,22 +217,46 @@ class OEISRegistry:
         - ...
         """
         for name, sequence in sorted(self.series.items(), key=lambda kvp: kvp[0]):
-            if sequence.doc:
-                print("-", name, sequence.doc.replace("\n", " ").replace("     ", " "))
+            if sequence.__doc__:
+                print(
+                    "-", name, sequence.__doc__.replace("\n", " ").replace("     ", " ")
+                )
 
-    def __call__(self, function: SerieGenerator) -> IntegerSequence:
-        """Register a new integer sequence in the registry."""
-        wrapped = IntegerSequence(
-            function, name=function.__name__, doc=function.__doc__
-        )
-        self.series[function.__name__] = wrapped
+    def from_(self, wrapper_type, to_wrap, offset=0):
+        """Register a new integer sequence, wrapping it in wrapper_type."""
+        wrapped = type(
+            to_wrap.__name__,
+            (wrapper_type,),
+            {"__doc__": to_wrap.__doc__},
+        )(to_wrap, offset=offset)
+        self.series[to_wrap.__name__] = wrapped
         return wrapped
+
+    def from_function(
+        self, offset=0
+    ) -> Callable[[Callable[[int], int]], IntegerSequenceFromFunction]:
+        """Register a new integer sequence, implemented as a function."""
+
+        def wrapper(function: Callable[[int], int]):
+            return self.from_(IntegerSequenceFromFunction, function, offset)
+
+        return wrapper
+
+    def from_generator(
+        self, offset=0
+    ) -> Callable[[SerieGenerator], IntegerSequenceFromGenerator]:
+        """Register a new integer sequence, implemented as a generator."""
+
+        def wrapper(function: SerieGenerator) -> IntegerSequenceFromGenerator:
+            return self.from_(IntegerSequenceFromGenerator, function, offset)
+
+        return wrapper
 
 
 oeis = OEISRegistry()
 
 
-@oeis
+@oeis.from_generator(offset=1)
 def A181391() -> Iterable[int]:
     """Van Eck's sequence.
 
@@ -170,52 +274,47 @@ def A181391() -> Iterable[int]:
         cur_value = next_value
 
 
-@oeis
-def A006577() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A006577(n: int) -> int:
     """Give the number of halving and tripling steps to reach 1 in '3x+1' problem."""
-
-    def steps(n: int) -> int:
-        if n == 1:
-            return 0
-        x = 0
-        while True:
-            if n % 2 == 0:
-                n //= 2
-            else:
-                n = 3 * n + 1
-            x += 1
-            if n < 2:
-                break
-        return x
-
-    return (steps(n) for n in count())
+    if n == 1:
+        return 0
+    x = 0
+    while True:
+        if n % 2 == 0:
+            n //= 2
+        else:
+            n = 3 * n + 1
+        x += 1
+        if n < 2:
+            break
+    return x
 
 
-@oeis
-def A000290() -> Iterable[int]:
+@oeis.from_function()
+def A000290(n: int) -> int:
     """Squares numbers: a(n) = n^2."""
-    return (n ** 2 for n in count())
+    return n ** 2
 
 
-@oeis
-def A000079() -> Iterable[int]:
+@oeis.from_function()
+def A000079(n: int) -> int:
     """Powers of 2: a(n) = 2^n."""
-    return (2 ** n for n in count())
+    return 2 ** n
 
 
-@oeis
-def A001221() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A001221(n: int) -> int:
     """omage(n).
 
     Number of distinct primes dividing n.
     """
     from sympy.ntheory import primefactors
 
-    for n in count(1):
-        yield len(primefactors(n))
+    return len(primefactors(n))
 
 
-@oeis
+@oeis.from_generator()
 def A000045() -> Iterable[int]:
     """Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."""
     a, b = (0, 1)
@@ -225,98 +324,82 @@ def A000045() -> Iterable[int]:
         yield a
 
 
-@oeis
+@oeis.from_generator()
 def A115020() -> Iterable[int]:
     """Count backwards from 100 in steps of 7."""
     for i in range(100, 0, -7):
         yield i
 
 
-@oeis
-def A000040() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A000040(n: int) -> int:
     """Primes number."""
     from sympy import sieve
 
-    for i in count(1):
-        yield sieve[i]
+    return sieve[n]
 
 
-@oeis
-def A023811() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A023811(n: int) -> int:
     """Largest metadrome.
 
     (number with digits in strict ascending order) in base n.
     """
-
-    def largest_metadrome(n: int) -> int:
-        result = 0
-        for i, j in enumerate(range(n - 2, -1, -1), start=1):
-            result += i * n ** j
-        return result
-
-    for n in count():
-        yield largest_metadrome(n)
+    result = 0
+    for i, j in enumerate(range(n - 2, -1, -1), start=1):
+        result += i * n ** j
+    return result
 
 
-@oeis
-def A000010() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A000010(n: int) -> int:
     """Euler totient function phi(n): count numbers <= n and prime to n."""
-
-    def phi(n: int) -> int:
-        numbers = []
-        i = 0
-        for i in range(n):
-            if math.gcd(i, n) == 1:
-                numbers.append(i)
-        return len(numbers)
-
-    return (phi(x) for x in count())
+    numbers = []
+    i = 0
+    for i in range(n):
+        if math.gcd(i, n) == 1:
+            numbers.append(i)
+    return len(numbers)
 
 
-@oeis
-def A000142() -> Iterable[int]:
+@oeis.from_function()
+def A000142(n: int) -> int:
     """Factorial numbers: n! = 1*2*3*4*...*n.
 
     (order of symmetric group S_n, number of permutations of n letters).
     """
-    return (factorial(i) for i in count())
+    return math.factorial(n)
 
 
-@oeis
-def A000217() -> Iterable[int]:
+@oeis.from_function()
+def A000217(i: int):
     """Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."""
-    for i in count():
-        if i + 1 < 2:
-            yield 0
-        else:
-            yield factorial(i + 1) // factorial(2) // factorial((i + 1) - 2)
+    if i < 1:
+        return 0
+    return math.factorial(i + 1) // math.factorial(2) // math.factorial((i + 1) - 2)
 
 
-@oeis
-def A008592() -> Iterable[int]:
+@oeis.from_function()
+def A008592(n: int) -> int:
     """Multiples of 10: a(n) = 10 * n."""
-    return (10 * n for n in count())
+    return 10 * n
 
 
-@oeis
-def A000041() -> Iterable[int]:
+@oeis.from_function()
+def A000041(n: int) -> int:
     """Parittion numbers.
 
     a(n) is the number of partitions of n (the partition numbers).
     """
-
-    def partitions(n: int) -> int:
-        parts = [0] * (n + 1)
-        parts[0] = 1
-        for value in range(1, n + 1):
-            for j in range(value, n + 1):
-                parts[j] += parts[j - value]
-        return parts[n]
-
-    return (partitions(n) for n in count())
+    parts = [0] * (n + 1)
+    parts[0] = 1
+    for value in range(1, n + 1):
+        for j in range(value, n + 1):
+            parts[j] += parts[j - value]
+    return parts[n]
 
 
-@oeis
+@oeis.from_generator(offset=1)
 def A001220() -> Iterable[int]:
     """Wieferich primes: primes p such that p^2 divides 2^(p-1) - 1."""
     yield 1093
@@ -327,99 +410,71 @@ def A001220() -> Iterable[int]:
     #         yield i
 
 
-@oeis
-def A008587(start: int = 0) -> Iterable[int]:
+@oeis.from_function()
+def A008587(n: int) -> int:
     """Multiples of 5."""
-    return (n * 5 for n in count(start))
+    return n * 5
 
 
-@oeis
-def A008589(start: int = 0) -> Iterable[int]:
+@oeis.from_function()
+def A008589(n: int) -> int:
     """Multiples of 7."""
-    return (n * 7 for n in count(start))
+    return n * 7
 
 
-@oeis
-def A000110() -> Iterable[int]:
+@oeis.from_function()
+def A000110(n: int) -> int:
     """Bell or exponential numbers.
 
     Number of ways to partition a set of n labeled elements.
     """
-    for n in count():
-        bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
-        bell[0][0] = 1
-        for i in range(1, n + 1):
-            bell[i][0] = bell[i - 1][i - 1]
-            for j in range(1, i + 1):
-                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
-        yield bell[n][0]
+    bell = [[0 for i in range(n + 1)] for j in range(n + 1)]
+    bell[0][0] = 1
+    for i in range(1, n + 1):
+        bell[i][0] = bell[i - 1][i - 1]
+        for j in range(1, i + 1):
+            bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
+    return bell[n][0]
 
 
-@oeis
-def A000203() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A000203(i: int) -> int:
     """Give sum of the divisors of n.
 
     a(n) = sigma(n). Also called sigma_1(n).
     """
-    for i in count(1):
-        divisors = []
-        for j in range(int(math.sqrt(i)) + 1):
-            if j == 0:
-                continue
-            if i % j == 0:
-                if i / j == j:
-                    divisors.append(j)
-                else:
-                    divisors.append(j)
-                    divisors.append(i // j)
-        yield int(sum(divisors))
+    divisors = []
+    for j in range(int(math.sqrt(i)) + 1):
+        if j == 0:
+            continue
+        if i % j == 0:
+            if i / j == j:
+                divisors.append(j)
+            else:
+                divisors.append(j)
+                divisors.append(i // j)
+    return int(sum(divisors))
 
 
-@oeis
-def A000004() -> Iterable[int]:
+@oeis.from_function()
+def A000004(n: int) -> int:  # pylint: disable=unused-argument
     """Return an infinite sequence of 0."""
-    while True:
-        yield 0
+    return 0
 
 
-@oeis
-def A001246() -> Iterable[int]:
+@oeis.from_function()
+def A001246(n: int) -> int:
     """Squares of Catalan numbers."""
-
-    def catalan(n: int) -> int:
-        if n in (0, 1):
-            return 1
-        catalan = [0 for i in range(n + 1)]
-        catalan[0] = 1
-        catalan[1] = 1
-        for i in range(2, n + 1):
-            catalan[i] = 0
-            for j in range(i):
-                catalan[i] = catalan[i] + catalan[j] * catalan[i - j - 1]
-        return catalan[n]
-
-    for i in count():
-        yield catalan(i) ** 2
+    return A000108[n] ** 2  # pylint: disable=unsubscriptable-object
 
 
-@oeis
-def A001247() -> Iterable[int]:
+@oeis.from_function()
+def A001247(n: int) -> int:
     """Squares of Bell number."""
-
-    def bellNumber(start: int) -> int:
-        bell = [[0 for i in range(start + 1)] for j in range(start + 1)]
-        bell[0][0] = 1
-        for i in range(1, start + 1):
-            bell[i][0] = bell[i - 1][i - 1]
-            for j in range(1, i + 1):
-                bell[i][j] = bell[i - 1][j - 1] + bell[i][j - 1]
-        return bell[start][0]
-
-    for i in count():
-        yield bellNumber(i) ** 2
+    return A000110[n] ** 2  # pylint: disable=unsubscriptable-object
 
 
-@oeis
+@oeis.from_generator()
 def A133058() -> Iterable[int]:
     """« Fly straight, dammit » sequence.
 
@@ -438,51 +493,52 @@ def A133058() -> Iterable[int]:
             yield last
 
 
-@oeis
-def A000005() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A000005(i: int) -> int:
     """d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."""
-    for i in count(1):
-        divisors = 0
-        for j in range(int(math.sqrt(i)) + 1):
-            if j == 0:
-                continue
-            if i % j == 0:
-                if i / j == j:
-                    divisors += 1
-                else:
-                    divisors += 2
-        yield divisors
+    divisors = 0
+    for j in range(int(math.sqrt(i)) + 1):
+        if j == 0:
+            continue
+        if i % j == 0:
+            if i / j == j:
+                divisors += 1
+            else:
+                divisors += 2
+    return divisors
 
 
-@oeis
-def A000108() -> Iterable[int]:
+@oeis.from_function()
+def A000108(i: int) -> int:
     """Catalan numbers: C(n) = binomial(2n,n)/(n+1) = (2n)!/(n!(n+1)!).
 
     Also called Segner numbers.
     """
-    for i in count():
-        r = (factorial(2 * i) // factorial(i) // factorial(2 * i - i)) / (i + 1)
-        yield int(r)
+    return (
+        math.factorial(2 * i)
+        // math.factorial(i)
+        // math.factorial(2 * i - i)
+        // (i + 1)
+    )
 
 
-@oeis
-def A007953() -> Iterable[int]:
+@oeis.from_function()
+def A007953(n: int) -> int:
     """Digital sum (i.e., sum of digits) of n; also called digsum(n)."""
-    for n in count():
-        yield sum(int(d) for d in str(n))
+    return sum(int(d) for d in str(n))
 
 
-@oeis
-def A000120() -> Iterable[int]:
+@oeis.from_function()
+def A000120(n: int) -> int:
     """1's-counting sequence.
 
     number of 1's in binary expansion of n (or the binary weight of
     n).
     """
-    return ("{:b}".format(n).count("1") for n in count())
+    return "{:b}".format(n).count("1")
 
 
-@oeis
+@oeis.from_generator(offset=1)
 def A001622() -> Iterable[int]:
     """Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."""
     with localcontext() as ctx:
@@ -492,72 +548,76 @@ def A001622() -> Iterable[int]:
             yield math.floor(tau * 10 ** n) % 10
 
 
-@oeis
-def A007947(start: int = 0) -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A007947(i: int) -> int:
     """Largest squarefree number dividing n.
 
     The squarefree kernel of n, rad(n), radical of n.
     """
     from sympy.ntheory import primefactors
 
-    start += 1
-    for i in count(start):
-        if i < 2:
-            yield 1
-        else:
-            yield reduce(lambda x, y: x * y, primefactors(i))
+    if i < 2:
+        return 1
+    return reduce(lambda x, y: x * y, primefactors(i))
 
 
-@oeis
-def A000326() -> Iterable[int]:
+@oeis.from_function()
+def A000326(n: int) -> int:
     """Pentagonal numbers: a(n) = n*(3*n-1)/2."""
-    return (n * (3 * n - 1) // 2 for n in count())
+    return n * (3 * n - 1) // 2
 
 
-@oeis
-def A165736() -> Iterable[int]:
+@oeis.from_function(offset=1)
+def A165736(n: int) -> int:
     """Give n^n^n^... modulo 10^10."""
-    n = 1
-    while True:
-        x = n
-        for t in range(1, 11):
-            x = pow(n, x, pow(10, t))
-        yield x
-        n = n + 1
+    x = n
+    for t in range(1, 11):
+        x = pow(n, x, pow(10, t))
+    return x
 
 
-@oeis
+@oeis.from_generator(offset=1)
 def A001462() -> Iterable[int]:
-    """Give n terms of Golomb sequence."""
+    """Golomb sequence."""
+    sequence = [0, 1, 2, 2]
+    for term in sequence[1:]:
+        yield term
+    n = 3
+    while True:
+        new_terms = [n for i in range(sequence[n])]
+        for term in new_terms:
+            yield term
+        sequence.extend(new_terms)
+        n += 1
 
-    @lru_cache()
-    def findGolomb(n: int) -> int:
-        if n == 1:
-            return 1
-        return 1 + findGolomb(n - findGolomb(findGolomb(n - 1)))
 
-    return (findGolomb(n) for n in count(1))
-
-
-@oeis
-def A004767() -> Iterable[int]:
+@oeis.from_function()
+def A004767(n: int) -> int:
     """Integers of a(n) = 4*n + 3."""
-    return (4 * n + 3 for n in count())
+    return 4 * n + 3
 
 
-@oeis
-def A004086() -> Iterable[int]:
-    """Digit reversal of n."""
+@oeis.from_function()
+def A004086(i: int) -> int:
+    """Digit reversal of i."""
+    result = 0
+    while i > 0:
+        unit = i % 10
+        result = result * 10 + unit
+        i = i // 10
+    return result
 
-    def reverse(n: int) -> int:
-        result = 0
-        while n > 0:
-            unit = n % 10
-            result = result * 10 + unit
-            n = n // 10
-        return result
 
-    return (reverse(n) for n in count())
+@oeis.from_generator(offset=1)
+def A001969() -> Iterable[int]:
+    """Evil numbers: numbers with an even number of 1's in their binary expansion."""
+    return (i for i in count() if f"{i:b}".count("1") % 2 == 0)
+
+
+@oeis.from_function()
+def A070939(i: int = 0) -> int:
+    """Length of binary representation of n."""
+    return len(f"{i:b}")
 
 
 def main() -> None:  # pylint: disable=too-many-branches
@@ -569,17 +629,28 @@ def main() -> None:  # pylint: disable=too-many-branches
         return
 
     if args.random:
-        args.sequence = choice(list(oeis.series.values())).name
+        args.sequence = choice(list(oeis.series.keys()))
 
     if not args.sequence:
-        print("No sequence given, please see oeis --help, or try oeis --random")
+        print(
+            "No sequence given, please see oeis --help, or try oeis --random",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     if args.sequence not in oeis.series:
         print("Unimplemented serie", file=sys.stderr)
         sys.exit(1)
 
-    serie = oeis.series[args.sequence][args.start : args.stop]
+    sequence = oeis.series[args.sequence]
+    if args.start is None:
+        args.start = sequence.offset
+
+    if args.start < sequence.offset:
+        print(f"{args.sequence} starts at offset {sequence.offset}", file=sys.stderr)
+        sys.exit(1)
+
+    serie = sequence[args.start : args.stop]
 
     if args.plot:  # pragma: no cover
         import matplotlib.pyplot as plt
@@ -597,7 +668,7 @@ def main() -> None:  # pylint: disable=too-many-branches
         plt.show()
     else:
         print("#", args.sequence, end="\n\n")
-        print(oeis.series[args.sequence].doc, end="\n\n")
+        print(oeis.series[args.sequence].__doc__, end="\n\n")
         print(*serie, sep=", ")
 
     if args.file:
@@ -610,20 +681,3 @@ def main() -> None:  # pylint: disable=too-many-branches
 
 if __name__ == "__main__":
     main()
-
-
-@oeis
-def A001969(start: int = 0) -> Iterable[int]:
-    """Evil numbers: numbers with an even number of 1's in their binary expansion."""
-    for i in count(start):
-        binary = bin(i)
-        setBits = [ones for ones in binary[2:] if ones == "1"]
-        if (len(setBits) % 2) == 0:
-            yield i
-
-
-@oeis
-def A070939(start: int = 0) -> Iterable[int]:
-    """Length of binary representation of n."""
-    for i in count(start):
-        yield len(format(i, "b"))

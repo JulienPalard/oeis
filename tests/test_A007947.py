@@ -5,7 +5,7 @@ from functools import reduce
 
 
 def test_sequence():
-    assert A007947[:20] == [
+    assert A007947[1:21] == [
         1,
         2,
         3,
@@ -29,9 +29,9 @@ def test_sequence():
     ]
 
 
-@given(integers(min_value=0, max_value=100), integers(min_value=1, max_value=100))
+@given(integers(min_value=1, max_value=100), integers(min_value=1, max_value=100))
 @settings(deadline=None)
 def test_A007947(start, stop):
     composite = reduce(lambda x, y: x * y, A000040[start : start + stop], 1)
     expected = reduce(lambda x, y: x * y, set(A000040[start : start + stop]), 1)
-    assert A007947[composite - 1] == expected
+    assert A007947[composite] == expected
