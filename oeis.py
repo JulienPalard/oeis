@@ -17,6 +17,8 @@ from typing import (
 )
 import sys
 
+# Version format is YYYY.MM.DD (https://calver.org/)
+__version__ = "2021.1.3"
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
