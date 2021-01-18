@@ -52,7 +52,7 @@ def test_iteration():
 
 
 def test_get_by_name():
-    oeis["A001220"][1] == A001220[1]
+    assert oeis["A001220"][1] == A001220[1]
 
 
 def test_out_of_offset():
