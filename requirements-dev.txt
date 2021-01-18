@@ -12,6 +12,7 @@ astroid==2.4.2
     # via pylint
 attrs==20.3.0
     # via
+    #   flake8-bugbear
     #   hypothesis
     #   pytest
 black==20.8b1
@@ -30,8 +31,12 @@ filelock==3.0.12
     # via
     #   tox
     #   virtualenv
-flake8==3.8.4
+flake8-bugbear==20.11.1
     # via -r requirements-dev.in
+flake8==3.8.4
+    # via
+    #   -r requirements-dev.in
+    #   flake8-bugbear
 hypothesis==5.41.4
     # via -r requirements-dev.in
 iniconfig==1.1.1
@@ -80,6 +85,8 @@ py==1.9.0
     #   tox
 pycodestyle==2.6.0
     # via flake8
+pydocstyle==5.1.1
+    # via -r requirements-dev.in
 pyflakes==2.2.0
     # via flake8
 pylint==2.6.0
@@ -103,6 +110,8 @@ six==1.15.0
     #   python-dateutil
     #   tox
     #   virtualenv
+snowballstemmer==2.0.0
+    # via pydocstyle
 sortedcontainers==2.3.0
     # via hypothesis
 sympy==1.7
