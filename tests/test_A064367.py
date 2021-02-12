@@ -1,3 +1,5 @@
+from hypothesis import given
+from hypothesis.strategies import integers
 from oeis import A064367
 
 
@@ -24,3 +26,36 @@ def test_sequence():
         13,
         48,
     ]
+
+
+@given(integers(min_value=1, max_value=10 ** 5))
+def test_residue(i):
+    """For a(n) with n <= 10^6, the following residues have not yet
+    appeared: {19, 22, 46, 52, 57, 65, 70, 77, 81, 85, 88, 90, 91,
+    103, 104, 106, 108, 115, 120, 122, 123, 125, ..., 15472319}
+    (14537148 terms). - Michael De Vlieger, Jul 16 2017.
+    """
+    A064367[i] not in {
+        19,
+        22,
+        46,
+        52,
+        57,
+        65,
+        70,
+        77,
+        81,
+        85,
+        88,
+        90,
+        91,
+        103,
+        104,
+        106,
+        108,
+        115,
+        120,
+        122,
+        123,
+        125,
+    }
