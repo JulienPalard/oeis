@@ -626,6 +626,19 @@ def A064367(n: int) -> int:
 
 
 @oeis.from_function()
+def A007089(n: int) -> int:
+    """Numbers in base 3."""
+    if n == 0:
+        return 0
+    digits: list = []
+    while n:
+        n, r = divmod(n, 3)
+        digits += str(r)
+    o = "".join(reversed(digits))
+    return int(o)
+
+
+@oeis.from_function()
 def A070939(i: int = 0) -> int:
     """Length of binary representation of n."""
     return len(f"{i:b}")
