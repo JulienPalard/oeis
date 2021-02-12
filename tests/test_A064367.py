@@ -1,4 +1,4 @@
-from hypothesis import given
+from hypothesis import given, settings
 from hypothesis.strategies import integers
 from oeis import A064367
 
@@ -28,6 +28,7 @@ def test_sequence():
     ]
 
 
+@settings(deadline=None)
 @given(integers(min_value=1, max_value=10 ** 5))
 def test_residue(i):
     """For a(n) with n <= 10^6, the following residues have not yet
