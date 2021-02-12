@@ -617,6 +617,14 @@ def A001969() -> Iterable[int]:
     return (i for i in count() if f"{i:b}".count("1") % 2 == 0)
 
 
+@oeis.from_function(offset=1)
+def A064367(n: int) -> int:
+    """Show result of a(n) = 2^n mod prime(n), or 2^n = k*prime(n) + a(n) with integer k."""
+    from sympy.ntheory import prime
+
+    return 2 ** n % prime(n)
+
+
 @oeis.from_function()
 def A070939(i: int = 0) -> int:
     """Length of binary representation of n."""
