@@ -36,7 +36,7 @@ def test_residue(i):
     103, 104, 106, 108, 115, 120, 122, 123, 125, ..., 15472319}
     (14537148 terms). - Michael De Vlieger, Jul 16 2017.
     """
-    A064367[i] not in {
+    assert A064367[i] not in {
         19,
         22,
         46,
