@@ -36,7 +36,7 @@ jobs:
         include:
           - tox:
               env: flake8,mypy,black,pylint,pydocstyle
-              python-version: '3.8'
+              python-version: '3.9'
             os: ubuntu-latest
 
     name: ${{ matrix.tox.env }} on ${{ matrix.os }}
