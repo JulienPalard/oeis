@@ -12,3 +12,4 @@ pylint
 pytest
 sympy
 tox
+numpy < 1.20.0  # Keep Python 3.6 compatibility for a while.
