@@ -555,6 +555,16 @@ def A007953(n: int) -> int:
     return sum(int(d) for d in str(n))
 
 
+@oeis.from_function(offset=1)
+def A265326(n: int) -> int:
+    """Give n-th prime minus its binary reversal."""
+    from sympy.ntheory import prime
+
+    p = prime(n)
+    pbinrev = int(bin(p)[:1:-1], 2)
+    return p - pbinrev
+
+
 @oeis.from_function()
 def A000120(n: int) -> int:
     """1's-counting sequence.
