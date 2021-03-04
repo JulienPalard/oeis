@@ -327,6 +327,18 @@ def A000045() -> Iterable[int]:
         yield a
 
 
+@oeis.from_function()
+def A000119(n: int) -> int:
+    """Give the number of representations of n as a sum of distinct Fibonacci numbers."""
+
+    def f(x, y, z):
+        if x < y:
+            return 0 ** x
+        return f(x - y, y + z, y) + f(x, y + z, y)
+
+    return f(n, 1, 1)
+
+
 @oeis.from_generator()
 def A115020() -> Iterable[int]:
     """Count backwards from 100 in steps of 7."""
