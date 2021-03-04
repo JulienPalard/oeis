@@ -339,6 +339,18 @@ def A000119(n: int) -> int:
     return f(n, 1, 1)
 
 
+@oeis.from_function()
+def A000121(n: int) -> int:
+    """Give Number of representations of n as a sum of Fibonacci numbers.
+
+    (1 is allowed twice as a part).
+    a(0) = 1; for n >= 1, a(n) = A000119(n) + A000119(n-1). - Peter Munn, Jan 19 2018
+    """
+    if n == 0:
+        return 1
+    return A000119[n] + A000119[n - 1]
+
+
 @oeis.from_generator()
 def A115020() -> Iterable[int]:
     """Count backwards from 100 in steps of 7."""
