@@ -623,6 +623,12 @@ def A004086(i: int) -> int:
     return result
 
 
+@oeis.from_function(offset=0)
+def A008588(i: int) -> int:
+    """Nonnegative multiples of 6."""
+    return i * 6
+
+
 @oeis.from_generator(offset=1)
 def A001969() -> Iterable[int]:
     """Evil numbers: numbers with an even number of 1's in their binary expansion."""
