@@ -73,7 +73,7 @@ packaging==20.9
     #   tox
 pathspec==0.8.1
     # via black
-pillow==8.1.0
+pillow==8.1.1
     # via matplotlib
 pip-tools==5.5.0
     # via -r requirements-dev.in
