@@ -1,0 +1,46 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "04:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: pylint
+    versions:
+    - 2.7.2
+  - dependency-name: mypy
+    versions:
+    - "0.800"
+    - "0.812"
+  - dependency-name: hypothesis
+    versions:
+    - 6.0.2
+    - 6.1.1
+    - 6.3.4
+  - dependency-name: coverage
+    versions:
+    - 5.3.1
+    - "5.4"
+    - "5.5"
+  - dependency-name: tox
+    versions:
+    - 3.21.3
+    - 3.22.0
+  - dependency-name: pytest
+    versions:
+    - 6.2.1
+    - 6.2.2
+  - dependency-name: matplotlib
+    versions:
+    - 3.3.4
+  - dependency-name: pip-tools
+    versions:
+    - 5.5.0
+  - dependency-name: sympy
+    versions:
+    - 1.7.1
+  - dependency-name: isort
+    versions:
+    - 5.7.0
