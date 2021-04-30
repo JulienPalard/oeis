@@ -88,7 +88,7 @@ True
 
 ## Contributing
 
-We are using the [black]((https://github.com/psf/black) coding style,
+We are using the [black](https://github.com/psf/black) coding style,
 and `tox` to run some tests, so after creating a `venv`, installing
 dev requirements via `pip install requirements-dev.txt`, run `tox` or
 `tox -p auto` (parallel), it should look like this:
