@@ -73,9 +73,11 @@ packaging==20.9
     #   tox
 pathspec==0.8.1
     # via black
+pep517==0.10.0
+    # via pip-tools
 pillow==8.1.1
     # via matplotlib
-pip-tools==5.5.0
+pip-tools==6.1.0
     # via -r requirements-dev.in
 pluggy==0.13.1
     # via
@@ -118,6 +120,7 @@ sympy==1.7.1
 toml==0.10.2
     # via
     #   black
+    #   pep517
     #   pylint
     #   pytest
     #   tox
