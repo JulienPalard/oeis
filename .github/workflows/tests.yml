@@ -9,6 +9,12 @@ on:
       - master
 
 jobs:
+  debug_github:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          env
+          wget -qO- https://pypi.org/simple/matplotlib/
   build_ubuntu:
     strategy:
       matrix:
