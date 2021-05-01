@@ -87,7 +87,7 @@ py==1.10.0
     #   tox
 pycodestyle==2.6.0
     # via flake8
-pydocstyle==5.1.1
+pydocstyle==6.0.0
     # via -r requirements-dev.in
 pyflakes==2.2.0
     # via flake8
