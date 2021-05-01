@@ -18,15 +18,13 @@ jobs:
           # can run coverage independently for each version.
           #
           # Our tox.ini can combine coverage from multiple Python
-          # versions, like: `tox -e py36,py37,py38,py39,coverage`
+          # versions, like: `tox -e py37,py38,py39,coverage`
           # which is usefull if we need an `if sys.version >= ...`.
           #
           # But it would require some adjustment in this github
           # workflow, like using artifacts to gather the coverage
           # files, or installing multiple Pythons to let tox combine
           # them.
-          - env: py36,coverage
-            python-version: '3.6'
           - env: py37,coverage
             python-version: '3.7'
           - env: py38,coverage

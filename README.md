@@ -98,13 +98,13 @@ $ tox -p auto
 ✔ OK mypy in 11.807 seconds
 ✔ OK flake8 in 12.024 seconds
 ✔ OK black in 12.302 seconds
-✔ OK py36 in 13.776 seconds
 ✔ OK py37 in 15.344 seconds
 ✔ OK py38 in 21.041 seconds
+✔ OK py39 in 21.042 seconds
 ______________________________________ summary ________________________________________
-  py36: commands succeeded
   py37: commands succeeded
   py38: commands succeeded
+  py39: commands succeeded
   flake8: commands succeeded
   mypy: commands succeeded
   black: commands succeeded
