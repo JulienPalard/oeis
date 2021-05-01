@@ -15,7 +15,7 @@ attrs==20.3.0
     #   flake8-bugbear
     #   hypothesis
     #   pytest
-black==20.8b1
+black==21.4b2
     # via -r requirements-dev.in
 click==7.1.2
     # via
@@ -124,13 +124,9 @@ toml==0.10.2
 tox==3.22.0
     # via -r requirements-dev.in
 typed-ast==1.4.2
-    # via
-    #   black
-    #   mypy
+    # via mypy
 typing-extensions==3.7.4.3
-    # via
-    #   black
-    #   mypy
+    # via mypy
 virtualenv==20.4.2
     # via tox
 wrapt==1.12.1
