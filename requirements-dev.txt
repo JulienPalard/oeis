@@ -124,7 +124,7 @@ toml==0.10.2
     #   pylint
     #   pytest
     #   tox
-tox==3.23.0
+tox==3.23.1
     # via -r requirements-dev.in
 typed-ast==1.4.3
     # via mypy
