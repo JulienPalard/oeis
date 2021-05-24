@@ -37,7 +37,7 @@ flake8==3.9.1
     # via
     #   -r requirements-dev.in
     #   flake8-bugbear
-hypothesis==6.10.1
+hypothesis==6.13.4
     # via -r requirements-dev.in
 iniconfig==1.1.1
     # via pytest
