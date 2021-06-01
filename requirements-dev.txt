@@ -15,7 +15,7 @@ attrs==20.3.0
     #   flake8-bugbear
     #   hypothesis
     #   pytest
-black==21.4b2
+black==21.5b2
     # via -r requirements-dev.in
 click==7.1.2
     # via
