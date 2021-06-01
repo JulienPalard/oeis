@@ -1,15 +1,13 @@
+-r requirements.txt
 black
 coverage
 flake8
 flake8-bugbear
 hypothesis
 isort
-matplotlib
 mypy
 pip-tools
 pydocstyle
 pylint
 pytest
-sympy
 tox
-numpy
