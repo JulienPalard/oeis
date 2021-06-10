@@ -1,4 +1,11 @@
 from oeis import A008587
+from hypothesis import given
+from hypothesis.strategies import integers
+
+
+@given(integers(min_value=0))
+def test_divisible_by_five(n):
+    assert A008587[n] % 5 == 0
 
 
 def test_A008587():
