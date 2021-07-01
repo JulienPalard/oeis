@@ -12,7 +12,7 @@ matplotlib==3.4.2
     # via oeis (pyproject.toml)
 mpmath==1.2.1
     # via sympy
-numpy==1.20.3
+numpy==1.21.0
     # via matplotlib
 pillow==8.2.0
     # via matplotlib
