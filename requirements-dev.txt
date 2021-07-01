@@ -33,13 +33,13 @@ filelock==3.0.12
     # via
     #   tox
     #   virtualenv
-flake8-bugbear==21.4.3
-    # via -r requirements-dev.in
 flake8==3.9.2
     # via
     #   -r requirements-dev.in
     #   flake8-bugbear
-hypothesis==6.13.10
+flake8-bugbear==21.4.3
+    # via -r requirements-dev.in
+hypothesis==6.14.0
     # via -r requirements-dev.in
 iniconfig==1.1.1
     # via pytest
@@ -63,12 +63,12 @@ mpmath==1.2.1
     # via
     #   -r requirements.txt
     #   sympy
+mypy==0.812
+    # via -r requirements-dev.in
 mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.812
-    # via -r requirements-dev.in
 numpy==1.20.3
     # via
     #   -r requirements.txt
