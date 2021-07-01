@@ -33,12 +33,12 @@ filelock==3.0.12
     # via
     #   tox
     #   virtualenv
-flake8-bugbear==21.4.3
-    # via -r requirements-dev.in
 flake8==3.9.2
     # via
     #   -r requirements-dev.in
     #   flake8-bugbear
+flake8-bugbear==21.4.3
+    # via -r requirements-dev.in
 hypothesis==6.13.10
     # via -r requirements-dev.in
 iniconfig==1.1.1
@@ -63,12 +63,12 @@ mpmath==1.2.1
     # via
     #   -r requirements.txt
     #   sympy
+mypy==0.812
+    # via -r requirements-dev.in
 mypy-extensions==0.4.3
     # via
     #   black
     #   mypy
-mypy==0.812
-    # via -r requirements-dev.in
 numpy==1.20.3
     # via
     #   -r requirements.txt
@@ -85,7 +85,7 @@ pillow==8.2.0
     # via
     #   -r requirements.txt
     #   matplotlib
-pip-tools==6.1.0
+pip-tools==6.2.0
     # via -r requirements-dev.in
 pluggy==0.13.1
     # via
@@ -144,8 +144,11 @@ typing-extensions==3.10.0.0
     # via mypy
 virtualenv==20.4.7
     # via tox
+wheel==0.36.2
+    # via pip-tools
 wrapt==1.12.1
     # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
+# setuptools
