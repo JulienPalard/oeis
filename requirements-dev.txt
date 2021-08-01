@@ -15,7 +15,7 @@ attrs==21.2.0
     #   pytest
 backports.entry-points-selectable==1.1.0
     # via virtualenv
-black==21.6b0
+black==21.7b0
     # via -r requirements-dev.in
 click==8.0.1
     # via
@@ -133,12 +133,13 @@ sympy==1.8
     # via -r requirements.txt
 toml==0.10.2
     # via
-    #   black
     #   mypy
     #   pep517
     #   pylint
     #   pytest
     #   tox
+tomli==1.2.0
+    # via black
 tox==3.23.1
     # via -r requirements-dev.in
 typing-extensions==3.10.0.0
