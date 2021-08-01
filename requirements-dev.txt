@@ -43,7 +43,7 @@ hypothesis==6.14.2
     # via -r requirements-dev.in
 iniconfig==1.1.1
     # via pytest
-isort==5.9.2
+isort==5.9.3
     # via
     #   -r requirements-dev.in
     #   pylint
