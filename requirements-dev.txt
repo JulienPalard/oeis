@@ -4,8 +4,6 @@
 #
 #    pip-compile requirements-dev.in
 #
-appdirs==1.4.4
-    # via black
 astroid==2.6.2
     # via pylint
 attrs==21.2.0
@@ -15,7 +13,7 @@ attrs==21.2.0
     #   pytest
 backports.entry-points-selectable==1.1.0
     # via virtualenv
-black==21.6b0
+black==21.8b0
     # via -r requirements-dev.in
 click==8.0.1
     # via
@@ -77,7 +75,7 @@ packaging==21.0
     # via
     #   pytest
     #   tox
-pathspec==0.8.1
+pathspec==0.9.0
     # via black
 pep517==0.10.0
     # via pip-tools
@@ -88,7 +86,9 @@ pillow==8.3.1
 pip-tools==6.2.0
     # via -r requirements-dev.in
 platformdirs==2.0.2
-    # via virtualenv
+    # via
+    #   black
+    #   virtualenv
 pluggy==0.13.1
     # via
     #   pytest
@@ -133,16 +133,19 @@ sympy==1.8
     # via -r requirements.txt
 toml==0.10.2
     # via
-    #   black
     #   mypy
     #   pep517
     #   pylint
     #   pytest
     #   tox
+tomli==1.2.1
+    # via black
 tox==3.23.1
     # via -r requirements-dev.in
 typing-extensions==3.10.0.0
-    # via mypy
+    # via
+    #   black
+    #   mypy
 virtualenv==20.5.0
     # via tox
 wheel==0.36.2
