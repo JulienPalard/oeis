@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements-dev.in
 #
-astroid==2.7.3
+astroid==2.8.0
     # via pylint
 attrs==21.2.0
     # via
@@ -104,7 +104,7 @@ pydocstyle==6.1.1
     # via -r requirements-dev.in
 pyflakes==2.3.1
     # via flake8
-pylint==2.10.2
+pylint==2.11.1
     # via -r requirements-dev.in
 pyparsing==2.4.7
     # via
@@ -146,8 +146,10 @@ tox==3.24.3
     # via -r requirements-dev.in
 typing-extensions==3.10.0.2
     # via
+    #   astroid
     #   black
     #   mypy
+    #   pylint
 virtualenv==20.7.2
     # via tox
 wheel==0.37.0
