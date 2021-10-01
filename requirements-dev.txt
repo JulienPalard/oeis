@@ -13,7 +13,7 @@ attrs==21.2.0
     #   pytest
 backports.entry-points-selectable==1.1.0
     # via virtualenv
-black==21.8b0
+black==21.9b0
     # via -r requirements-dev.in
 click==8.0.1
     # via
