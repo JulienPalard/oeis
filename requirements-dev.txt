@@ -142,7 +142,7 @@ tomli==1.2.1
     # via
     #   black
     #   pep517
-tox==3.24.3
+tox==3.24.4
     # via -r requirements-dev.in
 typing-extensions==3.10.0.2
     # via
