@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements-dev.in
 #
-astroid==2.7.3
+astroid==2.8.0
     # via pylint
 attrs==21.2.0
     # via
@@ -13,7 +13,7 @@ attrs==21.2.0
     #   pytest
 backports.entry-points-selectable==1.1.0
     # via virtualenv
-black==21.8b0
+black==21.9b0
     # via -r requirements-dev.in
 click==8.0.1
     # via
@@ -25,9 +25,9 @@ cycler==0.10.0
     # via
     #   -r requirements.txt
     #   matplotlib
-distlib==0.3.2
+distlib==0.3.3
     # via virtualenv
-filelock==3.0.12
+filelock==3.2.0
     # via
     #   tox
     #   virtualenv
@@ -35,9 +35,9 @@ flake8==3.9.2
     # via
     #   -r requirements-dev.in
     #   flake8-bugbear
-flake8-bugbear==21.4.3
+flake8-bugbear==21.9.2
     # via -r requirements-dev.in
-hypothesis==6.17.4
+hypothesis==6.23.1
     # via -r requirements-dev.in
 iniconfig==1.1.1
     # via pytest
@@ -79,13 +79,13 @@ pathspec==0.9.0
     # via black
 pep517==0.11.0
     # via pip-tools
-pillow==8.3.1
+pillow==8.3.2
     # via
     #   -r requirements.txt
     #   matplotlib
-pip-tools==6.2.0
+pip-tools==6.3.0
     # via -r requirements-dev.in
-platformdirs==2.3.0
+platformdirs==2.4.0
     # via
     #   black
     #   pylint
@@ -104,7 +104,7 @@ pydocstyle==6.1.1
     # via -r requirements-dev.in
 pyflakes==2.3.1
     # via flake8
-pylint==2.10.2
+pylint==2.11.1
     # via -r requirements-dev.in
 pyparsing==2.4.7
     # via
@@ -117,7 +117,7 @@ python-dateutil==2.8.2
     # via
     #   -r requirements.txt
     #   matplotlib
-regex==2021.8.28
+regex==2021.9.30
     # via black
 six==1.16.0
     # via
@@ -142,13 +142,15 @@ tomli==1.2.1
     # via
     #   black
     #   pep517
-tox==3.24.3
+tox==3.24.4
     # via -r requirements-dev.in
 typing-extensions==3.10.0.2
     # via
+    #   astroid
     #   black
     #   mypy
-virtualenv==20.7.2
+    #   pylint
+virtualenv==20.8.1
     # via tox
 wheel==0.37.0
     # via pip-tools
