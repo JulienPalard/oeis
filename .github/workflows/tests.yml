@@ -1,3 +1,5 @@
+---
+
 name: Tests
 
 on:
@@ -31,10 +33,12 @@ jobs:
             python-version: '3.8'
           - env: py39,coverage
             python-version: '3.9'
+          - env: py310,coverage
+            python-version: '3.10'
         include:
           - tox:
               env: flake8,mypy,black,pylint,pydocstyle
-              python-version: '3.9'
+              python-version: '3.10'
             os: ubuntu-latest
 
     name: ${{ matrix.tox.env }} on ${{ matrix.os }}
