@@ -19,7 +19,7 @@ click==8.0.1
     # via
     #   black
     #   pip-tools
-coverage==5.5
+coverage==6.1.1
     # via -r requirements-dev.in
 cycler==0.10.0
     # via
@@ -146,10 +146,8 @@ tox==3.24.4
     # via -r requirements-dev.in
 typing-extensions==3.10.0.2
     # via
-    #   astroid
     #   black
     #   mypy
-    #   pylint
 virtualenv==20.8.1
     # via tox
 wheel==0.37.0
