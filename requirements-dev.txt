@@ -83,7 +83,7 @@ pillow==8.3.2
     # via
     #   -r requirements.txt
     #   matplotlib
-pip-tools==6.3.0
+pip-tools==6.4.0
     # via -r requirements-dev.in
 platformdirs==2.4.0
     # via
@@ -146,10 +146,8 @@ tox==3.24.4
     # via -r requirements-dev.in
 typing-extensions==3.10.0.2
     # via
-    #   astroid
     #   black
     #   mypy
-    #   pylint
 virtualenv==20.8.1
     # via tox
 wheel==0.37.0
