@@ -14,7 +14,7 @@ mpmath==1.2.1
     # via sympy
 numpy==1.21.2
     # via matplotlib
-pillow==8.3.2
+pillow==8.4.0
     # via matplotlib
 pyparsing==2.4.7
     # via matplotlib
