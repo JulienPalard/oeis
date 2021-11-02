@@ -1,3 +1,4 @@
+import pytest
 from hypothesis import given, settings
 from hypothesis.strategies import integers
 from oeis import A064367
@@ -30,6 +31,7 @@ def test_sequence():
 
 @settings(deadline=None)
 @given(integers(min_value=1, max_value=10 ** 5))
+@pytest.mark.slow
 def test_residue(i):
     """For a(n) with n <= 10^6, the following residues have not yet
     appeared: {19, 22, 46, 52, 57, 65, 70, 77, 81, 85, 88, 90, 91,
