@@ -5,6 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/l/oeis.svg)](https://github.com/JulienPalard/oeis/blob/master/LICENSE)
 [![Tests](https://github.com/JulienPalard/oeis/workflows/Tests/badge.svg)](https://github.com/JulienPalard/oeis/actions?query=workflow%3ATests)
 
+
 ## Project
 
 This project is the implementation of a few sequences from the [OEIS](https://oeis.org).
@@ -88,23 +89,22 @@ True
 
 ## Contributing
 
-We are using the [black]((https://github.com/psf/black) coding style,
-and `tox` to run some tests, so after creating a `venv`, installing
-dev requirements via `pip install requirements-dev.txt`, run `tox` or
-`tox -p auto` (parallel), it should look like this:
+We are using the [black](https://github.com/psf/black) coding style,
+and `tox` to run some tests, so after creating a `venv` and having
+installed `tox` in it, run `tox -p auto` it should look like this:
 
 ```
 $ tox -p auto
 ✔ OK mypy in 11.807 seconds
 ✔ OK flake8 in 12.024 seconds
 ✔ OK black in 12.302 seconds
-✔ OK py36 in 13.776 seconds
 ✔ OK py37 in 15.344 seconds
 ✔ OK py38 in 21.041 seconds
+✔ OK py39 in 21.042 seconds
 ______________________________________ summary ________________________________________
-  py36: commands succeeded
   py37: commands succeeded
   py38: commands succeeded
+  py39: commands succeeded
   flake8: commands succeeded
   mypy: commands succeeded
   black: commands succeeded
@@ -191,3 +191,33 @@ def A008589() -> Iterable[int]:
     """Multiples of 7."""
     return (n * 7 for n in count(1))
 ```
+
+
+### Why requirements are not pinned?
+
+There's two kind of requirements projects usually pin:
+
+- The actual project dependencies (numpy, ...).
+- The test dependencies (pytest, ...).
+
+Anyway users will just `pip install` (or `apt install` or whatever)
+the project and expect it to work. If there's an incompatiliby with a
+dependency we need to know it and restrict it explicitly in
+`install_requires`.
+
+Pinning project dependencies is a lie: it works in the CI, but may not
+work in users environments.
+
+Pinning test dependencies looks comfortable as if the tests pass today
+they'll pass tomorrow, but it also mean running outdated linters most
+of the time.
+
+Finally pinning dependencies may just not be possible: there could be
+no set of frozen dependencies that work on every version of Python you
+want to test.
+
+So the idea is: Let's not pin anything and learn issues the hard way
+before the users find them.
+
+Yes it means the CI could break anytime. But it's better than a end
+user finding the bug.

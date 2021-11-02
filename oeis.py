@@ -583,7 +583,7 @@ def A000120(n: int) -> int:
     number of 1's in binary expansion of n (or the binary weight of
     n).
     """
-    return "{:b}".format(n).count("1")
+    return f"{n:b}".count("1")
 
 
 @oeis.from_generator(offset=1)
