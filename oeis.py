@@ -691,6 +691,10 @@ def A070939(i: int = 0) -> int:
     """Length of binary representation of n."""
     return len(f"{i:b}")
 
+@oeis.from_function()
+def A000201(n: int) -> int:
+    """Lower Wythoff sequence: a(n) = floor(n * phi), where phi = (1 + sqrt(5))/2 (golden ratio)"""
+    return (math.floor(n * (1 + math.sqrt(5))/2.0))
 
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
