@@ -327,6 +327,15 @@ def A000045() -> Iterable[int]:
         yield a
 
 
+@oeis.from_generator()
+def A000032() -> Iterable[int]:
+    """Lucas numbers beginning at 2: L(n) = L(n-1) + L(n-2), L(0) = 2, L(1) = 1."""
+    a, b = (2, 1)
+    while True:
+        yield a
+        a, b = b, a + b
+
+
 @oeis.from_function()
 def A000119(n: int) -> int:
     """Give the number of representations of n as a sum of distinct Fibonacci numbers."""
