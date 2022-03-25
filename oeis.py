@@ -297,13 +297,13 @@ def A006577(n: int) -> int:
 @oeis.from_function()
 def A000290(n: int) -> int:
     """Squares numbers: a(n) = n^2."""
-    return n ** 2
+    return n**2
 
 
 @oeis.from_function()
 def A000079(n: int) -> int:
     """Powers of 2: a(n) = 2^n."""
-    return 2 ** n
+    return 2**n
 
 
 @oeis.from_function(offset=1)
@@ -342,7 +342,7 @@ def A000119(n: int) -> int:
 
     def f(x, y, z):
         if x < y:
-            return 0 ** x
+            return 0**x
         return f(x - y, y + z, y) + f(x, y + z, y)
 
     return f(n, 1, 1)
@@ -383,7 +383,7 @@ def A023811(n: int) -> int:
     """
     result = 0
     for i, j in enumerate(range(n - 2, -1, -1), start=1):
-        result += i * n ** j
+        result += i * n**j
     return result
 
 
@@ -591,7 +591,7 @@ def A001622() -> Iterable[int]:
         ctx.prec = 99999
         tau = (1 + Decimal(5).sqrt()) / 2
         for n in count():
-            yield math.floor(tau * 10 ** n) % 10
+            yield math.floor(tau * 10**n) % 10
 
 
 @oeis.from_function(offset=1)
@@ -671,7 +671,7 @@ def A064367(n: int) -> int:
     """Show result of a(n) = 2^n mod prime(n), or 2^n = k*prime(n) + a(n) with integer k."""
     from sympy.ntheory import prime
 
-    return 2 ** n % prime(n)
+    return 2**n % prime(n)
 
 
 @oeis.from_function()
