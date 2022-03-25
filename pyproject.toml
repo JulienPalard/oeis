@@ -1,8 +1,45 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools >= 61", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
 ]
+
+[project]
+name = "oeis"
+description = "Implementation of a few integer sequences from the OEIS."
+readme = "README.md"
+license = {text = "MIT License"}
+authors = [
+    {name = "Julien Palard", email = "julien@palard.fr"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+]
+requires-python = ">= 3.7"
+dependencies = [
+    "matplotlib>=2<4",
+    "sympy>=1<2",
+]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/JulienPalard/oeis"
+
+[project.scripts]
+oeis = "oeis:main"
+
+[tool.setuptools]
+py-modules = [
+    "oeis",
+]
+include-package-data = false
+
+[tool.setuptools.dynamic.version]
+attr = "oeis.__version__"
