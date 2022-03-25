@@ -42,4 +42,4 @@ jobs:
           python -m pip install --upgrade tox
       - name: run ${{ matrix.tox.env }}
         run: |
-          tox -q -p auto
+          tox
