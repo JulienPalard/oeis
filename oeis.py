@@ -701,16 +701,6 @@ def A070939(i: int = 0) -> int:
     return len(f"{i:b}")
 
 
-@oeis.from_generator(offset=1)
-def A000396() -> Iterable[int]:
-    """Perfect numbers k: k is equal to the sum of the proper divisors of k."""
-    from sympy import divisor_sigma
-
-    for n in count(1):
-        if divisor_sigma(n) == 2*n:
-            yield n
-
-
 @oeis.from_function()
 def A001223(n: int) -> int:
     """Gaps between primes."""
