@@ -701,7 +701,7 @@ def A070939(i: int = 0) -> int:
     return len(f"{i:b}")
 
 
-@oeis.from_function()
+@oeis.from_function(offset=1)
 def A001223(n: int) -> int:
     """Gaps between primes."""
     return A000040[n + 1] - A000040[n]
@@ -709,14 +709,16 @@ def A001223(n: int) -> int:
 
 @oeis.from_generator(offset=1)
 def A002182() -> Iterable[int]:
-    """Highly composite numbers, definition (1): numbers n where d(n), 
-    the number of divisors of n (A000005), increases to a record."""
+    """Highly composite numbers.
+
+    numbers n where d(n), the number of divisors of n (A000005), increases to a record.
+    """
     record = 0
     from sympy import divisor_count
 
     yield 1
     for n in count(2, 2):
-        divisors = divisor_count(n) 
+        divisors = divisor_count(n)
         if divisors > record:
             record = divisors
             yield n
