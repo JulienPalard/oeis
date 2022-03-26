@@ -701,6 +701,37 @@ def A070939(i: int = 0) -> int:
     return len(f"{i:b}")
 
 
+@oeis.from_generator(offset=1)
+def A000396() -> Iterable[int]:
+    """Perfect numbers k: k is equal to the sum of the proper divisors of k."""
+    from sympy import divisor_sigma
+
+    for n in count(1):
+        if divisor_sigma(n) == 2*n:
+            yield n
+
+
+@oeis.from_function()
+def A001223(n: int) -> int:
+    """Gaps between primes."""
+    return A000040[n + 1] - A000040[n]
+
+
+@oeis.from_generator(offset=1)
+def A002182() -> Iterable[int]:
+    """Highly composite numbers, definition (1): numbers n where d(n), 
+    the number of divisors of n (A000005), increases to a record."""
+    record = 0
+    from sympy import divisor_count
+
+    yield 1
+    for n in count(2, 2):
+        divisors = divisor_count(n) 
+        if divisors > record:
+            record = divisors
+            yield n
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
