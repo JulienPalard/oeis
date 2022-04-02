@@ -724,6 +724,58 @@ def A002182() -> Iterable[int]:
             yield n
 
 
+@oeis.from_function()
+def A008586(n: int) -> int:
+    """Multiples of 4"""
+    return n * 4
+
+
+@oeis.from_function()
+def A008590(n: int) -> int:
+    """Multiples of 8"""
+    return n * 8
+
+
+@oeis.from_function()
+def A008591(n: int) -> int:
+    """Multiples of 9"""
+    return n * 9
+
+
+@oeis.from_function()
+def A000578(n: int) -> int:
+    """The cubes"""
+    return n ** 3
+
+
+@oeis.from_function()
+def A000583(n: int) -> int:
+    """Fourth powers"""
+    return n ** 4
+
+
+@oeis.from_function()
+def A000584(n: int) -> int:
+    """Fifth powers"""
+    return n ** 5
+
+
+@oeis.from_function()
+def A000196(n: int) -> int:
+    """Integer part of square root of n"""
+    return int(n ** 0.5)
+
+
+@oeis.from_function()
+def A028391(n: int) -> int:
+    """Number of nonsquares <= to n
+    
+    a(n) = n - floor(sqrt(n))
+    """
+    return (n - A000196[n])
+
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
