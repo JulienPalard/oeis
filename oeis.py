@@ -772,7 +772,7 @@ def A028391(n: int) -> int:
     
     a(n) = n - floor(sqrt(n))
     """
-    return (n - A000196[n])
+    return n - A000196[n]
 
 
 
