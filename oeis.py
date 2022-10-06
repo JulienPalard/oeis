@@ -694,14 +694,28 @@ def A002275(n: int) -> int:
         return 0
     return int("1" * n)
 
+
 @oeis.from_function()
-def A133613 (i):
+def A133613(i):
     """Last digits of the graham number."""
     x = 3
-    for t in range(1, i+2):
+    for t in range(1, i + 2):
         x = pow(3, x, pow(10, t))
-        z = x // pow(10, int(t-1))
+        z = x // pow(10, int(t - 1))
     return z
+
+
+@oeis.from_generator(offset=1)
+def A183613() -> Iterable[int]:
+    """Backward concatenation of A133613.
+
+    a(n) = 3^^(n+1) modulo 10^n.
+    """
+    concatenation = 0
+    for i in iter(A133613):
+        concatenation = concatenation * 10 + i
+        yield int(str(concatenation)[::-1])
+
 
 @oeis.from_function()
 def A070939(i: int = 0) -> int:
