@@ -7,7 +7,7 @@ from oeis import A000037
 
 
 def first_formula(n):
-    return n + floor(1/2 + sqrt(n))
+    return n + floor(1 / 2 + sqrt(n))
 
 
 @given(integers(min_value=1))
