@@ -30,4 +30,4 @@ def test_first_formula(n):
 
 def test_no_squares():
     """For example note that the squares 0, 1, 4, 9, 16 are not included."""
-    assert {0, 1, 4, 9, 16} & set(A000037[1:17]) == {}
+    assert {0, 1, 4, 9, 16} & set(A000037[1:17]) == set()
