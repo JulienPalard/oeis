@@ -259,6 +259,17 @@ class OEISRegistry:
 oeis = OEISRegistry()
 
 
+@oeis.from_function(offset=1)
+def A000037(n: int) -> int:
+    """Give Numbers that are not squares (or, the nonsquares).
+
+    a(n) = A000194(n) + n = floor(1/2 *(1 + sqrt(4*n-3))) + n. - Jaroslav Krizek, Jun 14 2009
+    """
+    from math import floor, sqrt
+
+    return floor(1 / 2 * (1 + sqrt(4 * n - 3))) + n
+
+
 @oeis.from_generator(offset=1)
 def A181391() -> Iterable[int]:
     """Van Eck's sequence.
