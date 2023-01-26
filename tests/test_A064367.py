@@ -30,7 +30,7 @@ def test_sequence():
 
 
 @settings(deadline=None)
-@given(integers(min_value=1, max_value=10 ** 5))
+@given(integers(min_value=1, max_value=10**5))
 @pytest.mark.slow
 def test_residue(i):
     """For a(n) with n <= 10^6, the following residues have not yet

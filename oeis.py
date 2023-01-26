@@ -308,13 +308,13 @@ def A006577(n: int) -> int:
 @oeis.from_function()
 def A000290(n: int) -> int:
     """Squares numbers: a(n) = n^2."""
-    return n ** 2
+    return n**2
 
 
 @oeis.from_function()
 def A000079(n: int) -> int:
     """Powers of 2: a(n) = 2^n."""
-    return 2 ** n
+    return 2**n
 
 
 @oeis.from_function(offset=1)
@@ -338,13 +338,22 @@ def A000045() -> Iterable[int]:
         yield a
 
 
+@oeis.from_generator()
+def A000032() -> Iterable[int]:
+    """Lucas numbers beginning at 2: L(n) = L(n-1) + L(n-2), L(0) = 2, L(1) = 1."""
+    a, b = (2, 1)
+    while True:
+        yield a
+        a, b = b, a + b
+
+
 @oeis.from_function()
 def A000119(n: int) -> int:
     """Give the number of representations of n as a sum of distinct Fibonacci numbers."""
 
     def f(x, y, z):
         if x < y:
-            return 0 ** x
+            return 0**x
         return f(x - y, y + z, y) + f(x, y + z, y)
 
     return f(n, 1, 1)
@@ -385,7 +394,7 @@ def A023811(n: int) -> int:
     """
     result = 0
     for i, j in enumerate(range(n - 2, -1, -1), start=1):
-        result += i * n ** j
+        result += i * n**j
     return result
 
 
@@ -593,7 +602,7 @@ def A001622() -> Iterable[int]:
         ctx.prec = 99999
         tau = (1 + Decimal(5).sqrt()) / 2
         for n in count():
-            yield math.floor(tau * 10 ** n) % 10
+            yield math.floor(tau * 10**n) % 10
 
 
 @oeis.from_function(offset=1)
@@ -673,7 +682,7 @@ def A064367(n: int) -> int:
     """Show result of a(n) = 2^n mod prime(n), or 2^n = k*prime(n) + a(n) with integer k."""
     from sympy.ntheory import prime
 
-    return 2 ** n % prime(n)
+    return 2**n % prime(n)
 
 
 @oeis.from_function()
@@ -698,9 +707,54 @@ def A002275(n: int) -> int:
 
 
 @oeis.from_function()
+def A133613(i):
+    """Last digits of the graham number."""
+    x = 3
+    for t in range(1, i + 2):
+        x = pow(3, x, pow(10, t))
+        z = x // pow(10, int(t - 1))
+    return z
+
+
+@oeis.from_generator(offset=1)
+def A183613() -> Iterable[int]:
+    """Backward concatenation of A133613.
+
+    a(n) = 3^^(n+1) modulo 10^n.
+    """
+    concatenation = 0
+    for i in iter(A133613):
+        concatenation = concatenation * 10 + i
+        yield int(str(concatenation)[::-1])
+
+
+@oeis.from_function()
 def A070939(i: int = 0) -> int:
     """Length of binary representation of n."""
     return len(f"{i:b}")
+
+
+@oeis.from_function(offset=1)
+def A001223(n: int) -> int:
+    """Gaps between primes."""
+    return A000040[n + 1] - A000040[n]
+
+
+@oeis.from_generator(offset=1)
+def A002182() -> Iterable[int]:
+    """Highly composite numbers.
+
+    numbers n where d(n), the number of divisors of n (A000005), increases to a record.
+    """
+    record = 0
+    from sympy import divisor_count
+
+    yield 1
+    for n in count(2, 2):
+        divisors = divisor_count(n)
+        if divisors > record:
+            record = divisors
+            yield n
 
 
 def main() -> None:  # pylint: disable=too-many-branches
