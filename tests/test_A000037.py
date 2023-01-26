@@ -1,96 +1,33 @@
+from math import floor, sqrt
+
+from hypothesis import given
+from hypothesis.strategies import integers
+
 from oeis import A000037
 
 
-def test_A000037():
-    assert A000037[1:91] == [
-        2,
-        3,
-        5,
-        6,
-        7,
-        8,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        47,
-        48,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        58,
-        59,
-        60,
-        61,
-        62,
-        63,
-        65,
-        66,
-        67,
-        68,
-        69,
-        70,
-        71,
-        72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        78,
-        79,
-        80,
-        82,
-        83,
-        84,
-        85,
-        86,
-        87,
-        88,
-        89,
-        90,
-        91,
-        92,
-        93,
-        94,
-        95,
-        96,
-        97,
-        98,
-        99,
-    ]
+def first_formula(n):
+    return n + floor(1/2 + sqrt(n))
+
+
+@given(integers(min_value=1))
+def test_first_formula(n):
+    assert first_formula(n) == A000037[n]
+
+
+# To uncomment when we have an implementation for A000194
+# @given(integers(min_value=1))
+# def test_last_formula(n):
+#     assert A000037[n] == A000194[n] + n
+
+
+# To uncomment when we have an implementation for A010052
+# @given(integers(min_value=1))
+# def test_reinhard_zumkeller(n):
+#     """A010052(a(n)) = 0. - Reinhard Zumkeller, Jan 26 2010."""
+#     assert A010052[A000037[n]] == 0
+
+
+def test_no_squares():
+    """For example note that the squares 0, 1, 4, 9, 16 are not included."""
+    assert {0, 1, 4, 9, 16} & set(A000037[1:17]) == {}
