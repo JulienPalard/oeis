@@ -9,7 +9,7 @@ from random import choice, random
 from typing import Callable, Dict, Iterable, Iterator, List, Sequence, Union, overload
 
 # Version format is YYYY.MM.DD (https://calver.org/)
-__version__ = "2021.1.3"
+__version__ = "2023.3.10"
 
 
 def parse_args() -> argparse.Namespace:
