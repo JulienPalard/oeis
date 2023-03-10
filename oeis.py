@@ -1,21 +1,12 @@
 """Implementation of a few integer sequences from the OEIS."""
 import argparse
 import math
-from itertools import count
-from functools import lru_cache, reduce
-from random import random, choice
-from decimal import Decimal, localcontext
-from typing import (
-    Callable,
-    Dict,
-    Iterable,
-    Iterator,
-    List,
-    Sequence,
-    Union,
-    overload,
-)
 import sys
+from decimal import Decimal, localcontext
+from functools import lru_cache, reduce
+from itertools import count
+from random import choice, random
+from typing import Callable, Dict, Iterable, Iterator, List, Sequence, Union, overload
 
 # Version format is YYYY.MM.DD (https://calver.org/)
 __version__ = "2021.1.3"
@@ -144,7 +135,7 @@ class IntegerSequenceFromGenerator(IntegerSequence):
     def __getitem__(self, key: slice) -> Sequence[int]:
         """Return a slice from an integer sequence."""
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:  # type: ignore
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
         """Return a value from the sequence (or a slice of it)."""
         if isinstance(key, slice):
             key = self.check_slice(key)
@@ -185,7 +176,7 @@ class IntegerSequenceFromFunction(
     def __getitem__(self, key: slice) -> Sequence[int]:
         """Return a slice from an integer sequence."""
 
-    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:  # type: ignore
+    def __getitem__(self, key: Union[int, slice]) -> Union[int, Sequence[int]]:
         """Return a value from the sequence (or a slice of it)."""
         if isinstance(key, slice):
             self.check_slice(key)
@@ -263,7 +254,8 @@ oeis = OEISRegistry()
 def A000037(n: int) -> int:
     """Give Numbers that are not squares (or, the nonsquares).
 
-    a(n) = A000194(n) + n = floor(1/2 *(1 + sqrt(4*n-3))) + n. - Jaroslav Krizek, Jun 14 2009
+    a(n) = A000194(n) + n = floor(1/2 *(1 + sqrt(4*n-3))) + n.
+    - Jaroslav Krizek, Jun 14 2009
     """
     from math import floor, sqrt
 
@@ -349,7 +341,7 @@ def A000032() -> Iterable[int]:
 
 @oeis.from_function()
 def A000119(n: int) -> int:
-    """Give the number of representations of n as a sum of distinct Fibonacci numbers."""
+    """Give the number of representations of n as a sum of distinct Fib. numbers."""
 
     def f(x, y, z):
         if x < y:
@@ -679,7 +671,10 @@ def A001969() -> Iterable[int]:
 
 @oeis.from_function(offset=1)
 def A064367(n: int) -> int:
-    """Show result of a(n) = 2^n mod prime(n), or 2^n = k*prime(n) + a(n) with integer k."""
+    """Show result of a(n) = 2^n mod prime(n).
+
+    Or 2^n = k*prime(n) + a(n) with integer k.
+    """
     from sympy.ntheory import prime
 
     return 2**n % prime(n)
