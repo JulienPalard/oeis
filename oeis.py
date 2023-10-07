@@ -539,12 +539,7 @@ def A000108(i: int) -> int:
 
     Also called Segner numbers.
     """
-    return (
-        math.factorial(2 * i)
-        // math.factorial(i)
-        // math.factorial(2 * i - i)
-        // (i + 1)
-    )
+    return math.factorial(2 * i) // math.factorial(i) ** 2 // (i + 1)
 
 
 @oeis.from_function()
