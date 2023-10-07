@@ -475,17 +475,13 @@ def A000203(i: int) -> int:
 
     a(n) = sigma(n). Also called sigma_1(n).
     """
-    divisors = []
-    for j in range(int(math.sqrt(i)) + 1):
-        if j == 0:
-            continue
+    divisor_sum = 0
+    for j in range(1, int(math.sqrt(i)) + 1):
         if i % j == 0:
-            if i / j == j:
-                divisors.append(j)
-            else:
-                divisors.append(j)
-                divisors.append(i // j)
-    return int(sum(divisors))
+            divisor_sum += j
+            if i // j != j:
+                divisor_sum += i // j
+    return divisor_sum
 
 
 @oeis.from_function()
