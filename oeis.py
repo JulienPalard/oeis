@@ -572,10 +572,14 @@ def A000120(n: int) -> int:
 def A001622() -> Iterable[int]:
     """Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."""
     with localcontext() as ctx:
-        ctx.prec = 99999
-        tau = (1 + Decimal(5).sqrt()) / 2
-        for n in count():
-            yield math.floor(tau * 10**n) % 10
+        ctx.prec = 10
+        start = 0
+        while True:
+            ctx.prec *= 10
+            phi = (1 + Decimal(5).sqrt()) / 2
+            for n in range(start, ctx.prec - 1):
+                yield math.floor(phi * 10**n) % 10
+            start = n + 1
 
 
 @oeis.from_function(offset=1)
