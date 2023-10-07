@@ -524,9 +524,7 @@ def A133058() -> Iterable[int]:
 def A000005(i: int) -> int:
     """d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."""
     divisors = 0
-    for j in range(int(math.sqrt(i)) + 1):
-        if j == 0:
-            continue
+    for j in range(1, int(math.sqrt(i)) + 1):
         if i % j == 0:
             if i / j == j:
                 divisors += 1
