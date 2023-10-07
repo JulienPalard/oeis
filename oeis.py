@@ -320,10 +320,9 @@ def A001221(n: int) -> int:
 def A000045() -> Iterable[int]:
     """Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."""
     a, b = (0, 1)
-    yield 0
     while True:
-        a, b = b, a + b
         yield a
+        a, b = b, a + b
 
 
 @oeis.from_generator()
