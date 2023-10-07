@@ -283,17 +283,13 @@ def A181391() -> Iterable[int]:
 @oeis.from_function(offset=1)
 def A006577(n: int) -> int:
     """Give the number of halving and tripling steps to reach 1 in '3x+1' problem."""
-    if n == 1:
-        return 0
     x = 0
-    while True:
+    while n > 1:
         if n % 2 == 0:
             n //= 2
         else:
             n = 3 * n + 1
         x += 1
-        if n < 2:
-            break
     return x
 
 
