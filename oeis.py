@@ -510,15 +510,14 @@ def A133058() -> Iterable[int]:
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
     last = 1
-    for i in count():
-        if i in (0, 1):
-            yield 1
-        elif (math.gcd(i, last)) == 1:
+    yield 1
+    yield 1
+    for i in count(2):
+        if (math.gcd(i, last)) == 1:
             last = last + i + 1
-            yield last
         else:
             last = int(last / math.gcd(last, i))
-            yield last
+        yield last
 
 
 @oeis.from_function(offset=1)
