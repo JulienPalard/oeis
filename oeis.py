@@ -406,11 +406,9 @@ def A000142(n: int) -> int:
 
 
 @oeis.from_function()
-def A000217(i: int):
+def A000217(n: int):
     """Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."""
-    if i < 1:
-        return 0
-    return math.factorial(i + 1) // math.factorial(2) // math.factorial((i + 1) - 2)
+    return n * (n + 1) // 2
 
 
 @oeis.from_function()
