@@ -752,6 +752,42 @@ def A002182() -> Iterable[int]:
             yield n
 
 
+@oeis.from_generator(offset=0)
+def A065722() -> Iterable[int]:
+    """Primes that when written in base 4, then reinterpreted in base 10, again give primes."""
+    from sympy.ntheory import prime
+
+    n = 1
+    while True:
+        p = prime(n)
+        if _is_patterson_prime(p):
+            yield p
+        n += 1
+
+
+def _is_patterson_prime(n):
+    from sympy.ntheory import isprime
+
+    base_four_repr = _decimal_to_base_n(n, 4)
+    base_ten_repr = int(base_four_repr)
+    return isprime(base_ten_repr)
+
+
+def _decimal_to_base_n(decimal_num, base):
+    if decimal_num < 0 or base < 2:
+        raise ValueError(
+            "Input must be a non-negative integer and base must be 2 or greater."
+        )
+    elif decimal_num == 0:
+        return "0"
+
+    result = ""
+    while decimal_num > 0:
+        decimal_num, remainder = divmod(decimal_num, base)
+        result = str(remainder) + result
+    return result
+
+
 def main() -> None:  # pylint: disable=too-many-branches
     """Command line entry point."""
     args = parse_args()
