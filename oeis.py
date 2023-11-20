@@ -97,6 +97,11 @@ class IntegerSequence:  # pylint: disable=too-few-public-methods
         """Return a slice or a value from an integer sequence."""
         raise NotImplementedError
 
+    def __iter__(self) -> Iterator[int]:
+        """Iterate over the integer sequence."""
+        for i in count(self.offset):
+            yield self[i]
+
 
 class IntegerSequenceFromGenerator(IntegerSequence):
     """IntegerSequence based on a generator.
@@ -755,9 +760,7 @@ def A002182() -> Iterable[int]:
 @oeis.from_generator(offset=0)
 def A065722() -> Iterable[int]:
     """Primes that when written in base 4, then reinterpreted in base 10, again give primes."""
-    from sympy import sieve
-
-    for p in sieve:
+    for p in A000040:
         if _is_patterson_prime(p):
             yield p
 
