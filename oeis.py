@@ -760,7 +760,8 @@ def A002182() -> Iterable[int]:
 @oeis.from_generator(offset=0)
 def A065722() -> Iterable[int]:
     """Primes that when written in base 4, then reinterpreted in base 10, again give primes."""
-    for p in A000040:
+    for p in A000040:  # pylint: disable=not-an-iterable
+        # Refer: https://github.com/pylint-dev/pylint/issues/9251
         if _is_patterson_prime(p):
             yield p
 
