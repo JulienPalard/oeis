@@ -97,6 +97,11 @@ class IntegerSequence:  # pylint: disable=too-few-public-methods
         """Return a slice or a value from an integer sequence."""
         raise NotImplementedError
 
+    def __iter__(self) -> Iterator[int]:
+        """Iterate over the integer sequence."""
+        for i in count(self.offset):
+            yield self[i]
+
 
 class IntegerSequenceFromGenerator(IntegerSequence):
     """IntegerSequence based on a generator.
@@ -750,6 +755,24 @@ def A002182() -> Iterable[int]:
         if divisors > record:
             record = divisors
             yield n
+
+
+@oeis.from_generator(offset=0)
+def A065722() -> Iterable[int]:
+    """Primes that when written in base 4, then reinterpreted in base 10, again give primes."""
+    for p in A000040:  # pylint: disable=not-an-iterable
+        # Refer: https://github.com/pylint-dev/pylint/issues/9251
+        if _is_patterson_prime(p):
+            yield p
+
+
+def _is_patterson_prime(n):
+    import numpy as np
+    from sympy.ntheory import isprime
+
+    base_four_repr = np.base_repr(n, base=4)
+    base_ten_repr = int(base_four_repr)
+    return isprime(base_ten_repr)
 
 
 def main() -> None:  # pylint: disable=too-many-branches
