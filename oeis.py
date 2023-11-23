@@ -288,17 +288,13 @@ def A181391() -> Iterable[int]:
 @oeis.from_function(offset=1)
 def A006577(n: int) -> int:
     """Give the number of halving and tripling steps to reach 1 in '3x+1' problem."""
-    if n == 1:
-        return 0
     x = 0
-    while True:
+    while n > 1:
         if n % 2 == 0:
             n //= 2
         else:
             n = 3 * n + 1
         x += 1
-        if n < 2:
-            break
     return x
 
 
@@ -329,10 +325,9 @@ def A001221(n: int) -> int:
 def A000045() -> Iterable[int]:
     """Fibonacci numbers: F(n) = F(n-1) + F(n-2) with F(0) = 0 and F(1) = 1."""
     a, b = (0, 1)
-    yield 0
     while True:
-        a, b = b, a + b
         yield a
+        a, b = b, a + b
 
 
 @oeis.from_generator()
@@ -416,11 +411,9 @@ def A000142(n: int) -> int:
 
 
 @oeis.from_function()
-def A000217(i: int):
+def A000217(n: int):
     """Triangular numbers: a(n) = binomial(n+1,2) = n(n+1)/2 = 0 + 1 + 2 + ... + n."""
-    if i < 1:
-        return 0
-    return math.factorial(i + 1) // math.factorial(2) // math.factorial((i + 1) - 2)
+    return n * (n + 1) // 2
 
 
 @oeis.from_function()
@@ -487,17 +480,13 @@ def A000203(i: int) -> int:
 
     a(n) = sigma(n). Also called sigma_1(n).
     """
-    divisors = []
-    for j in range(int(math.sqrt(i)) + 1):
-        if j == 0:
-            continue
+    divisor_sum = 0
+    for j in range(1, int(math.sqrt(i)) + 1):
         if i % j == 0:
-            if i / j == j:
-                divisors.append(j)
-            else:
-                divisors.append(j)
-                divisors.append(i // j)
-    return int(sum(divisors))
+            divisor_sum += j
+            if i // j != j:
+                divisor_sum += i // j
+    return divisor_sum
 
 
 @oeis.from_function()
@@ -526,24 +515,21 @@ def A133058() -> Iterable[int]:
     otherwise a(n) = a(n-1)/gcd(a(n-1),n).
     """
     last = 1
-    for i in count():
-        if i in (0, 1):
-            yield 1
-        elif (math.gcd(i, last)) == 1:
+    yield 1
+    yield 1
+    for i in count(2):
+        if (math.gcd(i, last)) == 1:
             last = last + i + 1
-            yield last
         else:
             last = int(last / math.gcd(last, i))
-            yield last
+        yield last
 
 
 @oeis.from_function(offset=1)
 def A000005(i: int) -> int:
     """d(n) (also called tau(n) or sigma_0(n)), the number of divisors of n."""
     divisors = 0
-    for j in range(int(math.sqrt(i)) + 1):
-        if j == 0:
-            continue
+    for j in range(1, int(math.sqrt(i)) + 1):
         if i % j == 0:
             if i / j == j:
                 divisors += 1
@@ -558,12 +544,7 @@ def A000108(i: int) -> int:
 
     Also called Segner numbers.
     """
-    return (
-        math.factorial(2 * i)
-        // math.factorial(i)
-        // math.factorial(2 * i - i)
-        // (i + 1)
-    )
+    return math.factorial(2 * i) // math.factorial(i) ** 2 // (i + 1)
 
 
 @oeis.from_function()
@@ -596,10 +577,14 @@ def A000120(n: int) -> int:
 def A001622() -> Iterable[int]:
     """Decimal expansion of golden ratio phi (or tau) = (1 + sqrt(5))/2."""
     with localcontext() as ctx:
-        ctx.prec = 99999
-        tau = (1 + Decimal(5).sqrt()) / 2
-        for n in count():
-            yield math.floor(tau * 10**n) % 10
+        ctx.prec = 10
+        start = 0
+        while True:
+            ctx.prec *= 10
+            phi = (1 + Decimal(5).sqrt()) / 2
+            for n in range(start, ctx.prec - 1):
+                yield math.floor(phi * 10**n) % 10
+            start = n + 1
 
 
 @oeis.from_function(offset=1)
