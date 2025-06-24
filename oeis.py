@@ -1,4 +1,5 @@
 """Implementation of a few integer sequences from the OEIS."""
+
 import argparse
 import math
 import sys
@@ -366,8 +367,7 @@ def A000121(n: int) -> int:
 @oeis.from_generator()
 def A115020() -> Iterable[int]:
     """Count backwards from 100 in steps of 7."""
-    for i in range(100, 0, -7):
-        yield i
+    yield from range(100, 0, -7)
 
 
 @oeis.from_function(offset=1)
@@ -619,13 +619,11 @@ def A165736(n: int) -> int:
 def A001462() -> Iterable[int]:
     """Golomb sequence."""
     sequence = [0, 1, 2, 2]
-    for term in sequence[1:]:
-        yield term
+    yield from sequence[1:]
     n = 3
     while True:
         new_terms = [n for i in range(sequence[n])]
-        for term in new_terms:
-            yield term
+        yield from new_terms
         sequence.extend(new_terms)
         n += 1
 
@@ -769,7 +767,7 @@ def main() -> None:  # pylint: disable=too-many-branches
         return
 
     if args.random:
-        args.sequence = choice(list(oeis.series.keys()))
+        args.sequence = choice(list(oeis.series.keys()))  # nosec
 
     if not args.sequence:
         print(
@@ -802,7 +800,7 @@ def main() -> None:  # pylint: disable=too-many-branches
 
         colors = []
         for _i in range(len(serie)):
-            colors.append(random())
+            colors.append(random())  # nosec
         with plt.style.context("dark_background"):
             plt.scatter(list(range(len(serie))), serie, s=50, c=colors, alpha=0.5)
         plt.show()

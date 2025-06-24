@@ -1,6 +1,7 @@
 import pytest
 from hypothesis import given, settings
 from hypothesis.strategies import integers
+
 from oeis import A064367
 
 

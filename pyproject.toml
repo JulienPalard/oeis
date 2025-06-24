@@ -35,6 +35,21 @@ homepage = "https://github.com/JulienPalard/oeis"
 [project.scripts]
 oeis = "oeis:main"
 
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "hypothesis",
+    "tox",
+    "pylint",
+    "mypy",
+    "isort",
+    "black",
+    "ruff",
+    "bandit",
+    "coverage",
+    "pydocstyle",
+]
+
 [tool.setuptools]
 py-modules = [
     "oeis",
@@ -43,3 +58,80 @@ include-package-data = false
 
 [tool.setuptools.dynamic.version]
 attr = "oeis.__version__"
+
+[tool.black]
+
+[tool.coverage.run]
+branch = false
+omit = [".tox/*"]
+
+[tool.coverage.report]
+skip_covered = true
+show_missing = true
+exclude_lines = [
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "# pragma: no cover",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+
+[tool.pylint]
+disable = [
+    "missing-module-docstring",
+    "missing-function-docstring",
+    "import-outside-toplevel",
+    "invalid-name",
+]
+
+[tool.tox]
+envlist = ["py38", "py39", "py310", "py311", "py312", "py313", "mypy", "black", "pylint", "isort", "ruff", "bandit", "coverage", "pycodestyle"]
+skip_missing_interpreters = true
+
+[tool.tox.env_run_base]
+deps = ["pytest", "hypothesis", "coverage"]
+description = "Run test under {base_python}"
+commands = [["python", "-m", "coverage", "run", "-m", "pytest"]]
+setenv = { COVERAGE_FILE = "{toxworkdir}/.coverage.{envname}" }
+
+[tool.tox.env.coverage]
+deps = ["coverage"]
+depends = ["py38", "py39", "py310", "py311", "py312", "py313", "py314"]
+parallel_show_output = true
+skip_install = true
+setenv = { COVERAGE_FILE = "{toxworkdir}/.coverage" }
+commands = [
+  ["coverage", "combine"],
+  ["coverage", "report", "--fail-under", "100"]
+]
+
+[tool.tox.env.mypy]
+deps = ["mypy"]
+commands = [["mypy", "oeis.py"]]
+
+[tool.tox.env.black]
+deps = ["black"]
+commands = [["black", "--check", "--diff", "oeis.py", "tests/"]]
+
+[tool.tox.env.pylint]
+deps = [".[dev]"]
+commands = [["pylint", "oeis.py", "tests/"]]
+
+[tool.tox.env.isort]
+deps = ["isort"]
+commands = [["isort", "--check", "--profile=black", "oeis.py", "tests/"]]
+
+[tool.tox.env.bandit]
+deps = ["bandit"]
+commands = [["bandit", "oeis.py"]]
+
+[tool.tox.env.ruff]
+deps = ["ruff"]
+commands = [["ruff", "check", "oeis.py", "tests/", "pyproject.toml"]]
+
+[tool.tox.env.pydocstyle]
+deps = ["pydocstyle"]
+skip_install = true
+commands = [["pydocstyle", "oeis.py"]]

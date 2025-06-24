@@ -1,7 +1,9 @@
-from oeis import A001462
 from functools import lru_cache
+
 from hypothesis import given
 from hypothesis.strategies import integers
+
+from oeis import A001462
 
 
 @given(integers(min_value=1, max_value=1000))

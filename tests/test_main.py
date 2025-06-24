@@ -44,7 +44,7 @@ def test_main_random(monkeypatch, capsys):
     assert "A" in captured.out
 
 
-def test_main_plot_to_file(monkeypatch, capsys, tmpdir):
+def test_main_plot_to_file(monkeypatch, tmpdir):
     tmpdir = Path(tmpdir)
     pngfile = tmpdir / "test.png"
     monkeypatch.setattr(sys, "argv", ["oeis", "A000290", "--file", str(pngfile)])

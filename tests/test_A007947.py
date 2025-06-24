@@ -1,7 +1,9 @@
-from oeis import A007947, A000040
+from functools import reduce
+
 from hypothesis import given, settings
 from hypothesis.strategies import integers
-from functools import reduce
+
+from oeis import A000040, A007947
 
 
 def test_sequence():

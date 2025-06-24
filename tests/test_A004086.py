@@ -1,6 +1,7 @@
-from oeis import A004086
 from hypothesis import given
 from hypothesis.strategies import integers
+
+from oeis import A004086
 
 
 @given(integers(min_value=1, max_value=10000))

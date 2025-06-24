@@ -1,6 +1,7 @@
-from oeis import A008587
 from hypothesis import given
 from hypothesis.strategies import integers
+
+from oeis import A008587
 
 
 @given(integers(min_value=0))

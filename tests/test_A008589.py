@@ -1,6 +1,7 @@
-from oeis import A008589
 from hypothesis import given
 from hypothesis.strategies import integers
+
+from oeis import A008589
 
 
 def test_A008589_start():
