@@ -109,7 +109,7 @@ class IntegerSequenceFromGenerator(IntegerSequence):
 
     Can be used like:
 
-    >>> s = IntegerSequenceFromGenerator(source=count)
+    >>> s = IntegerSequenceFromGenerator(source=count, offset=0)
     >>> s[:10]
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     """
@@ -163,7 +163,7 @@ class IntegerSequenceFromFunction(
 
     Can be used like:
 
-    >>> s = IntegerSequenceFromFunction(source=lambda x: x)
+    >>> s = IntegerSequenceFromFunction(source=lambda x: x, offset=0)
     >>> s[:10]
     [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     """

@@ -87,7 +87,7 @@ disable = [
 ]
 
 [tool.tox]
-envlist = ["py38", "py39", "py310", "py311", "py312", "py313", "mypy", "black", "pylint", "isort", "ruff", "bandit", "coverage", "pydocstyle"]
+envlist = ["py38", "py39", "py310", "py311", "py312", "py313", "mypy", "black", "pylint", "isort", "ruff", "bandit", "coverage", "pydocstyle", "doctest"]
 skip_missing_interpreters = true
 
 [tool.tox.env_run_base]
@@ -135,3 +135,8 @@ commands = [["ruff", "check", "oeis.py", "tests/", "pyproject.toml"]]
 deps = ["pydocstyle"]
 skip_install = true
 commands = [["pydocstyle", "oeis.py"]]
+
+[tool.tox.env.doctest]
+deps = []
+skip_install = true
+commands = [["python", "-m", "doctest", "oeis.py"]]
