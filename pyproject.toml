@@ -87,7 +87,7 @@ disable = [
 ]
 
 [tool.tox]
-envlist = ["py38", "py39", "py310", "py311", "py312", "py313", "mypy", "black", "pylint", "isort", "ruff", "bandit", "coverage", "pycodestyle"]
+envlist = ["py38", "py39", "py310", "py311", "py312", "py313", "mypy", "black", "pylint", "isort", "ruff", "bandit", "coverage", "pydocstyle"]
 skip_missing_interpreters = true
 
 [tool.tox.env_run_base]
