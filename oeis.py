@@ -9,9 +9,6 @@ from itertools import count
 from random import choice, random
 from typing import Callable, Dict, Iterable, Iterator, List, Sequence, Union, overload
 
-# Version format is YYYY.MM.DD (https://calver.org/)
-__version__ = "2023.3.10"
-
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
