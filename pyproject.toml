@@ -11,14 +11,13 @@ markers = [
 name = "oeis"
 description = "Implementation of a few integer sequences from the OEIS."
 readme = "README.md"
-license = {text = "MIT License"}
+license = "MIT"
 authors = [
     {name = "Julien Palard", email = "julien@palard.fr"},
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
 ]
